@@ -1,0 +1,1 @@
+- La multiplicidad de "Property" cambiarla de N:M a 1:N pues no le encuentro mucho sentido a que compartan filas de una tabla para las propiedades aunque se repitan.
