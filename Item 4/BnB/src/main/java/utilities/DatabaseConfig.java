@@ -3,6 +3,6 @@ package utilities;
 
 public interface DatabaseConfig {
 
-	public final String	PersistenceUnit	= "BnB";
+	public final String	PersistenceUnit	= "AcmeBnB";
 
 }
