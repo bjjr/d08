@@ -31,7 +31,6 @@ public class Tenant extends ConsumerActor {
 		this.invoices = invoices;
 	}
 
-	@NotNull
 	@Valid
 	@OneToOne(optional = true)
 	public Finder getFinder() {

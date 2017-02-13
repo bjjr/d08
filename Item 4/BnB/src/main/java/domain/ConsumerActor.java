@@ -22,7 +22,6 @@ public abstract class ConsumerActor extends Actor {
 	private Collection<Comment>	comments;
 
 
-	@NotNull
 	@Valid
 	@OneToOne(optional = true)
 	public CreditCard getCreditCard() {
