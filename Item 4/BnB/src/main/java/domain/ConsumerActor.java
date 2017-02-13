@@ -34,7 +34,6 @@ public abstract class ConsumerActor extends Actor {
 	}
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "commented")
 	public Collection<Comment> getComments() {
 		return comments;

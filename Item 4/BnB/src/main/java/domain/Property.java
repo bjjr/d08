@@ -21,7 +21,7 @@ public class Property extends DomainEntity {
 
 	// Attributes
 	private String	name;
-	private Double	rate;
+	private double	rate;
 	private String	description;
 	private String	address;
 
@@ -36,11 +36,11 @@ public class Property extends DomainEntity {
 	}
 
 	@Digits(integer = 9, fraction = 2)
-	public Double getRate() {
+	public double getRate() {
 		return rate;
 	}
 
-	public void setRate(Double rate) {
+	public void setRate(double rate) {
 		this.rate = rate;
 	}
 
@@ -82,7 +82,6 @@ public class Property extends DomainEntity {
 	}
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "property")
 	public Collection<Book> getBooks() {
 		return books;
@@ -93,7 +92,6 @@ public class Property extends DomainEntity {
 	}
 
 	@NotNull
-	@Valid
 	@ManyToMany(mappedBy = "properties")
 	public Collection<Attribute> getAttributes() {
 		return attributes;
@@ -104,7 +102,6 @@ public class Property extends DomainEntity {
 	}
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "property")
 	public Collection<Audit> getAudits() {
 		return audits;
