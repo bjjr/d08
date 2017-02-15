@@ -6,7 +6,7 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -16,8 +16,8 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Attribute extends DomainEntity {
 
 	// Attributes
+
 	private String	name;
-	private String	value;
 
 
 	@NotBlank
@@ -29,28 +29,20 @@ public class Attribute extends DomainEntity {
 		this.name = name;
 	}
 
-	@NotBlank
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
 
 	// Relationships
-	private Collection<Property>	properties;
+
+	private Collection<AttributeValue>	attributeValues;
 
 
 	@NotNull
-	@ManyToMany
-	public Collection<Property> getProperties() {
-		return properties;
+	@OneToMany(mappedBy = "attribute")
+	public Collection<AttributeValue> getAttributeValues() {
+		return attributeValues;
 	}
 
-	public void setProperties(Collection<Property> properties) {
-		this.properties = properties;
+	public void setAttributeValues(Collection<AttributeValue> attributeValues) {
+		this.attributeValues = attributeValues;
 	}
 
 }
