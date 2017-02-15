@@ -1,0 +1,16 @@
+Query 1
+select min(t.invoices.size) from Tenant t;
+
+select avg(t.invoices.size) from Tenant t;
+
+select max(t.invoices.size) from Tenant t; 
+
+Query 2
+
+select sum(i.due) from Tenant t join t.invoices i;
+
+Query 3
+
+select sum(p.requests.size)/(select sum(r) from Request r) from Property p where p.autits.size >= 1;
+
+select sum(p.requests.size)/(select sum(r) from Request r) from Property p where p.autits.size == 0;
