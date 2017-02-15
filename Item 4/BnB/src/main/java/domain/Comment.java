@@ -78,7 +78,7 @@ public class Comment extends DomainEntity {
 		return commentableEntity;
 	}
 
-	public void setCommented(CommentableEntity commentableEntity) {
+	public void setCommentableEntity(CommentableEntity commentableEntity) {
 		this.commentableEntity = commentableEntity;
 	}
 
