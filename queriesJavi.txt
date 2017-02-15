@@ -1,0 +1,29 @@
+The average number of accepted and denied requests per lessor
+	select avg(count(b)) fron Lessor l join l.properties p join p.books b where b.status.name = "ACCEPTED"
+	select avg(count(b)) fron Lessor l join l.properties p join p.books b where b.status.name = "DENIED"
+
+The average number of accepted and denied requests per tenant
+	select avg(count(b)) fron Tenant t join t.books b where b.status.name = "ACCEPTED"
+	select avg(count(b)) fron Tenant t join t.books b where b.status.name = "DENIED"
+
+The lessors who have more pending requests
+	select l from Lessor l join l.properties p join p.books b where count(b) = (select max(count(b)) from Lessor l join l.properties p join p.books b) and b.status.name = "PENDING"
+
+The lessors who have more pending approved
+	select l from Lessor l join l.properties p join p.books b where count(b) = (select max(count(b)) from Lessor l join l.properties p join p.books b) and b.status.name = "ACCEPTED"
+
+The lessors who have more pending denied
+	select l from Lessor l join l.properties p join p.books b where count(b) = (select max(count(b)) from Lessor l join l.properties p join p.books b) and b.status.name = "DENIED"
+
+The lessors who have more pending requests
+	select l from Lessor l join l.properties p join p.books b where count(b) = (select max(count(b)) from Lessor l join l.properties p join p.books b) and b.status.name = "PENDING"
+
+The tenants who have got more requests approved
+	select t from Tenant t join t.books b where count(b) = (select max(count(b)) from Tenant t join t.books b) and b.status.name = "ACCEPTED"
+
+The tenants who have got more requests denied
+	select t from Tenant t join t.books b where count(b) = (select max(count(b)) from Tenant t join t.books b) and b.status.name = "DENIED"
+
+The tenants who have more pending requests
+	select t from Tenant t join t.books b where count(b) = (select max(count(b)) from Tenant t join t.books b) and b.status.name = "PENDING"
+
