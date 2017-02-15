@@ -68,30 +68,18 @@ public class Comment extends DomainEntity {
 
 
 	// Relationships
-	private ConsumerActor	commented;
-	private ConsumerActor	commentator;
+	private CommentableEntity	commentableEntity;
 
 
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	public ConsumerActor getCommented() {
-		return commented;
+	public CommentableEntity getCommentableEntity() {
+		return commentableEntity;
 	}
 
-	public void setCommented(ConsumerActor commented) {
-		this.commented = commented;
-	}
-
-	@NotNull
-	@Valid
-	@ManyToOne(optional = false)
-	public ConsumerActor getCommentator() {
-		return commentator;
-	}
-
-	public void setCommentator(ConsumerActor commentator) {
-		this.commentator = commentator;
+	public void setCommented(CommentableEntity commentableEntity) {
+		this.commentableEntity = commentableEntity;
 	}
 
 }

@@ -64,10 +64,10 @@ public class Property extends DomainEntity {
 
 
 	// Relationships
-	private Lessor					lessor;
-	private Collection<Book>		books;
-	private Collection<Attribute>	attributes;
-	private Collection<Audit>		audits;
+	private Lessor						lessor;
+	private Collection<Book>			books;
+	private Collection<AttributeValue>	attributeValues;
+	private Collection<Audit>			audits;
 
 
 	@NotNull
@@ -93,12 +93,12 @@ public class Property extends DomainEntity {
 
 	@NotNull
 	@ManyToMany(mappedBy = "properties")
-	public Collection<Attribute> getAttributes() {
-		return attributes;
+	public Collection<AttributeValue> getAttributeValues() {
+		return attributeValues;
 	}
 
-	public void setAttributes(Collection<Attribute> attributes) {
-		this.attributes = attributes;
+	public void setAttributeValues(Collection<AttributeValue> attributeValues) {
+		this.attributeValues = attributeValues;
 	}
 
 	@NotNull
