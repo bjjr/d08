@@ -25,9 +25,10 @@ public class Audit extends DomainEntity {
 	// Attributes
 	private Date	momentWritten;
 	private String	text;
-	private Boolean	draft;
+	private boolean	draft;
 
 
+	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Past
@@ -48,11 +49,11 @@ public class Audit extends DomainEntity {
 		this.text = text;
 	}
 
-	public Boolean getDraft() {
+	public boolean getDraft() {
 		return draft;
 	}
 
-	public void setDraft(Boolean draft) {
+	public void setDraft(boolean draft) {
 		this.draft = draft;
 	}
 
@@ -86,7 +87,6 @@ public class Audit extends DomainEntity {
 	}
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "audit")
 	public Collection<Attachment> getAttachments() {
 		return attachments;

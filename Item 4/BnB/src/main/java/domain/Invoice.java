@@ -23,11 +23,12 @@ public class Invoice extends DomainEntity {
 
 	// Attributes
 	private Date	momentIssued;
-	private Integer	vatNumber;
+	private int		vatNumber;
 	private String	details;
-	private Double	totalDue;
+	private double	totalDue;
 
 
+	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Past
@@ -39,11 +40,11 @@ public class Invoice extends DomainEntity {
 		this.momentIssued = momentIssued;
 	}
 
-	public Integer getVatNumber() {
+	public int getVatNumber() {
 		return vatNumber;
 	}
 
-	public void setVatNumber(Integer vatNumber) {
+	public void setVatNumber(int vatNumber) {
 		this.vatNumber = vatNumber;
 	}
 
@@ -57,11 +58,11 @@ public class Invoice extends DomainEntity {
 	}
 
 	@Digits(integer = 9, fraction = 2)
-	public Double getTotalDue() {
+	public double getTotalDue() {
 		return totalDue;
 	}
 
-	public void setTotalDue(Double totalDue) {
+	public void setTotalDue(double totalDue) {
 		this.totalDue = totalDue;
 	}
 

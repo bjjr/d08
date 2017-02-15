@@ -11,15 +11,15 @@ import javax.validation.constraints.Digits;
 public class Fee extends DomainEntity {
 
 	// Attributes
-	private Double	value;
+	private double	value;
 
 
 	@Digits(integer = 9, fraction = 2)
-	public Double getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 

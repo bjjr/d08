@@ -22,7 +22,6 @@ public class Tenant extends ConsumerActor {
 
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "tenant")
 	public Collection<Invoice> getInvoices() {
 		return invoices;
@@ -32,7 +31,6 @@ public class Tenant extends ConsumerActor {
 		this.invoices = invoices;
 	}
 
-	@NotNull
 	@Valid
 	@OneToOne(optional = true)
 	public Finder getFinder() {
@@ -44,7 +42,6 @@ public class Tenant extends ConsumerActor {
 	}
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "tenant")
 	public Collection<Book> getBooks() {
 		return books;

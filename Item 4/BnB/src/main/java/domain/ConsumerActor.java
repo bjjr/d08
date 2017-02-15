@@ -22,7 +22,6 @@ public abstract class ConsumerActor extends Actor {
 	private Collection<Comment>	comments;
 
 
-	@NotNull
 	@Valid
 	@OneToOne(optional = true)
 	public CreditCard getCreditCard() {
@@ -34,7 +33,6 @@ public abstract class ConsumerActor extends Actor {
 	}
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "commented")
 	public Collection<Comment> getComments() {
 		return comments;

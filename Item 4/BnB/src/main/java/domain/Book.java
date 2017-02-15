@@ -21,7 +21,7 @@ public class Book extends DomainEntity {
 	// Attributes
 	private Date	checkInDate;
 	private Date	checkOutDate;
-	private Boolean	smoker;
+	private boolean	smoker;
 
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -44,11 +44,11 @@ public class Book extends DomainEntity {
 		this.checkOutDate = checkOutDate;
 	}
 
-	public Boolean getSmoker() {
+	public boolean getSmoker() {
 		return smoker;
 	}
 
-	public void setSmoker(Boolean smoker) {
+	public void setSmoker(boolean smoker) {
 		this.smoker = smoker;
 	}
 

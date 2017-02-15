@@ -5,15 +5,18 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
+
+import security.UserAccount;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -55,6 +58,7 @@ public abstract class Actor extends DomainEntity {
 		this.email = email;
 	}
 
+
 	@Pattern(regexp = "^\\+\\d{1,4}[\\s\\S]+$")
 	public String getPhone() {
 		return phone;
@@ -76,10 +80,10 @@ public abstract class Actor extends DomainEntity {
 
 	// Relationships
 	private Collection<SocialIdentity>	socialIdentities;
+	private UserAccount					userAccount;
 
 
 	@NotNull
-	@Valid
 	@OneToMany(mappedBy = "actor")
 	public Collection<SocialIdentity> getSocialIdentities() {
 		return socialIdentities;
@@ -87,6 +91,17 @@ public abstract class Actor extends DomainEntity {
 
 	public void setSocialIdentities(Collection<SocialIdentity> socialIdentities) {
 		this.socialIdentities = socialIdentities;
+	}
+
+	@NotNull
+	@Valid
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
 	}
 
 }
