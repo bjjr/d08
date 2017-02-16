@@ -7,10 +7,10 @@ select max(t.invoices.size) from Tenant t;
 
 Query 2
 
-select sum(i.due) from Tenant t join t.invoices i;
+select sum(i.totalDue) from Invoice i;
 
 Query 3
 
-select sum(p.requests.size)/(select sum(r) from Request r) from Property p where p.autits.size >= 1;
+select sum(p.books.size)*1.0/(select count(b) from Book b) from Property p where p.audits.size >= 1;
 
-select sum(p.requests.size)/(select sum(r) from Request r) from Property p where p.autits.size == 0;
+select sum(p.books.size)*1.0/(select count(b) from Book b) from Property p where p.audits.size = 0;
