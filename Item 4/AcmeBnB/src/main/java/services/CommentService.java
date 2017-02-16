@@ -9,9 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.CommentRepository;
+import security.Authority;
+import domain.Book;
 import domain.Comment;
 import domain.CommentableEntity;
 import domain.ConsumerActor;
+import domain.Lessor;
+import domain.Property;
+import domain.Tenant;
 
 @Service
 @Transactional
@@ -24,7 +29,7 @@ public class CommentService {
 
 	// Supporting services
 	@Autowired
-	private ActorService				actorService;
+	private ConsumerActorService		consumerActorService;
 
 	@Autowired
 	private CommentableEntityService	commentableEntityService;
@@ -43,23 +48,53 @@ public class CommentService {
 
 		Comment result;
 		Date moment;
+		ConsumerActor principal;
+		Authority auth1;
+		Authority auth2;
+		Lessor lessor;
+		Tenant tenant;
 
-		sc = socialActorService.findByPrincipal();
-		identity = sc.getName() + sc.getSurname();
+		principal = consumerActorService.findByPrincipal();
 		result = new Comment();
-		result.setRecipe(recipe);
-		recipe.addComment(result);
-		recipeService.save(recipe);
-		result.setSocialActor(sc);
-		result.setIdentity(identity);
-		sc.addComment(result);
-		socialActorService.save(sc);
+		auth1 = new Authority();
+		auth2 = new Authority();
+		auth1.setAuthority(Authority.TENANT);
+		auth2.setAuthority(Authority.LESSOR);
+
+		if (principal.equals(consumerActor)) {
+			result.setCommentableEntity(principal);
+			principal.getComments().add(result);
+			consumerActorService.save(principal);
+
+		} else if (!principal.equals(consumerActor) && principal.getUserAccount().getAuthorities().contains(auth1)) {
+			Assert.isTrue(consumerActor.getUserAccount().getAuthorities().contains(auth2));
+			tenant = (Tenant) principal;
+			for (Book b : tenant.getBooks()) {
+				Assert.isTrue(b.getProperty().getLessor().equals(consumerActor));
+				break;
+			}
+			result.setCommentableEntity(consumerActor);
+			consumerActor.getComments().add(result);
+			consumerActorService.save(consumerActor);
+		} else {
+			Assert.isTrue(consumerActor.getUserAccount().getAuthorities().contains(auth1));
+			Assert.isTrue(principal.getUserAccount().getAuthorities().contains(auth2));
+			lessor = (Lessor) principal;
+			for (Property p : lessor.getProperties()) {
+				for (Book b : p.getBooks()) {
+					Assert.isTrue(b.getTenant().equals(consumerActor));
+					break;
+				}
+			}
+			result.setCommentableEntity(consumerActor);
+			consumerActor.getComments().add(result);
+			consumerActorService.save(consumerActor);
+		}
 		moment = new Date(System.currentTimeMillis() - 1000);
-		result.setMoment(moment);
+		result.setMomentPosted(moment);
 
 		return result;
 	}
-
 	public Comment save(Comment comment) {
 		Assert.notNull(comment);
 
