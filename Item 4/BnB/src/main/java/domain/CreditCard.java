@@ -16,7 +16,7 @@ public class CreditCard extends DomainEntity {
 	// Attributes
 	private String	holderName;
 	private String	brandName;
-	private int		number;
+	private String	number;
 	private int		expirationMonth;
 	private int		expirationYear;
 	private int		cvv;
@@ -41,11 +41,11 @@ public class CreditCard extends DomainEntity {
 	}
 
 	@CreditCardNumber
-	public int getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 
