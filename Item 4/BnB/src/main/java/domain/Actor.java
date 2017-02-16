@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -20,7 +21,7 @@ import security.UserAccount;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public abstract class Actor extends DomainEntity {
+public abstract class Actor extends CommentableEntity {
 
 	// Attributes
 	private String	name;
@@ -58,7 +59,7 @@ public abstract class Actor extends DomainEntity {
 		this.email = email;
 	}
 
-	//	@Pattern(regexp = "^$|(^(\\+([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\s)?(\\((00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9])\\)\\s)?([a-zA-Z0-9](\\s|\\-)*){3,}([a-zA-Z0-9]))$")
+	@Pattern(regexp = "^\\+\\d{1,4}[\\s\\S]+$")
 	public String getPhone() {
 		return phone;
 	}
