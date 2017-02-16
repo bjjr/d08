@@ -369,7 +369,9 @@
 		<property name="address" value="property1Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">
-			<list></list>
+			<list>
+				<ref bean="book4" />
+			</list>
 		</property>
 		<property name="audits">
 			<list></list>
@@ -432,7 +434,11 @@
 		<property name="address" value="property4Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">
-			<list></list>
+			<list>
+				<ref bean="book2" />
+				<ref bean="book3" />
+				<ref bean="book5" />
+			</list>
 		</property>
 		<property name="audits">
 			<list>
@@ -647,7 +653,11 @@
 			<list></list>
 		</property>
 		<property name="books">
-			<list></list>
+			<list>
+				<ref bean="book3" />
+				<ref bean="book4" />
+				<ref bean="book5" />
+			</list>
 		</property>
 	</bean>
 
@@ -676,6 +686,7 @@
 		<property name="books">
 			<list>
 				<ref bean="book1" />
+				<ref bean="book2" />
 			</list>
 		</property>
 	</bean>
@@ -725,6 +736,42 @@
 		<property name="smoker" value="false" />
 		<property name="tenant" ref="tenant2" />
 		<property name="property" ref="property3" />
+		<property name="status" ref="status1" />
+	</bean>
+	
+	<bean id="book2" class="domain.Book">
+		<property name="checkInDate" value="01/04/2020 00:10" />
+		<property name="checkOutDate" value="01/08/2020 03:50" />
+		<property name="smoker" value="true" />
+		<property name="tenant" ref="tenant2" />
+		<property name="property" ref="property4" />
+		<property name="status" ref="status3" />
+	</bean>
+	
+	<bean id="book3" class="domain.Book">
+		<property name="checkInDate" value="07/10/2019 17:13" />
+		<property name="checkOutDate" value="26/04/2020 10:58" />
+		<property name="smoker" value="false" />
+		<property name="tenant" ref="tenant1" />
+		<property name="property" ref="property4" />
+		<property name="status" ref="status2" />
+	</bean>
+	
+	<bean id="book4" class="domain.Book">
+		<property name="checkInDate" value="07/06/2019 22:46" />
+		<property name="checkOutDate" value="12/04/2020 10:00" />
+		<property name="smoker" value="false" />
+		<property name="tenant" ref="tenant1" />
+		<property name="property" ref="property2" />
+		<property name="status" ref="status1" />
+	</bean>
+	
+	<bean id="book5" class="domain.Book">
+		<property name="checkInDate" value="17/02/2020 10:00" />
+		<property name="checkOutDate" value="17/04/2020 10:00" />
+		<property name="smoker" value="false" />
+		<property name="tenant" ref="tenant1" />
+		<property name="property" ref="property1" />
 		<property name="status" ref="status1" />
 	</bean>
 
