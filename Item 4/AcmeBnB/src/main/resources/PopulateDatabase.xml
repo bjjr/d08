@@ -359,6 +359,15 @@
 		<property name="expirationYear" value="2021" />
 		<property name="cvv" value="113" />
 	</bean>
+	
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holderName" value="holderName2" />
+		<property name="brandName" value="brandName2" />
+		<property name="number" value="5382872890424046" />
+		<property name="expirationMonth" value="7" />
+		<property name="expirationYear" value="2024" />
+		<property name="cvv" value="125" />
+	</bean>
 
 	<!-- PROPERTIES -->
 
@@ -643,6 +652,7 @@
 		<property name="phone" value="+34000000001" />
 		<property name="picture" value="http://photo.com" />
 		<property name="userAccount" ref="userAccountT1" />
+		<property name="creditCard" ref="creditCard2" />
 		<property name="socialIdentities">
 			<list></list>
 		</property>
@@ -650,7 +660,10 @@
 			<list></list>
 		</property>
 		<property name="invoices">
-			<list></list>
+			<list>
+			<ref bean="invoice2" />
+			<ref bean="invoice3" />
+			</list>
 		</property>
 		<property name="books">
 			<list>
@@ -727,6 +740,26 @@
 		<property name="creditCard" ref="creditCard1" />
 		<property name="tenant" ref="tenant2" />
 	</bean>
+	
+	<bean id="invoice2" class="domain.Invoice">
+		<property name="momentIssued" value="05/02/2016 15:00" />
+		<property name="vatNumber" value="43" />
+		<property name="details" value="This is invoice 2's details" />
+		<property name="totalDue" value="176.13" />
+		<property name="creditCard" ref="creditCard2" />
+		<property name="tenant" ref="tenant1" />
+	</bean>
+	
+	<bean id="invoice3" class="domain.Invoice">
+		<property name="momentIssued" value="11/05/2016 17:30" />
+		<property name="vatNumber" value="68" />
+		<property name="details" value="This is invoice 3's details" />
+		<property name="totalDue" value="318.25" />
+		<property name="creditCard" ref="creditCard2" />
+		<property name="tenant" ref="tenant1" />
+	</bean>
+	
+	
 
 	<!-- BOOKS -->
 
@@ -762,7 +795,7 @@
 		<property name="checkOutDate" value="12/04/2020 10:00" />
 		<property name="smoker" value="false" />
 		<property name="tenant" ref="tenant1" />
-		<property name="property" ref="property2" />
+		<property name="property" ref="property1" />
 		<property name="status" ref="status1" />
 	</bean>
 	
@@ -771,7 +804,7 @@
 		<property name="checkOutDate" value="17/04/2020 10:00" />
 		<property name="smoker" value="false" />
 		<property name="tenant" ref="tenant1" />
-		<property name="property" ref="property1" />
+		<property name="property" ref="property4" />
 		<property name="status" ref="status1" />
 	</bean>
 
