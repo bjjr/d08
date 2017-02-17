@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.FinderRepository;
 import domain.Finder;
+import domain.Tenant;
 
 @Service
 @Transactional
@@ -18,6 +19,9 @@ public class FinderService {
 
 	@Autowired
 	private FinderRepository	finderRepository;
+
+	@Autowired
+	private TenantService		tenantService;
 
 
 	public Finder create() {
@@ -34,7 +38,16 @@ public class FinderService {
 
 	public Finder save(Finder finder) {
 		Finder result;
+		Tenant tenant;
+
 		Assert.notNull(finder);
+		tenant = tenantService.findByPrincipal();
+		Assert.notNull(tenant);
+
+		// Only the logged Tenant can edit his Finder
+		if (finder.getId() != 0) {
+			Assert.isTrue(tenant.getFinder().getId() == finder.getId());
+		}
 
 		result = finderRepository.save(finder);
 		Assert.notNull(result);
@@ -47,6 +60,10 @@ public class FinderService {
 
 	public Collection<Finder> findAll() {
 		return finderRepository.findAll();
+	}
+
+	public void flush() {
+		finderRepository.flush();
 	}
 
 }
