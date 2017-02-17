@@ -86,6 +86,10 @@ public class TenantService {
 		return tenantRepository.findAll();
 	}
 
+	public void flush() {
+		tenantRepository.flush();
+	}
+
 	public Tenant findByPrincipal() {
 		return tenantRepository.findByUserAccount(LoginService.getPrincipal().getId());
 	}
