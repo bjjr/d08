@@ -23,6 +23,9 @@ public class BookService {
 	@Autowired
 	private TenantService tenantService;
 	
+	@Autowired
+	private StatusService statusService;
+	
 	public Book create(Property property){
 		Book book = new Book();
 		
@@ -33,7 +36,7 @@ public class BookService {
 		
 		book.setTenant(tenantService.findByPrincipal());
 		book.setProperty(property);
-		//ToDo: book.setStatus()
+		book.setStatus(statusService.create());
 		
 		return book;
 	}
