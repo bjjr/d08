@@ -4,7 +4,9 @@ package repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import domain.Attachment;
+
 @Repository
-public interface Attachment extends JpaRepository<Attachment, Integer> {
+public interface AttachmentRepository extends JpaRepository<Attachment, Integer> {
 
 }
