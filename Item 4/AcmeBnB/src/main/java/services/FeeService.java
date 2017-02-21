@@ -27,6 +27,16 @@ public class FeeService {
 
 	// Simple CRUD methods ----------------------------------
 
+	public Fee save(Fee fee) {
+		Assert.notNull(fee);
+
+		Fee result;
+
+		result = feeRepository.save(fee);
+
+		return result;
+	}
+
 	public Fee findOne(int feeID) {
 		Fee result;
 
@@ -41,16 +51,6 @@ public class FeeService {
 
 		result = feeRepository.findAll();
 		Assert.notNull(result);
-
-		return result;
-	}
-
-	public Fee save(Fee fee) {
-		Assert.notNull(fee);
-
-		Fee result;
-
-		result = feeRepository.save(fee);
 
 		return result;
 	}

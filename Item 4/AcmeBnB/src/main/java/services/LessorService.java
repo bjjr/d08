@@ -1,13 +1,16 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import repositories.LessorRepository;
 import domain.Lessor;
+import domain.Property;
 
 public class LessorService {
 
@@ -16,11 +19,11 @@ public class LessorService {
 	@Autowired
 	private LessorRepository	lessorRepository;
 
+
 	// Supporting services ----------------------------------
 
-	@Autowired
-	private UserAccountService	UserAccountService;
-
+	//	@Autowired
+	//TODO	private UserAccountService	UserAccountService;
 
 	// Constructors -----------------------------------------
 
@@ -53,16 +56,9 @@ public class LessorService {
 
 		result = new Lessor();
 
-		result.setComments(null);
-		result.setCreditCard(null);
-		result.setEmail("");
-		result.setName("");
-		result.setPhone("");
-		result.setPicture("");
-		result.setProperties(null);
-		result.setSocialIdentities(null);
-		result.setSurname("");
-		result.setUserAccount(null);//TODO
+		//TODO
+
+		result.setProperties(new ArrayList<Property>());
 
 		return result;
 	}
@@ -82,5 +78,85 @@ public class LessorService {
 	}
 
 	// Other business methods -------------------------------
+
+	public Double avgAcceptedPerLessor() {
+		Double avg;
+
+		avg = lessorRepository.avgAcceptedPerLessor();
+
+		Assert.notNull(avg);
+
+		return avg;
+	}
+
+	public Double avgDeniedPerLessor() {
+		Double avg;
+
+		avg = lessorRepository.avgDeniedPerLessor();
+
+		Assert.notNull(avg);
+
+		return avg;
+	}
+
+	public String lessorMaxNumApproved() {
+		List<Object[]> lessors;
+		Lessor lessor;
+		String lessorName;
+
+		lessors = lessorRepository.lessorsOrderByNumApproved();
+
+		Assert.notNull(lessors);
+
+		lessor = (Lessor) lessors.get(0)[0];
+
+		Assert.notNull(lessor);
+
+		lessorName = lessor.getName();
+
+		Assert.notNull(lessorName);
+
+		return lessorName;
+	}
+
+	public String lessorMaxNumPending() {
+		List<Object[]> lessors;
+		Lessor lessor;
+		String lessorName;
+
+		lessors = lessorRepository.lessorsOrderByNumPending();
+
+		Assert.notNull(lessors);
+
+		lessor = (Lessor) lessors.get(0)[0];
+
+		Assert.notNull(lessor);
+
+		lessorName = lessor.getName();
+
+		Assert.notNull(lessorName);
+
+		return lessorName;
+	}
+
+	public String lessorMaxNumDenied() {
+		List<Object[]> lessors;
+		Lessor lessor;
+		String lessorName;
+
+		lessors = lessorRepository.lessorsOrderByNumDenied();
+
+		Assert.notNull(lessors);
+
+		lessor = (Lessor) lessors.get(0)[0];
+
+		Assert.notNull(lessor);
+
+		lessorName = lessor.getName();
+
+		Assert.notNull(lessorName);
+
+		return lessorName;
+	}
 
 }
