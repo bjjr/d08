@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import repositories.AuditorRepository;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountService;
 import domain.Auditor;
 
 @Service
