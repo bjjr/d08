@@ -16,8 +16,11 @@ public class LessorService {
 	@Autowired
 	private LessorRepository	lessorRepository;
 
-
 	// Supporting services ----------------------------------
+
+	@Autowired
+	private UserAccountService	UserAccountService;
+
 
 	// Constructors -----------------------------------------
 
@@ -49,6 +52,17 @@ public class LessorService {
 		Lessor result;
 
 		result = new Lessor();
+
+		result.setComments(null);
+		result.setCreditCard(null);
+		result.setEmail("");
+		result.setName("");
+		result.setPhone("");
+		result.setPicture("");
+		result.setProperties(null);
+		result.setSocialIdentities(null);
+		result.setSurname("");
+		result.setUserAccount(null);//TODO
 
 		return result;
 	}
