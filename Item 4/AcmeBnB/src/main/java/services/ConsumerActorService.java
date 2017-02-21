@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ConsumerActorRepository;
+import domain.Comment;
 import domain.ConsumerActor;
+import domain.SocialIdentity;
 
 @Service
 @Transactional
@@ -34,6 +37,20 @@ public class ConsumerActorService {
 
 	// Simple CRUD methods ----------------------------------
 
+	public ConsumerActor save(ConsumerActor consumerActor) {
+		Assert.notNull(consumerActor);
+
+		ConsumerActor result;
+
+		result = ConsumerActorRepository.save(consumerActor);
+
+		return result;
+	}
+
+	public void flush() {
+		ConsumerActorRepository.flush();
+	}
+
 	public ConsumerActor findOne(int consumerActorID) {
 		ConsumerActor result;
 
@@ -52,20 +69,21 @@ public class ConsumerActorService {
 		return result;
 	}
 
-	public ConsumerActor save(ConsumerActor consumerActor) {
-		Assert.notNull(consumerActor);
-
-		ConsumerActor result;
-
-		result = ConsumerActorRepository.save(consumerActor);
-
-		return result;
-	}
-
-	public void flush() {
-		ConsumerActorRepository.flush();
-	}
-
 	// Other business methods -------------------------------
 
+	public void setConsumerActorProperties(ConsumerActor ca) {
+		Collection<Comment> comments;
+		Collection<SocialIdentity> socialIdentities;
+
+		comments = new LinkedList<>();
+		socialIdentities = new LinkedList<>();
+
+		ca.setComments(comments);
+		ca.setSocialIdentities(socialIdentities);
+		ca.setName("");
+		ca.setSurname("");
+		ca.setEmail("");
+		ca.setPhone("");
+		ca.setPicture("");
+	}
 }

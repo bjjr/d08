@@ -27,24 +27,6 @@ public class CreditCardService {
 
 	// Simple CRUD methods ----------------------------------
 
-	public CreditCard findOne(int creditCardID) {
-		CreditCard result;
-
-		result = creditCardRepository.findOne(creditCardID);
-		Assert.notNull(result);
-
-		return result;
-	}
-
-	public Collection<CreditCard> findAll() {
-		Collection<CreditCard> result;
-
-		result = creditCardRepository.findAll();
-		Assert.notNull(result);
-
-		return result;
-	}
-
 	public CreditCard create() {
 		CreditCard result;
 
@@ -55,7 +37,7 @@ public class CreditCardService {
 		result.setExpirationMonth(0);
 		result.setExpirationYear(0);
 		result.setHolderName("");
-		result.setNumber(null);
+		result.setNumber("");
 
 		return result;
 	}
@@ -72,6 +54,24 @@ public class CreditCardService {
 
 	public void flush() {
 		creditCardRepository.flush();
+	}
+
+	public CreditCard findOne(int creditCardID) {
+		CreditCard result;
+
+		result = creditCardRepository.findOne(creditCardID);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<CreditCard> findAll() {
+		Collection<CreditCard> result;
+
+		result = creditCardRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
 	}
 
 	// Other business methods -------------------------------

@@ -2,12 +2,14 @@
 package services;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import repositories.AttributeValueRepository;
 import domain.AttributeValue;
+import domain.Property;
 
 public class AttributeValueService {
 
@@ -27,28 +29,14 @@ public class AttributeValueService {
 
 	// Simple CRUD methods ----------------------------------
 
-	public AttributeValue findOne(int attributeValueID) {
-		AttributeValue result;
-
-		result = attributeValueRepository.findOne(attributeValueID);
-		Assert.notNull(result);
-
-		return result;
-	}
-
-	public Collection<AttributeValue> findAll() {
-		Collection<AttributeValue> result;
-
-		result = attributeValueRepository.findAll();
-		Assert.notNull(result);
-
-		return result;
-	}
-
 	public AttributeValue create() {
 		AttributeValue result;
+		Collection<Property> properties;
 
 		result = new AttributeValue();
+		properties = new LinkedList<>();
+
+		result.setProperties(properties);
 
 		return result;
 	}
@@ -65,6 +53,24 @@ public class AttributeValueService {
 
 	public void flush() {
 		attributeValueRepository.flush();
+	}
+
+	public AttributeValue findOne(int attributeValueID) {
+		AttributeValue result;
+
+		result = attributeValueRepository.findOne(attributeValueID);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<AttributeValue> findAll() {
+		Collection<AttributeValue> result;
+
+		result = attributeValueRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
 	}
 
 	// Other business methods -------------------------------
