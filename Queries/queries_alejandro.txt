@@ -1,0 +1,5 @@
+1.- select min(p.audits.size), avg(p.audits.size), max(p.audits.size) from Property p;
+2.- select a from Attribute a join a.attributeValues av join av.properties p group by a order by count(a) desc;
+3.- select p from Property p where p.lessor.id=VARIABLE order by p.audits.size desc;
+4.- select p from Property p where p.lessor.id=VARIABLE order by p.books.size desc;
+
