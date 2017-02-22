@@ -107,6 +107,33 @@ public class AuditService {
 		return result;
 	}
 
+	public Double findMinAuditsOfProperties() {
+		Double result;
+
+		result = auditRepository.findMinAuditsOfProperties();
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Double findAvgAuditsOfProperties() {
+		Double result;
+
+		result = auditRepository.findAvgAuditsOfProperties();
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Double findMaxAuditsOfProperties() {
+		Double result;
+
+		result = auditRepository.findMaxAuditsOfProperties();
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public void flush() {
 		auditRepository.flush();
 	}
