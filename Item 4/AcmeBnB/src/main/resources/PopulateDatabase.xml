@@ -176,7 +176,9 @@
 			<list></list>
 		</property>
 		<property name="comments">
-			<list></list>
+			<list>
+				<ref bean="comment6" />
+			</list>
 		</property>
 		<property name="properties">
 			<list></list>
@@ -195,7 +197,7 @@
 		</property>
 		<property name="comments">
 			<list>
-				<ref bean="comment4" />
+				<ref bean="comment5" />
 			</list>
 		</property>
 		<property name="properties">
@@ -217,8 +219,7 @@
 		</property>
 		<property name="comments">
 			<list>
-				<ref bean="comment5" />
-				<ref bean="comment6" />
+				<ref bean="comment4" />
 			</list>
 		</property>
 		<property name="properties">
@@ -369,7 +370,9 @@
 		<property name="address" value="property1Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">
-			<list></list>
+			<list>
+				<ref bean="book4" />
+			</list>
 		</property>
 		<property name="audits">
 			<list></list>
@@ -432,7 +435,11 @@
 		<property name="address" value="property4Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">
-			<list></list>
+			<list>
+				<ref bean="book2" />
+				<ref bean="book3" />
+				<ref bean="book5" />
+			</list>
 		</property>
 		<property name="audits">
 			<list>
@@ -647,7 +654,11 @@
 			<list></list>
 		</property>
 		<property name="books">
-			<list></list>
+			<list>
+				<ref bean="book3" />
+				<ref bean="book4" />
+				<ref bean="book5" />
+			</list>
 		</property>
 	</bean>
 
@@ -666,6 +677,7 @@
 		<property name="comments">
 			<list>
 				<ref bean="comment1" />
+				<ref bean="comment3" />
 			</list>
 		</property>
 		<property name="invoices">
@@ -676,6 +688,7 @@
 		<property name="books">
 			<list>
 				<ref bean="book1" />
+				<ref bean="book2" />
 			</list>
 		</property>
 	</bean>
@@ -693,7 +706,6 @@
 		<property name="comments">
 			<list>
 				<ref bean="comment2" />
-				<ref bean="comment3" />
 			</list>
 		</property>
 		<property name="invoices">
@@ -727,6 +739,42 @@
 		<property name="property" ref="property3" />
 		<property name="status" ref="status1" />
 	</bean>
+	
+	<bean id="book2" class="domain.Book">
+		<property name="checkInDate" value="01/04/2020 00:10" />
+		<property name="checkOutDate" value="01/08/2020 03:50" />
+		<property name="smoker" value="true" />
+		<property name="tenant" ref="tenant2" />
+		<property name="property" ref="property4" />
+		<property name="status" ref="status3" />
+	</bean>
+	
+	<bean id="book3" class="domain.Book">
+		<property name="checkInDate" value="07/10/2019 17:13" />
+		<property name="checkOutDate" value="26/04/2020 10:58" />
+		<property name="smoker" value="false" />
+		<property name="tenant" ref="tenant1" />
+		<property name="property" ref="property4" />
+		<property name="status" ref="status2" />
+	</bean>
+	
+	<bean id="book4" class="domain.Book">
+		<property name="checkInDate" value="07/06/2019 22:46" />
+		<property name="checkOutDate" value="12/04/2020 10:00" />
+		<property name="smoker" value="false" />
+		<property name="tenant" ref="tenant1" />
+		<property name="property" ref="property2" />
+		<property name="status" ref="status1" />
+	</bean>
+	
+	<bean id="book5" class="domain.Book">
+		<property name="checkInDate" value="17/02/2020 10:00" />
+		<property name="checkOutDate" value="17/04/2020 10:00" />
+		<property name="smoker" value="false" />
+		<property name="tenant" ref="tenant1" />
+		<property name="property" ref="property1" />
+		<property name="status" ref="status1" />
+	</bean>
 
 	<!-- COMMENTS -->
 
@@ -735,7 +783,8 @@
 		<property name="momentPosted" value="01/02/2016 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="5" />
-		<property name="commentableEntity" ref="tenant2" />
+		<property name="actor" ref="tenant2" />
+		<property name="commentableEntity" ref="lessor3" />
 	</bean>
 
 	<bean id="comment2" class="domain.Comment">
@@ -743,6 +792,7 @@
 		<property name="momentPosted" value="01/02/2015 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="4" />
+		<property name="actor" ref="tenant3" />
 		<property name="commentableEntity" ref="tenant3" />
 	</bean>
 
@@ -751,7 +801,8 @@
 		<property name="momentPosted" value="01/02/2014 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="3" />
-		<property name="commentableEntity" ref="tenant3" />
+		<property name="actor" ref="tenant2" />
+		<property name="commentableEntity" ref="lessor3" />
 	</bean>
 
 	<bean id="comment4" class="domain.Comment">
@@ -759,7 +810,8 @@
 		<property name="momentPosted" value="01/02/2013 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="2" />
-		<property name="commentableEntity" ref="lessor2" />
+		<property name="actor" ref="lessor3" />
+		<property name="commentableEntity" ref="tenant1" />
 	</bean>
 
 	<bean id="comment5" class="domain.Comment">
@@ -767,7 +819,8 @@
 		<property name="momentPosted" value="01/02/2012 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="1" />
-		<property name="commentableEntity" ref="lessor3" />
+		<property name="actor" ref="lessor2" />
+		<property name="commentableEntity" ref="tenant2" />
 	</bean>
 
 	<bean id="comment6" class="domain.Comment">
@@ -775,7 +828,8 @@
 		<property name="momentPosted" value="01/02/2011 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="0" />
-		<property name="commentableEntity" ref="lessor3" />
+		<property name="actor" ref="lessor1" />
+		<property name="commentableEntity" ref="lessor1" />
 	</bean>
 
 
