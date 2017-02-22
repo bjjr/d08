@@ -32,6 +32,9 @@ public class CommentService {
 	private ConsumerActorService		consumerActorService;
 
 	@Autowired
+	private TenantService				tenantService;
+
+	@Autowired
 	private CommentableEntityService	commentableEntityService;
 
 
@@ -53,6 +56,7 @@ public class CommentService {
 		Authority auth2;
 		Lessor lessor;
 		Tenant tenant;
+		Boolean finished;
 
 		principal = consumerActorService.findByPrincipal();
 		result = new Comment();
@@ -60,6 +64,7 @@ public class CommentService {
 		auth2 = new Authority();
 		auth1.setAuthority(Authority.TENANT);
 		auth2.setAuthority(Authority.LESSOR);
+		finished = false;
 
 		if (principal.equals(consumerActor)) {
 			result.setCommentableEntity(principal);
@@ -68,7 +73,7 @@ public class CommentService {
 
 		} else if (!principal.equals(consumerActor) && principal.getUserAccount().getAuthorities().contains(auth1)) {
 			Assert.isTrue(consumerActor.getUserAccount().getAuthorities().contains(auth2));
-			tenant = (Tenant) principal;
+			tenant = tenantService.findOne(principal.getId());
 			for (Book b : tenant.getBooks()) {
 				Assert.isTrue(b.getProperty().getLessor().equals(consumerActor));
 				break;
@@ -82,13 +87,20 @@ public class CommentService {
 			lessor = (Lessor) principal;
 			for (Property p : lessor.getProperties()) {
 				for (Book b : p.getBooks()) {
-					Assert.isTrue(b.getTenant().equals(consumerActor));
+					if (b.getTenant().equals(consumerActor)) {
+						result.setCommentableEntity(consumerActor);
+						consumerActor.getComments().add(result);
+						consumerActorService.save(consumerActor);
+						finished = true;
+						break;
+					}
+
+				}
+				if (finished) {
 					break;
 				}
 			}
-			result.setCommentableEntity(consumerActor);
-			consumerActor.getComments().add(result);
-			consumerActorService.save(consumerActor);
+
 		}
 		moment = new Date(System.currentTimeMillis() - 1000);
 		result.setMomentPosted(moment);
