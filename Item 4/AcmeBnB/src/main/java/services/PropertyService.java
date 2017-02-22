@@ -31,24 +31,6 @@ public class PropertyService {
 
 	// Simple CRUD methods ----------------------------------
 
-	public Property findOne(int propertyID) {
-		Property result;
-
-		result = propertyRepository.findOne(propertyID);
-		Assert.notNull(result);
-
-		return result;
-	}
-
-	public Collection<Property> findAll() {
-		Collection<Property> result;
-
-		result = propertyRepository.findAll();
-		Assert.notNull(result);
-
-		return result;
-	}
-
 	public Property create() {
 		Property result;
 
@@ -71,6 +53,24 @@ public class PropertyService {
 		Property result;
 
 		result = propertyRepository.save(property);
+
+		return result;
+	}
+
+	public Property findOne(int propertyID) {
+		Property result;
+
+		result = propertyRepository.findOne(propertyID);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<Property> findAll() {
+		Collection<Property> result;
+
+		result = propertyRepository.findAll();
+		Assert.notNull(result);
 
 		return result;
 	}
