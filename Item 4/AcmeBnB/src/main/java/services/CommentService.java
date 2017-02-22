@@ -10,10 +10,9 @@ import org.springframework.util.Assert;
 
 import repositories.CommentRepository;
 import security.Authority;
+import domain.Actor;
 import domain.Book;
 import domain.Comment;
-import domain.CommentableEntity;
-import domain.ConsumerActor;
 import domain.Lessor;
 import domain.Property;
 import domain.Tenant;
@@ -25,17 +24,15 @@ public class CommentService {
 	//Managed repository
 
 	@Autowired
-	private CommentRepository			commentRepository;
+	private CommentRepository	commentRepository;
 
 	// Supporting services
-	@Autowired
-	private ConsumerActorService		consumerActorService;
 
 	@Autowired
-	private TenantService				tenantService;
+	private ActorService		actorService;
 
 	@Autowired
-	private CommentableEntityService	commentableEntityService;
+	private TenantService		tenantService;
 
 
 	//Constructors
@@ -45,20 +42,20 @@ public class CommentService {
 
 	// Simple CRUD methods
 
-	public Comment create(ConsumerActor consumerActor) {
-		Assert.notNull(consumerActor);
-		Assert.isTrue(consumerActor.getId() != 0);
+	public Comment create(Actor actor) {
+		Assert.notNull(actor);
+		Assert.isTrue(actor.getId() != 0);
 
 		Comment result;
 		Date moment;
-		ConsumerActor principal;
+		Actor principal;
 		Authority auth1;
 		Authority auth2;
 		Lessor lessor;
 		Tenant tenant;
 		Boolean finished;
 
-		principal = consumerActorService.findByPrincipal();
+		principal = actorService.findByPrincipal();
 		result = new Comment();
 		auth1 = new Authority();
 		auth2 = new Authority();
@@ -66,31 +63,34 @@ public class CommentService {
 		auth2.setAuthority(Authority.LESSOR);
 		finished = false;
 
-		if (principal.equals(consumerActor)) {
+		if (principal.equals(actor)) {
 			result.setCommentableEntity(principal);
+			result.setActor(principal);
 			principal.getComments().add(result);
-			consumerActorService.save(principal);
+			actorService.save(principal);
 
-		} else if (!principal.equals(consumerActor) && principal.getUserAccount().getAuthorities().contains(auth1)) {
-			Assert.isTrue(consumerActor.getUserAccount().getAuthorities().contains(auth2));
+		} else if (!principal.equals(actor) && principal.getUserAccount().getAuthorities().contains(auth1)) {
+			Assert.isTrue(actor.getUserAccount().getAuthorities().contains(auth2));
 			tenant = tenantService.findOne(principal.getId());
 			for (Book b : tenant.getBooks()) {
-				Assert.isTrue(b.getProperty().getLessor().equals(consumerActor));
+				Assert.isTrue(b.getProperty().getLessor().equals(actor));
 				break;
 			}
-			result.setCommentableEntity(consumerActor);
-			consumerActor.getComments().add(result);
-			consumerActorService.save(consumerActor);
+			result.setCommentableEntity(actor);
+			result.setActor(principal);
+			principal.getComments().add(result);
+			actorService.save(principal);
 		} else {
-			Assert.isTrue(consumerActor.getUserAccount().getAuthorities().contains(auth1));
+			Assert.isTrue(actor.getUserAccount().getAuthorities().contains(auth1));
 			Assert.isTrue(principal.getUserAccount().getAuthorities().contains(auth2));
 			lessor = (Lessor) principal;
 			for (Property p : lessor.getProperties()) {
 				for (Book b : p.getBooks()) {
-					if (b.getTenant().equals(consumerActor)) {
-						result.setCommentableEntity(consumerActor);
-						consumerActor.getComments().add(result);
-						consumerActorService.save(consumerActor);
+					if (b.getTenant().equals(actor)) {
+						result.setCommentableEntity(actor);
+						result.setActor(principal);
+						principal.getComments().add(result);
+						actorService.save(principal);
 						finished = true;
 						break;
 					}
@@ -130,12 +130,13 @@ public class CommentService {
 		Assert.isTrue(comment.getId() != 0);
 		Assert.isTrue(commentRepository.exists(comment.getId()));
 
-		CommentableEntity ce;
+		Actor a;
 
-		ce = comment.getCommentableEntity();
-		ce.getComments().remove(comment);
+		a = comment.getActor();
+		a.getComments().remove(comment);
 		comment.setCommentableEntity(null);
-		commentableEntityService.save(ce);
+		comment.setActor(null);
+		actorService.save(a);
 
 		commentRepository.delete(comment);
 	}

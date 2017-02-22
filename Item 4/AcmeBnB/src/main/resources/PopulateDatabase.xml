@@ -176,7 +176,9 @@
 			<list></list>
 		</property>
 		<property name="comments">
-			<list></list>
+			<list>
+				<ref bean="comment6" />
+			</list>
 		</property>
 		<property name="properties">
 			<list></list>
@@ -195,7 +197,7 @@
 		</property>
 		<property name="comments">
 			<list>
-				<ref bean="comment4" />
+				<ref bean="comment5" />
 			</list>
 		</property>
 		<property name="properties">
@@ -217,8 +219,7 @@
 		</property>
 		<property name="comments">
 			<list>
-				<ref bean="comment5" />
-				<ref bean="comment6" />
+				<ref bean="comment4" />
 			</list>
 		</property>
 		<property name="properties">
@@ -676,6 +677,7 @@
 		<property name="comments">
 			<list>
 				<ref bean="comment1" />
+				<ref bean="comment3" />
 			</list>
 		</property>
 		<property name="invoices">
@@ -704,7 +706,6 @@
 		<property name="comments">
 			<list>
 				<ref bean="comment2" />
-				<ref bean="comment3" />
 			</list>
 		</property>
 		<property name="invoices">
@@ -782,7 +783,8 @@
 		<property name="momentPosted" value="01/02/2016 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="5" />
-		<property name="commentableEntity" ref="tenant2" />
+		<property name="actor" ref="tenant2" />
+		<property name="commentableEntity" ref="lessor3" />
 	</bean>
 
 	<bean id="comment2" class="domain.Comment">
@@ -790,6 +792,7 @@
 		<property name="momentPosted" value="01/02/2015 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="4" />
+		<property name="actor" ref="tenant3" />
 		<property name="commentableEntity" ref="tenant3" />
 	</bean>
 
@@ -798,7 +801,8 @@
 		<property name="momentPosted" value="01/02/2014 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="3" />
-		<property name="commentableEntity" ref="tenant3" />
+		<property name="actor" ref="tenant2" />
+		<property name="commentableEntity" ref="lessor3" />
 	</bean>
 
 	<bean id="comment4" class="domain.Comment">
@@ -806,7 +810,8 @@
 		<property name="momentPosted" value="01/02/2013 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="2" />
-		<property name="commentableEntity" ref="lessor2" />
+		<property name="actor" ref="lessor3" />
+		<property name="commentableEntity" ref="tenant1" />
 	</bean>
 
 	<bean id="comment5" class="domain.Comment">
@@ -814,7 +819,8 @@
 		<property name="momentPosted" value="01/02/2012 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="1" />
-		<property name="commentableEntity" ref="lessor3" />
+		<property name="actor" ref="lessor2" />
+		<property name="commentableEntity" ref="tenant2" />
 	</bean>
 
 	<bean id="comment6" class="domain.Comment">
@@ -822,7 +828,8 @@
 		<property name="momentPosted" value="01/02/2011 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="0" />
-		<property name="commentableEntity" ref="lessor3" />
+		<property name="actor" ref="lessor1" />
+		<property name="commentableEntity" ref="lessor1" />
 	</bean>
 
 
