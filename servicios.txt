@@ -1,0 +1,8 @@
+Pareja 1:
+ConsumerActor
+CreditCard
+Lessor
+Property
+AttributeValue
+Attribute
+Fee

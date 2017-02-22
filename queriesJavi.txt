@@ -1,0 +1,27 @@
+The average number of accepted and denied requests per lessor
+	select count(b)/(select count(l) from Lessor l) from Book b where b.status.name like 'ACCEPTED'
+	select count(b)/(select count(l) from Lessor l) from Book b where b.status.name like 'DENIED'
+
+The average number of accepted and denied requests per tenant
+	select count(b)/(select count(t) from Tennant t) from Book b where b.status.name like 'ACCEPTED'
+	select count(b)/(select count(t) from Tennant t) from Book b where b.status.name like 'DENIED'
+
+
+The lessors who have more pending requests
+	select l,count(b) from Lessor l join l.properties p join p.books b where b.status.name = 'PENDING' group by l;
+
+The lessors who have more pending approved
+	select l,count(b) from Lessor l join l.properties p join p.books b where b.status.name = 'APPROVED' group by l;
+
+The lessors who have more pending denied
+	select l,count(b) from Lessor l join l.properties p join p.books b where b.status.name = 'DENIED' group by l;
+
+The tenants who have got more requests approved
+	select t,count(b) from Tenant t join t.books b where b.status.name = 'APPROVED' group by t;
+
+The tenants who have got more requests denied
+	select t,count(b) from Tenant t join t.books b where b.status.name = 'DENIED' group by t;
+
+The tenants who have more pending requests
+	select t,count(b) from Tenant t join t.books b where b.status.name = 'PENDING' group by t;
+
