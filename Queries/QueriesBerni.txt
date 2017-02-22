@@ -1,0 +1,16 @@
+Query 1
+select min(t.invoices.size) from Tenant t;
+
+select avg(t.invoices.size) from Tenant t;
+
+select max(t.invoices.size) from Tenant t; 
+
+Query 2
+
+select sum(i.totalDue) from Invoice i;
+
+Query 3
+
+select sum(p.books.size)*1.0/(select count(b) from Book b) from Property p where p.audits.size >= 1;
+
+select sum(p.books.size)*1.0/(select count(b) from Book b) from Property p where p.audits.size = 0;
