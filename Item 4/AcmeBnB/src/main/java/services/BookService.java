@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.BookRepository;
+import utilities.DateUtil;
 import domain.Book;
 import domain.Property;
 
@@ -29,10 +30,11 @@ public class BookService {
 	public Book create(Property property){
 		Book book = new Book();
 		
+		Date currentDate = new Date(System.currentTimeMillis());
 		
 		book.setSmoker(false);
-		book.setCheckInDate(new Date(System.currentTimeMillis()));
-		book.setCheckOutDate(new Date(System.currentTimeMillis()+100));
+		book.setCheckInDate(currentDate);
+		book.setCheckOutDate(DateUtil.addDays(currentDate, 1));
 		
 		book.setTenant(tenantService.findByPrincipal());
 		book.setProperty(property);
@@ -51,7 +53,13 @@ public class BookService {
 	
 	public Book save(Book book){
 		Assert.notNull(book, "BookService.save: The 'book' can not be null");
-		//Todo: Add constraints
+		
+		Assert.isTrue(DateUtil.isOneDayAfter(book.getCheckInDate(), book.getCheckOutDate()), "BookService.save: The checkoutDate has to be one day after than checkinDate");
+		
+		Date currentMoment = new Date(System.currentTimeMillis());
+		Assert.isTrue(book.getCheckInDate().after(currentMoment) && book.getCheckOutDate().after(currentMoment), "BookService.save: Checkin and checkout need to be planned in the future");
+		
+		//Add constraint just a request pending for tenant over a single property
 		
 		Book result;
 		
