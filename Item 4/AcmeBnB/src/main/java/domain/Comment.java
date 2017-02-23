@@ -68,8 +68,20 @@ public class Comment extends DomainEntity {
 
 
 	// Relationships
+	private Actor				actor;
 	private CommentableEntity	commentableEntity;
 
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
+	}
 
 	@NotNull
 	@Valid
