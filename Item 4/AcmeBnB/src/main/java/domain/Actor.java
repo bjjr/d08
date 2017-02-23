@@ -81,6 +81,7 @@ public abstract class Actor extends CommentableEntity {
 	// Relationships
 	private Collection<SocialIdentity>	socialIdentities;
 	private UserAccount					userAccount;
+	private Collection<Comment>			comments;
 
 
 	@NotNull
@@ -102,6 +103,16 @@ public abstract class Actor extends CommentableEntity {
 
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
+	}
+
+	@NotNull
+	@OneToMany(mappedBy = "actor")
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
 	}
 
 }
