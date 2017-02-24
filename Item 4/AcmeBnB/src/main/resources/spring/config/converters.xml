@@ -35,6 +35,14 @@
 		<bean class="converters.ConsumerActorToStringConverter" />
 		<bean class="converters.StringToConsumerActorConverter" />		
 		
+		<bean class="converters.TenantToStringConverter" />
+		<bean class="converters.StringToTenantConverter" />
+		
+		<bean class="converters.FinderToStringConverter" />
+		<bean class="converters.StringToFinderConverter" />
+		
+		<bean class="converters.InvoiceToStringConverter" />
+		<bean class="converters.StringToInvoiceConverter" />
 		
 	</util:list>
 	
