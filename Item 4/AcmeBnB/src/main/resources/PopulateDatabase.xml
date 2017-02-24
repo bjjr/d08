@@ -574,9 +574,6 @@
 		<property name="draft" value="false" />
 		<property name="auditor" ref="auditor2" />
 		<property name="property" ref="property2" />
-		<property name="attachments">
-			<list></list>
-		</property>
 	</bean>
 
 	<bean id="audit2" class="domain.Audit">
@@ -585,11 +582,6 @@
 		<property name="draft" value="true" />
 		<property name="auditor" ref="auditor3" />
 		<property name="property" ref="property3" />
-		<property name="attachments">
-			<list>
-				<ref bean="attachment1" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="audit3" class="domain.Audit">
@@ -598,12 +590,6 @@
 		<property name="draft" value="true" />
 		<property name="auditor" ref="auditor3" />
 		<property name="property" ref="property4" />
-		<property name="attachments">
-			<list>
-				<ref bean="attachment2" />
-				<ref bean="attachment3" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="audit4" class="domain.Audit">
@@ -612,9 +598,6 @@
 		<property name="draft" value="true" />
 		<property name="auditor" ref="auditor4" />
 		<property name="property" ref="property4" />
-		<property name="attachments">
-			<list></list>
-		</property>
 	</bean>
 
 	<!-- ATTACHMENTS -->

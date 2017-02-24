@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.AuditRepository;
+import domain.Attachment;
 import domain.Audit;
 import domain.Auditor;
+import domain.Property;
 
 @Service
 @Transactional
@@ -20,12 +22,15 @@ public class AuditService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private AuditRepository	auditRepository;
+	private AuditRepository		auditRepository;
 
 	// Supporting services ----------------------------------
 
 	@Autowired
-	private AuditorService	auditorService;
+	private AuditorService		auditorService;
+
+	@Autowired
+	private AttachmentService	attachmentService;
 
 
 	// Constructors -----------------------------------------
@@ -85,6 +90,32 @@ public class AuditService {
 		result = auditRepository.save(audit);
 
 		return result;
+	}
+
+	public void delete(Audit audit) {
+		Assert.notNull(audit);
+		Assert.isTrue(audit.getId() != 0);
+
+		Assert.isTrue(auditRepository.exists(audit.getId()));
+
+		Auditor auditor;
+		Property property;
+		Collection<Attachment> attachments;
+
+		auditor = audit.getAuditor();
+		property = audit.getProperty();
+		attachments = attachmentService.findAll();
+
+		auditor.getAudits().remove(audit);
+		property.getAudits().remove(audit);
+
+		for (Attachment a : attachments) {
+			if (a.getAudit().equals(audit)) {
+				attachmentService.delete(a);
+			}
+		}
+
+		auditRepository.delete(audit);
 	}
 
 	// Other business methods -------------------------------
