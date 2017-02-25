@@ -164,4 +164,12 @@ public class LessorService {
 		return lessorName;
 	}
 
+	public Lessor lessorMaxRatio() {
+		Lessor lessor;
+
+		lessor = lessorRepository.lessorMaxRatio();
+
+		return lessor;
+	}
+
 }
