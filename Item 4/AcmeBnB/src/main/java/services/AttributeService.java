@@ -73,16 +73,6 @@ public class AttributeService {
 		return result;
 	}
 
-	public void addAttributeValue(Attribute attribute, AttributeValue attributeValue) {
-		attribute.getAttributeValues().add(attributeValue);
-		attributeValue.setAttribute(attribute);
-	}
-
-	public void removeAttributeValue(Attribute attribute, AttributeValue attributeValue) {
-		attribute.getAttributeValues().remove(attributeValue);
-		attributeValue.setAttribute(null);
-	}
-
 	// Other business methods -------------------------------
 
 }
