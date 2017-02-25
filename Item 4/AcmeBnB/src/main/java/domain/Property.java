@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
@@ -64,10 +63,9 @@ public class Property extends DomainEntity {
 
 
 	// Relationships
-	private Lessor						lessor;
-	private Collection<Book>			books;
-	private Collection<AttributeValue>	attributeValues;
-	private Collection<Audit>			audits;
+	private Lessor				lessor;
+	private Collection<Book>	books;
+	private Collection<Audit>	audits;
 
 
 	@NotNull
@@ -89,16 +87,6 @@ public class Property extends DomainEntity {
 
 	public void setBooks(Collection<Book> books) {
 		this.books = books;
-	}
-
-	@NotNull
-	@ManyToMany(mappedBy = "properties")
-	public Collection<AttributeValue> getAttributeValues() {
-		return attributeValues;
-	}
-
-	public void setAttributeValues(Collection<AttributeValue> attributeValues) {
-		this.attributeValues = attributeValues;
 	}
 
 	@NotNull

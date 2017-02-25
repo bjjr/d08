@@ -36,4 +36,7 @@ public interface LessorRepository extends JpaRepository<Lessor, Integer> {
 	//	FORMA 2: Ratio de todas las solicitudes Pendientes con respecto a las Aceptadas.
 	//	select l from Lessor l order by ((select count(b1) from Lessor l1 join l1.properties p1 join p1.books b1 where b1.status.name = 'PENDING')/(select count(b2) from Lessor l2 join l2.properties p join p.books b2 where b2.status.name = 'ACCEPTED')) asc;
 	//	select l from Lessor l order by ((select count(b1) from Lessor l1 join l1.properties p1 join p1.books b1 where b1.status.name = 'PENDING')/(select count(b2) from Lessor l2 join l2.properties p join p.books b2 where b2.status.name = 'ACCEPTED')) desc;
+
+	@Query("select l from Lessor l where l.userAccount.id = ?1")
+	Lessor findByUserAccountId(int userAccountId);
 }

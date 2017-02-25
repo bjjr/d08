@@ -2,7 +2,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.transaction.Transactional;
 
@@ -12,7 +11,6 @@ import org.springframework.util.Assert;
 
 import repositories.AttributeRepository;
 import domain.Attribute;
-import domain.AttributeValue;
 
 @Service
 @Transactional
@@ -36,12 +34,9 @@ public class AttributeService {
 
 	public Attribute create() {
 		Attribute result;
-		Collection<AttributeValue> attributes;
 
 		result = new Attribute();
-		attributes = new LinkedList<>();
 
-		result.setAttributeValues(attributes);
 		result.setName("");
 
 		return result;
