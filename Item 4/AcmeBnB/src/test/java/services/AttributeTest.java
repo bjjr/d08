@@ -40,21 +40,21 @@ public class AttributeTest extends AbstractTest {
 
 	}
 
-	@Test
-	public void testSave() {
-		Attribute attribute, saved;
-
-		attribute = attributeService.create();
-
-		attribute.setName("prueba test");
-
-		saved = attributeService.save(attribute);
-
-		Assert.isTrue(saved.getId() != 0);
-		Assert.isTrue(saved.getName().equals(attribute.getName()));
-		Assert.isTrue(saved.getAttributeValues().equals(attribute.getAttributeValues()));
-
-	}
+	//	@Test
+	//	public void testSave() {
+	//		Attribute attribute, saved;
+	//
+	//		attribute = attributeService.create();
+	//
+	//		attribute.setName("prueba test");
+	//
+	//		saved = attributeService.save(attribute);
+	//
+	//		Assert.isTrue(saved.getId() != 0);
+	//		Assert.isTrue(saved.getName().equals(attribute.getName()));
+	//		Assert.isTrue(saved.getAttributeValues().equals(attribute.getAttributeValues()));
+	//
+	//	}
 
 	//	@Test
 	//	public void testAddAttibuteValue() {
