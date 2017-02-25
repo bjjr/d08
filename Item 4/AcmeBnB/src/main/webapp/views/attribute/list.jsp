@@ -21,7 +21,7 @@
 	
 	<security:authorize access="hasRole('ADMINISTRATOR')">
 		<display:column>
-			<a href="attribute/Çedit.do?attributeId=${row.id}"><spring:message code="attribute.edit" /></a>
+			<a href="attribute/edit.do?attributeId=${row.id}"><spring:message code="attribute.edit" /></a>
 		</display:column>
 	</security:authorize>
 </display:table>
