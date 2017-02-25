@@ -1,12 +1,9 @@
 
 package domain;
 
-import java.util.Collection;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -32,18 +29,19 @@ public class AttributeValue extends DomainEntity {
 
 
 	// Relationships
-	private Collection<Property>	properties;
-	private Attribute				attribute;
+	private Property	property;
+	private Attribute	attribute;
 
 
 	@NotNull
-	@ManyToMany
-	public Collection<Property> getProperties() {
-		return properties;
+	@Valid
+	@ManyToOne(optional = false)
+	public Property getProperty() {
+		return property;
 	}
 
-	public void setProperties(Collection<Property> properties) {
-		this.properties = properties;
+	public void setProperty(Property property) {
+		this.property = property;
 	}
 
 	@NotNull

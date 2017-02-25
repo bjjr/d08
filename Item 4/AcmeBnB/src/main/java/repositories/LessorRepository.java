@@ -26,4 +26,7 @@ public interface LessorRepository extends JpaRepository<Lessor, Integer> {
 
 	@Query("select l,count(b) from Lessor l join l.properties p join p.books b where b.status.name = 'DENIED' group by l order by count(b) DESC")
 	List<Object[]> lessorsOrderByNumDenied();
+
+	@Query("select l from Lessor l where l.userAccount.id = ?1")
+	Lessor findByUserAccountId(int userAccountId);
 }

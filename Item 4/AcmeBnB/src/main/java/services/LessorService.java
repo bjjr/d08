@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.LessorRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Lessor;
 import domain.Property;
 
@@ -80,6 +82,26 @@ public class LessorService {
 
 	public void flush() {
 		lessorRepository.flush();
+	}
+
+	public Lessor findByPrincipal() {
+		Lessor lessor;
+		UserAccount userAccount;
+
+		userAccount = LoginService.getPrincipal();
+
+		lessor = findByUserAccount(userAccount);
+
+		return lessor;
+	}
+
+	public Lessor findByUserAccount(UserAccount userAccount) {
+		Lessor res;
+
+		res = lessorRepository.findByUserAccountId(userAccount.getId());
+		Assert.notNull(res, "The user is not a lessor");
+
+		return res;
 	}
 
 	// Other business methods -------------------------------

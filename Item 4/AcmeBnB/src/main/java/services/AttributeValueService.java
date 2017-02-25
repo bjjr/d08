@@ -2,7 +2,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.transaction.Transactional;
 
@@ -12,7 +11,6 @@ import org.springframework.util.Assert;
 
 import repositories.AttributeValueRepository;
 import domain.AttributeValue;
-import domain.Property;
 
 @Service
 @Transactional
@@ -36,12 +34,8 @@ public class AttributeValueService {
 
 	public AttributeValue create() {
 		AttributeValue result;
-		Collection<Property> properties;
 
 		result = new AttributeValue();
-		properties = new LinkedList<>();
-
-		result.setProperties(properties);
 
 		return result;
 	}
@@ -79,5 +73,13 @@ public class AttributeValueService {
 	}
 
 	// Other business methods -------------------------------
+
+	public Collection<AttributeValue> findAttributesValuesByProperty(int propertyId) {
+		Collection<AttributeValue> res;
+
+		res = attributeValueRepository.findAttributesValuesByProperty(propertyId);
+
+		return res;
+	}
 
 }
