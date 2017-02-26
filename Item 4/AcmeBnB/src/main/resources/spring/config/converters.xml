@@ -18,13 +18,15 @@
 	">
 
 	<util:list id="converters">
-		<!-- 
-			Add your own converters using entries of the following form: 
-			<bean class="converters.Class1ToClass2" /> 
-		-->
 		
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
+		
+		<bean class="converters.AttributeToStringConverter" />
+		<bean class="converters.StringToAttributeConverter" />
+		
+		<bean class="converters.AttributeValueToStringConverter" />
+		<bean class="converters.StringToAttributeValueConverter" />
 		
 		<bean class="converters.CommentableEntityToStringConverter" />
 		<bean class="converters.StringToCommentableEntityConverter" />
@@ -33,8 +35,19 @@
 		<bean class="converters.StringToCommentConverter" />
 		
 		<bean class="converters.ConsumerActorToStringConverter" />
-		<bean class="converters.StringToConsumerActorConverter" />		
+		<bean class="converters.StringToConsumerActorConverter" />
 		
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
+		
+		<bean class="converters.FeeToStringConverter" />
+		<bean class="converters.StringToFeeConverter" />
+		
+		<bean class="converters.LessorToStringConverter" />
+		<bean class="converters.StringToLessorConverter" />
+		
+		<bean class="converters.PropertyToStringConverter" />
+		<bean class="converters.StringToPropertyConverter" />
 		
 	</util:list>
 	
