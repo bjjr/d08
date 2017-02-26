@@ -25,6 +25,7 @@
 		<value>/views/legal/messages</value>
 		<value>/views/creditcard/messages</value>
 		<value>/views/attributevalue/messages</value>
+		<value>/views/attribute/messages</value>
 		
 		<value>/views/administrator/messages</value>
 	</util:list>
