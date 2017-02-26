@@ -42,15 +42,16 @@
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" /> 
 
 		<security:intercept-url pattern="/legal/**" access="permitAll" />
-		<security:intercept-url pattern="/creditCard/**" access="hasAnyRole('LESSOR', 'TENANT')" />
+		
+		<security:intercept-url pattern="/attribute/**" access="hasRole('ADMINISTRATOR')"/>
 		
 		<security:intercept-url pattern="/attributeValue/**" access="hasRole('LESSOR')"/>
 		
-		<security:intercept-url pattern="/attribute/**" access="hasRole('ADMINISTRATOR')"/>
+		<security:intercept-url pattern="/creditCard/**" access="hasAnyRole('LESSOR', 'TENANT')" />
+		
+		<security:intercept-url pattern="/finder/tenant/**" access="hasRole('TENANT')" />
 
 		<security:intercept-url pattern="/tenant/create.do" access="permitAll" />
-
-		<security:intercept-url pattern="/finder/tenant/**" access="hasRole('TENANT')" />
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
