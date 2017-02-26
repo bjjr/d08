@@ -10,16 +10,10 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 	
-<!-- Listing grid -->
-<display:table pagesize="5" class="displaytag"
-	name="attributes" requestURI="attribute/list.do" id="row">
-	<!-- Attributes -->
+<form:form action="attribute/edit.do" modelAttribute="attribute">
+
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
 	
-	<acme:column code="attribute.name" property="name"/>
-	
-	<security:authorize access="hasRole('ADMINISTRATOR')">
-		<display:column>
-			<acme:link href="attribute/edit.do?attributeId=${row.id}" code="attribute.edit"/>
-		</display:column>
-	</security:authorize>
-</display:table>
+	<acme:textbox code="attribute.name" path="name"/>
+</form:form>

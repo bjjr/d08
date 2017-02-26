@@ -45,6 +45,8 @@
 		<security:intercept-url pattern="/creditCard/**" access="hasAnyRole('LESSOR', 'TENANT')" />
 		
 		<security:intercept-url pattern="/attributeValue/**" access="hasRole('LESSOR')"/>
+		
+		<security:intercept-url pattern="/attribute/**" access="hasRole('ADMINISTRATOR')"/>
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
