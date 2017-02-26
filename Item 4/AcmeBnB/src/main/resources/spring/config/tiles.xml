@@ -29,6 +29,8 @@
 		<value>/views/profile/tiles.xml</value>
 		
 		<value>/views/finder/tiles.xml</value>
+		
+		<value>/views/tenant/tiles.xml</value>
 	</util:list>
 
 </beans>

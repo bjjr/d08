@@ -53,6 +53,8 @@
 		
 		<security:intercept-url pattern="/legal/**" access="permitAll" />
 		
+		<security:intercept-url pattern="/tenant/create.do" access="permitAll" />
+		
 		<security:intercept-url pattern="/finder/tenant/display.do" access="hasRole('TENANT')" />
 		<security:intercept-url pattern="/finder/tenant/edit.do" access="hasRole('TENANT')" />
 	
