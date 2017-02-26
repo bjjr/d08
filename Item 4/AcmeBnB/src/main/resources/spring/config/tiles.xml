@@ -26,6 +26,8 @@
 		<value>/views/creditcard/tiles.xml</value>
 		<value>/views/attributevalue/tiles.xml</value>
 		<value>/views/attribute/tiles.xml</value>
+		<value>/views/finder/tiles.xml</value>
+		<value>/views/tenant/tiles.xml</value>
 		
 		<value>/views/administrator/tiles.xml</value>
 	</util:list>

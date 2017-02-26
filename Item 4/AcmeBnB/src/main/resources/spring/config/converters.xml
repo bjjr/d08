@@ -18,6 +18,10 @@
 	">
 
 	<util:list id="converters">
+		<!-- 
+			Add your own converters using entries of the following form: 
+			<bean class="converters.Class1ToClass2" /> 
+		-->
 		
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
@@ -42,12 +46,21 @@
 		
 		<bean class="converters.FeeToStringConverter" />
 		<bean class="converters.StringToFeeConverter" />
+
+		<bean class="converters.FinderToStringConverter" />
+		<bean class="converters.StringToFinderConverter" />
+
+		<bean class="converters.InvoiceToStringConverter" />
+		<bean class="converters.StringToInvoiceConverter" />
 		
 		<bean class="converters.LessorToStringConverter" />
 		<bean class="converters.StringToLessorConverter" />
 		
 		<bean class="converters.PropertyToStringConverter" />
 		<bean class="converters.StringToPropertyConverter" />
+
+		<bean class="converters.TenantToStringConverter" />
+		<bean class="converters.StringToTenantConverter" />
 		
 	</util:list>
 	
