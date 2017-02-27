@@ -176,7 +176,9 @@
 			<list></list>
 		</property>
 		<property name="comments">
-			<list></list>
+			<list>
+				<ref bean="comment6" />
+			</list>
 		</property>
 		<property name="properties">
 			<list></list>
@@ -195,7 +197,7 @@
 		</property>
 		<property name="comments">
 			<list>
-				<ref bean="comment4" />
+				<ref bean="comment5" />
 			</list>
 		</property>
 		<property name="properties">
@@ -217,8 +219,7 @@
 		</property>
 		<property name="comments">
 			<list>
-				<ref bean="comment5" />
-				<ref bean="comment6" />
+				<ref bean="comment4" />
 			</list>
 		</property>
 		<property name="properties">
@@ -234,99 +235,22 @@
 
 	<bean id="attribute1" class="domain.Attribute">
 		<property name="name" value="Country" />
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue1" />
-				<ref bean="attributeValue5" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="attribute2" class="domain.Attribute">
 		<property name="name" value="Province" />
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue2" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="attribute3" class="domain.Attribute">
 		<property name="name" value="State" />
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue3" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="attribute4" class="domain.Attribute">
 		<property name="name" value="City" />
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue4" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="attribute5" class="domain.Attribute">
 		<property name="name" value="Capacity" />
-		<property name="attributeValues">
-			<list>
-			</list>
-		</property>
-	</bean>
-
-	<!-- ATTRIBUTES VALUES -->
-
-	<bean id="attributeValue1" class="domain.AttributeValue">
-		<property name="value" value="Spain" />
-		<property name="attribute" ref="attribute1" />
-		<property name="properties">
-			<list>
-				<ref bean="property2" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="attributeValue2" class="domain.AttributeValue">
-		<property name="value" value="Seville" />
-		<property name="attribute" ref="attribute2" />
-		<property name="properties">
-			<list>
-				<ref bean="property3" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="attributeValue3" class="domain.AttributeValue">
-		<property name="value" value="Spain" />
-		<property name="attribute" ref="attribute3" />
-		<property name="properties">
-			<list>
-				<ref bean="property3" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="attributeValue4" class="domain.AttributeValue">
-		<property name="value" value="Seville" />
-		<property name="attribute" ref="attribute4" />
-		<property name="properties">
-			<list>
-				<ref bean="property3" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="attributeValue5" class="domain.AttributeValue">
-		<property name="value" value="EEUU" />
-		<property name="attribute" ref="attribute1" />
-		<property name="properties">
-			<list>
-				<ref bean="property4" />
-			</list>
-		</property>
 	</bean>
 
 	<!-- STATUS -->
@@ -376,9 +300,6 @@
 		<property name="audits">
 			<list></list>
 		</property>
-		<property name="attributeValues">
-			<list></list>
-		</property>
 	</bean>
 
 	<bean id="property2" class="domain.Property">
@@ -393,11 +314,6 @@
 		<property name="audits">
 			<list>
 				<ref bean="audit1" />
-			</list>
-		</property>
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue1" />
 			</list>
 		</property>
 	</bean>
@@ -416,13 +332,6 @@
 		<property name="audits">
 			<list>
 				<ref bean="audit2" />
-			</list>
-		</property>
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue2" />
-				<ref bean="attributeValue3" />
-				<ref bean="attributeValue4" />
 			</list>
 		</property>
 	</bean>
@@ -446,11 +355,38 @@
 				<ref bean="audit4" />
 			</list>
 		</property>
-		<property name="attributeValues">
-			<list>
-				<ref bean="attributeValue5" />
-			</list>
-		</property>
+	</bean>
+	
+	<!-- ATTRIBUTES VALUES -->
+
+	<bean id="attributeValue1" class="domain.AttributeValue">
+		<property name="value" value="Spain" />
+		<property name="attribute" ref="attribute1" />
+		<property name="property" ref="property2" />
+	</bean>
+
+	<bean id="attributeValue2" class="domain.AttributeValue">
+		<property name="value" value="Seville" />
+		<property name="attribute" ref="attribute2" />
+		<property name="property" ref="property3" />
+	</bean>
+
+	<bean id="attributeValue3" class="domain.AttributeValue">
+		<property name="value" value="Spain" />
+		<property name="attribute" ref="attribute3" />
+		<property name="property" ref="property3" />
+	</bean>
+
+	<bean id="attributeValue4" class="domain.AttributeValue">
+		<property name="value" value="Seville" />
+		<property name="attribute" ref="attribute4" />
+		<property name="property" ref="property3" />
+	</bean>
+
+	<bean id="attributeValue5" class="domain.AttributeValue">
+		<property name="value" value="EEUU" />
+		<property name="attribute" ref="attribute1" />
+		<property name="property" ref="property4" />
 	</bean>
 
 	<!-- AUDITORS -->
@@ -659,6 +595,7 @@
 		<property name="comments">
 			<list>
 				<ref bean="comment1" />
+				<ref bean="comment3" />
 			</list>
 		</property>
 		<property name="invoices">
@@ -687,7 +624,6 @@
 		<property name="comments">
 			<list>
 				<ref bean="comment2" />
-				<ref bean="comment3" />
 			</list>
 		</property>
 		<property name="invoices">
@@ -765,7 +701,8 @@
 		<property name="momentPosted" value="01/02/2016 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="5" />
-		<property name="commentableEntity" ref="tenant2" />
+		<property name="actor" ref="tenant2" />
+		<property name="commentableEntity" ref="lessor3" />
 	</bean>
 
 	<bean id="comment2" class="domain.Comment">
@@ -773,6 +710,7 @@
 		<property name="momentPosted" value="01/02/2015 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="4" />
+		<property name="actor" ref="tenant3" />
 		<property name="commentableEntity" ref="tenant3" />
 	</bean>
 
@@ -781,7 +719,8 @@
 		<property name="momentPosted" value="01/02/2014 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="3" />
-		<property name="commentableEntity" ref="tenant3" />
+		<property name="actor" ref="tenant2" />
+		<property name="commentableEntity" ref="lessor3" />
 	</bean>
 
 	<bean id="comment4" class="domain.Comment">
@@ -789,7 +728,8 @@
 		<property name="momentPosted" value="01/02/2013 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="2" />
-		<property name="commentableEntity" ref="lessor2" />
+		<property name="actor" ref="lessor3" />
+		<property name="commentableEntity" ref="tenant1" />
 	</bean>
 
 	<bean id="comment5" class="domain.Comment">
@@ -797,7 +737,8 @@
 		<property name="momentPosted" value="01/02/2012 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="1" />
-		<property name="commentableEntity" ref="lessor3" />
+		<property name="actor" ref="lessor2" />
+		<property name="commentableEntity" ref="tenant2" />
 	</bean>
 
 	<bean id="comment6" class="domain.Comment">
@@ -805,7 +746,8 @@
 		<property name="momentPosted" value="01/02/2011 00:00" />
 		<property name="text" value="text" />
 		<property name="stars" value="0" />
-		<property name="commentableEntity" ref="lessor3" />
+		<property name="actor" ref="lessor1" />
+		<property name="commentableEntity" ref="lessor1" />
 	</bean>
 
 

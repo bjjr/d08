@@ -26,6 +26,12 @@
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
 		
+		<bean class="converters.AttributeToStringConverter" />
+		<bean class="converters.StringToAttributeConverter" />
+		
+		<bean class="converters.AttributeValueToStringConverter" />
+		<bean class="converters.StringToAttributeValueConverter" />
+		
 		<bean class="converters.CommentableEntityToStringConverter" />
 		<bean class="converters.StringToCommentableEntityConverter" />
 		
@@ -33,8 +39,28 @@
 		<bean class="converters.StringToCommentConverter" />
 		
 		<bean class="converters.ConsumerActorToStringConverter" />
-		<bean class="converters.StringToConsumerActorConverter" />		
+		<bean class="converters.StringToConsumerActorConverter" />
 		
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
+		
+		<bean class="converters.FeeToStringConverter" />
+		<bean class="converters.StringToFeeConverter" />
+
+		<bean class="converters.FinderToStringConverter" />
+		<bean class="converters.StringToFinderConverter" />
+
+		<bean class="converters.InvoiceToStringConverter" />
+		<bean class="converters.StringToInvoiceConverter" />
+		
+		<bean class="converters.LessorToStringConverter" />
+		<bean class="converters.StringToLessorConverter" />
+		
+		<bean class="converters.PropertyToStringConverter" />
+		<bean class="converters.StringToPropertyConverter" />
+
+		<bean class="converters.TenantToStringConverter" />
+		<bean class="converters.StringToTenantConverter" />
 		
 	</util:list>
 	

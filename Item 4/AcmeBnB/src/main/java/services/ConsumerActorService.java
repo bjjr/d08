@@ -1,81 +1,89 @@
 
 package services;
 
-import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ConsumerActorRepository;
-import security.LoginService;
-import security.UserAccount;
+import domain.Comment;
 import domain.ConsumerActor;
+import domain.SocialIdentity;
 
 @Service
 @Transactional
 public class ConsumerActorService {
 
-	//Managed repository --------------------------
+	// Managed repository -----------------------------------
+
 	@Autowired
-	private ConsumerActorRepository	consumerActorRepository;
+	private ConsumerActorRepository	ConsumerActorRepository;
 
 
-	// Supporting services --------------------------
+	// Supporting services ----------------------------------
 
-	// Constructors ---------------------------------
+	//@Autowired
+	//private ActorService			actorService;
+
+	// Constructors -----------------------------------------
 
 	public ConsumerActorService() {
 		super();
 	}
 
-	// Simple CRUD methods --------------------------
+	// Simple CRUD methods ----------------------------------
 
-	public ConsumerActor findOne(Integer caId) {
-		Assert.isTrue(caId != 0);
+	public ConsumerActor save(ConsumerActor consumerActor) {
+		Assert.notNull(consumerActor);
 
-		ConsumerActor res;
-		res = consumerActorRepository.findOne(caId);
+		ConsumerActor result;
 
-		Assert.notNull(res);
-
-		return res;
-	}
-
-	public ConsumerActor save(ConsumerActor ca) {
-		Assert.notNull(ca);
-
-		ConsumerActor res;
-		res = consumerActorRepository.save(ca);
-
-		return res;
-	}
-
-	public void flush() {
-		consumerActorRepository.flush();
-	}
-
-	// Other business methods -----------------------
-
-	public ConsumerActor findByPrincipal() {
-		ConsumerActor result = null;
-		UserAccount userAccount;
-
-		userAccount = LoginService.getPrincipal();
-		Assert.notNull(userAccount);
-		result = findByUserAccount(userAccount);
+		result = ConsumerActorRepository.save(consumerActor);
 
 		return result;
 	}
 
-	public ConsumerActor findByUserAccount(UserAccount userAccount) {
-		Assert.notNull(userAccount);
-
-		ConsumerActor res;
-		res = consumerActorRepository.findByUserAccountId(userAccount.getId());
-		Assert.notNull(res);
-
-		return res;
+	public void flush() {
+		ConsumerActorRepository.flush();
 	}
 
+	public ConsumerActor findOne(int consumerActorID) {
+		ConsumerActor result;
+
+		result = ConsumerActorRepository.findOne(consumerActorID);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<ConsumerActor> findAll() {
+		Collection<ConsumerActor> result;
+
+		result = ConsumerActorRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	// Other business methods -------------------------------
+
+	public void setConsumerActorProperties(ConsumerActor ca) {
+		Collection<Comment> comments;
+		Collection<SocialIdentity> socialIdentities;
+
+		comments = new LinkedList<>();
+		socialIdentities = new LinkedList<>();
+
+		ca.setComments(comments);
+		ca.setSocialIdentities(socialIdentities);
+		ca.setName("");
+		ca.setSurname("");
+		ca.setEmail("");
+		ca.setPhone("");
+		ca.setPicture("");
+	}
 }
