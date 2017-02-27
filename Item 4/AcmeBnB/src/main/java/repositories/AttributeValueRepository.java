@@ -12,6 +12,6 @@ import domain.AttributeValue;
 @Repository
 public interface AttributeValueRepository extends JpaRepository<AttributeValue, Integer> {
 
-	@Query("select a from AttributeValue where a.property.id = ?1")
+	@Query("select a from AttributeValue a where a.property.id = ?1")
 	Collection<AttributeValue> findAttributesValuesByProperty(int propertyId);
 }
