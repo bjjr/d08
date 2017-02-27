@@ -24,13 +24,13 @@ public class LessorService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private LessorRepository	lessorRepository;
-
+	private LessorRepository		lessorRepository;
 
 	// Supporting services ----------------------------------
 
-	//	@Autowired
-	//TODO	private UserAccountService	UserAccountService;
+	@Autowired
+	private ConsumerActorService	consumerActorService;
+
 
 	// Constructors -----------------------------------------
 
@@ -63,8 +63,7 @@ public class LessorService {
 
 		result = new Lessor();
 
-		//TODO
-
+		consumerActorService.setConsumerActorProperties(result);
 		result.setProperties(new ArrayList<Property>());
 
 		return result;
