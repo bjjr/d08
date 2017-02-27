@@ -12,16 +12,27 @@
 	
 <!-- Listing grid -->
 <display:table pagesize="5" class="displaytag"
-	name="attributes" requestURI="${requestURI}" id="row">
+	name="lessors" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
 	
-	<acme:column code="attribute.name" property="name"/>
+	<acme:column code="lessor.name" property="name"/>
+	<acme:column code="lessor.surname" property="surname"/>
+	<acme:column code="lessor.email" property="email"/>
+	<acme:column code="lessor.phone" property="phone"/>
+
+	<!-- Action links -->
+	<spring:message code="lessor.properties" var="propertiesHeader" />
+	<display:column title="${propertiesHeader}">
+		<jstl:forEach items="${row.properties }" var="pro">
+			<a href="property/display.do?propertyId=${pro.id}">${pro.name}</a>
+			<br />
+		</jstl:forEach>
+	</display:column> 
 	
+	<display:column>
+			<a href="lessor/display.do?lessorId=${row.id}">
+				<spring:message	code="lessor.display" />
+			</a>
+	</display:column>
 	
-	
-	<security:authorize access="hasRole('ADMINISTRATOR')">
-		<display:column>
-			<a href="attribute/edit.do?attributeId=${row.id}"><spring:message code="attribute.edit" /></a>
-		</display:column>
-	</security:authorize>
 </display:table>
