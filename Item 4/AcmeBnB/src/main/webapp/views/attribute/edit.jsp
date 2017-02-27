@@ -16,4 +16,11 @@
 	<form:hidden path="version"/>
 	
 	<acme:textbox code="attribute.name" path="name"/>
+	
+	<div>
+		<acme:submit name="save" code="misc.save"/>
+		<acme:delete confirmationCode="attribute.delete.conf" buttonCode="misc.delete" id="${attribute.id}"/>
+		<acme:cancel url="attribute/list.do" code="misc.cancel"/>
+	</div>
+
 </form:form>

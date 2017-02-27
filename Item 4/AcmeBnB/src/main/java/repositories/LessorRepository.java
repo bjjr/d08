@@ -28,9 +28,9 @@ public interface LessorRepository extends JpaRepository<Lessor, Integer> {
 	List<Object[]> lessorsOrderByNumDenied();
 
 	//	FORMA 1: Ratio de todas las solicitudes (Aceptadas, Denegadas y Pendientes) con respecto a las Aceptadas.
-	@Query("select l from Lessor l order by ((select count(b1) from Lessor l1 join l1.properties p1 join p1.books b1)/(select count(b2) from Lessor l2 join l2.properties p join p.books b2 where b2.status.name = 'ACCEPTED')) asc;")
+	@Query("select l from Lessor l order by ((select count(b1) from Lessor l1 join l1.properties p1 join p1.books b1)/(select count(b2) from Lessor l2 join l2.properties p join p.books b2 where b2.status.name = 'ACCEPTED')) asc")
 	Lessor lessorMaxRatio();
-	@Query("select l from Lessor l order by ((select count(b1) from Lessor l1 join l1.properties p1 join p1.books b1)/(select count(b2) from Lessor l2 join l2.properties p join p.books b2 where b2.status.name = 'ACCEPTED')) desc;")
+	@Query("select l from Lessor l order by ((select count(b1) from Lessor l1 join l1.properties p1 join p1.books b1)/(select count(b2) from Lessor l2 join l2.properties p join p.books b2 where b2.status.name = 'ACCEPTED')) desc")
 	Lessor lessorMinRatio();
 
 	//	FORMA 2: Ratio de todas las solicitudes Pendientes con respecto a las Aceptadas.
