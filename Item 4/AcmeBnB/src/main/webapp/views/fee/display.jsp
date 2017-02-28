@@ -11,10 +11,8 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 	
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag"
-	name="fee" requestURI="${requestURI}" id="row">
 
-	<!-- Attributes -->	
-	<acme:column code="fee.value" property="value"/>
-	
-</display:table>
+
+	<acme:display code="fee.value" property="${fee.value}"/>
+
+	<acme:link code="fee.edit" href="fee/edit.do" />
