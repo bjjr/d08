@@ -16,9 +16,14 @@
       
 <tiles-definitions>
 
-	<definition name="lessor/list" extends="master.page">	
-		<put-attribute name="title" value="Lessors" />
-		<put-attribute name="body" value="/views/lessor/list.jsp" />
+	<definition name="finder/display" extends="master.page">	
+		<put-attribute name="title" value="Mostrar Finder" />
+		<put-attribute name="body" value="/views/finder/display.jsp" />
+	</definition>
+
+	<definition name="finder/edit" extends="master.page">	
+		<put-attribute name="title" value="Configurar Finder" />
+		<put-attribute name="body" value="/views/finder/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

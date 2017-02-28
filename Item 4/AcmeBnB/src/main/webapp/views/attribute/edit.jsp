@@ -10,17 +10,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 	
-<!-- Listing grid -->
-<display:table pagesize="5" class="displaytag"
-	name="attributes" requestURI="attribute/list.do" id="row">
-	<!-- Attributes -->
-	
-	<acme:column code="attribute.name" property="name"/>
-	
-	<display:column>
-		<acme:link href="attribute/edit.do?attributeId=${row.id}" code="attribute.edit"/>
-	</display:column>
-	
-</display:table>
+<form:form action="attribute/edit.do" modelAttribute="attribute">
 
-<acme:link href="attribute/create.do" code="attribute.create"/>
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
+	
+	<acme:textbox code="attribute.name" path="name"/>
+	
+	<div>
+		<acme:submit name="save" code="misc.save"/>
+		<acme:delete confirmationCode="attribute.delete.conf" buttonCode="misc.delete" id="${attribute.id}"/>
+		<acme:cancel url="attribute/list.do" code="misc.cancel"/>
+	</div>
+
+</form:form>

@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.AttributeRepository;
 import domain.Attribute;
+import domain.AttributeValue;
 
 @Service
 @Transactional
@@ -19,10 +20,13 @@ public class AttributeService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private AttributeRepository	attributeRepository;
-
+	private AttributeRepository		attributeRepository;
 
 	// Supporting services ----------------------------------
+
+	@Autowired
+	private AttributeValueService	attributeValueService;
+
 
 	// Constructors -----------------------------------------
 
@@ -49,6 +53,19 @@ public class AttributeService {
 		result = attributeRepository.save(attribute);
 
 		return result;
+	}
+
+	public void delete(Attribute attribute) {
+		Assert.notNull(attribute);
+		Collection<AttributeValue> attributeValues;
+
+		attributeValues = attributeValueService.findAttributeValuesByAttribute(attribute.getId());
+
+		for (AttributeValue a : attributeValues) {
+			attributeValueService.delete(a);
+		}
+
+		attributeRepository.delete(attribute);
 	}
 
 	public void flush() {

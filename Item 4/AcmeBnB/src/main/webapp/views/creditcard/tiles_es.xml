@@ -16,9 +16,14 @@
       
 <tiles-definitions>
 
-	<definition name="lessor/list" extends="master.page">	
-		<put-attribute name="title" value="Lessors" />
-		<put-attribute name="body" value="/views/lessor/list.jsp" />
+	<definition name="creditcard/display" extends="master.page">	
+		<put-attribute name="title" value="Información de la tarjeta de crédito" />
+		<put-attribute name="body" value="/views/creditcard/display.jsp" />
+	</definition>
+	
+	<definition name="creditcard/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar información de la tarjeta de crédito" />
+		<put-attribute name="body" value="/views/creditcard/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

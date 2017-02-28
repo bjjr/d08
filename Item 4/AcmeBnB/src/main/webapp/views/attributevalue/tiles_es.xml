@@ -16,9 +16,9 @@
       
 <tiles-definitions>
 
-	<definition name="lessor/list" extends="master.page">	
-		<put-attribute name="title" value="Lessors" />
-		<put-attribute name="body" value="/views/lessor/list.jsp" />
+	<definition name="attributevalue/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar un atributo" />
+		<put-attribute name="body" value="/views/attributevalue/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

@@ -18,7 +18,12 @@
 
 	<definition name="attribute/list" extends="master.page">	
 		<put-attribute name="title" value="Attributes" />
-		<put-attribute name="body" value="/views/attributes/list.jsp" />
+		<put-attribute name="body" value="/views/attribute/list.jsp" />
+	</definition>
+	
+	<definition name="attribute/edit" extends="master.page">	
+		<put-attribute name="title" value="Edit attribute" />
+		<put-attribute name="body" value="/views/attribute/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>
