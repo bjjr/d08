@@ -11,16 +11,11 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 	
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag"
-	name="property" requestURI="${requestURI}" id="row">
-	<!-- Attributes -->
-	
-	<acme:column code="property.name" property="name"/>
-	<acme:column code="property.rate" property="rate"/>
-	<acme:column code="property.description" property="description"/>
-	<acme:column code="property.address" property="address"/>
-	
-</display:table>
+	<acme:display code="property.name" property="${property.name}"/>
+	<acme:display code="property.rate" property="${property.rate}"/>
+	<acme:display code="property.description" property="${property.description}"/>
+	<acme:display code="property.address" property="${property.address}"/>
+
 <h1><spring:message code="property.attributes"/></h1>
 <display:table pagesize="5" class="displaytag"
 	name="attributes" requestURI="${requestURI}" id="row">
