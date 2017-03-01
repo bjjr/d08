@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ConsumerActorRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Comment;
 import domain.ConsumerActor;
 import domain.SocialIdentity;
@@ -21,7 +23,7 @@ public class ConsumerActorService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private ConsumerActorRepository	ConsumerActorRepository;
+	private ConsumerActorRepository	consumerActorRepository;
 
 
 	// Supporting services ----------------------------------
@@ -42,19 +44,19 @@ public class ConsumerActorService {
 
 		ConsumerActor result;
 
-		result = ConsumerActorRepository.save(consumerActor);
+		result = consumerActorRepository.save(consumerActor);
 
 		return result;
 	}
 
 	public void flush() {
-		ConsumerActorRepository.flush();
+		consumerActorRepository.flush();
 	}
 
 	public ConsumerActor findOne(int consumerActorID) {
 		ConsumerActor result;
 
-		result = ConsumerActorRepository.findOne(consumerActorID);
+		result = consumerActorRepository.findOne(consumerActorID);
 		Assert.notNull(result);
 
 		return result;
@@ -63,7 +65,7 @@ public class ConsumerActorService {
 	public Collection<ConsumerActor> findAll() {
 		Collection<ConsumerActor> result;
 
-		result = ConsumerActorRepository.findAll();
+		result = consumerActorRepository.findAll();
 		Assert.notNull(result);
 
 		return result;
@@ -85,5 +87,25 @@ public class ConsumerActorService {
 		ca.setEmail("");
 		ca.setPhone("");
 		ca.setPicture("");
+	}
+
+	public ConsumerActor findByPrincipal() {
+		ConsumerActor consumerActor;
+		UserAccount userAccount;
+
+		userAccount = LoginService.getPrincipal();
+
+		consumerActor = findByUserAccount(userAccount);
+
+		return consumerActor;
+	}
+
+	public ConsumerActor findByUserAccount(UserAccount userAccount) {
+		ConsumerActor res;
+
+		res = consumerActorRepository.findByUserAccountId(userAccount.getId());
+		Assert.notNull(res, "The user is not a consumer");
+
+		return res;
 	}
 }

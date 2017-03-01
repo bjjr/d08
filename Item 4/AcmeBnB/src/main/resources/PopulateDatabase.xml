@@ -279,8 +279,7 @@
 		<property name="holderName" value="holderName1" />
 		<property name="brandName" value="brandName1" />
 		<property name="number" value="4929890168968091" />
-		<property name="expirationMonth" value="2" />
-		<property name="expirationYear" value="2021" />
+		<property name="expiryDate" value="02/02/2018 00:00" />
 		<property name="cvv" value="113" />
 	</bean>
 
