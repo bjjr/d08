@@ -62,6 +62,9 @@
 		<bean class="converters.TenantToStringConverter" />
 		<bean class="converters.StringToTenantConverter" />
 		
+		<bean class="converters.BookToStringConverter" />
+		<bean class="converters.StringToBookConverter" />
+		
 	</util:list>
 	
 </beans>
