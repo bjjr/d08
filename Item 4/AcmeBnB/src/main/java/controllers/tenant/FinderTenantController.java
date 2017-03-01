@@ -1,10 +1,14 @@
 
 package controllers.tenant;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +18,7 @@ import services.FinderService;
 import services.TenantService;
 import controllers.AbstractController;
 import domain.Finder;
+import domain.Property;
 
 @Controller
 @RequestMapping("/finder/tenant")
@@ -38,6 +43,23 @@ public class FinderTenantController extends AbstractController {
 
 		result = new ModelAndView("finder/display");
 		result.addObject("finder", finder);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/results", method = RequestMethod.GET)
+	public ModelAndView results() {
+		ModelAndView result;
+		Finder finder;
+		Collection<Property> properties = new ArrayList<>();
+
+		finder = finderService.findByPrincipal();
+		Assert.notNull(finder);
+
+		properties = finderService.resultsPerFinder();
+
+		result = new ModelAndView("finder/results");
+		result.addObject("properties", properties);
 
 		return result;
 	}

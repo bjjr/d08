@@ -34,3 +34,7 @@
 </div>
 
 <br /><acme:link href="finder/tenant/edit.do" code="finder.edit"/>
+
+<jstl:if test="${finder.id != 0}">
+	<br /><acme:link href="finder/tenant/results.do" code="finder.results"/>
+</jstl:if>

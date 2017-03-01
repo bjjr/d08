@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.FinderRepository;
 import domain.Finder;
+import domain.Property;
 import domain.Tenant;
 
 @Service
@@ -69,6 +70,10 @@ public class FinderService {
 
 	public Finder findByPrincipal() {
 		return finderRepository.findByPrincipal(tenantService.findByPrincipal().getId());
+	}
+
+	public Collection<Property> resultsPerFinder() {
+		return finderRepository.resultsPerFinder(findByPrincipal().getId());
 	}
 
 	public Double avgResultsPerFinder() {
