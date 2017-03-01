@@ -74,6 +74,9 @@
 		<bean class="converters.BookToStringConverter" />
 		<bean class="converters.StringToBookConverter" />
 		
+		<bean class="converters.AdministratorToStringConverter" />
+		<bean class="converters.StringToAdministratorConverter" />
+		
 	</util:list>
 	
 </beans>
