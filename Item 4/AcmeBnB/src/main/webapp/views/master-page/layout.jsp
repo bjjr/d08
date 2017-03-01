@@ -44,6 +44,9 @@
 		$("#hide").click(function() {
 			$("#legal").fadeOut("slow");
 		});
+		$("#datepicker").datepicker({
+			dateFormat: "dd/mm/yy"
+		});
 	});
 
 	function askSubmission(msg, form) {

@@ -7,15 +7,19 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="creditCard/edit.do" modelAttribute="creditCard" >
+<form:form action="creditCard/edit.do" modelAttribute="creditCardForm" >
 	
-	<form:hidden path="id"/>
-	<form:hidden path="version"/>
+	<form:hidden path="creditCard.id"/>
+	<form:hidden path="creditCard.version"/>
 	
-	<acme:textbox code="creditcard.holder" path="holderName" />
-	<acme:textbox code="creditcard.brand" path="brandName" />
-	<acme:textbox code="creditcard.number" path="number"/>
-	<acme:textbox code="creditcard.expirationMonth" path="expirationMonth" />
-	<acme:textbox code="creditcard.expirationYear" path="expirationYear"/>
-	<acme:textbox code="creditcard.cvv" path="cvv" />
+	<acme:textbox code="creditcard.holder" path="creditCard.holderName" />
+	<acme:textbox code="creditcard.brand" path="creditCard.brandName" />
+	<acme:textbox code="creditcard.number" path="creditCard.number"/>
+	<acme:textbox code="creditcard.expiryDate" path="date" id="datepicker" />
+	<acme:textbox code="creditcard.cvv" path="creditCard.cvv" />
+	
+	<div>
+		<acme:submit name="save" code="misc.save"/>
+		<acme:cancel url="creditCard/display.do" code="misc.cancel"/>
+	</div>
 </form:form>
