@@ -1,71 +1,81 @@
 
 package services;
 
-import java.util.Collection;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ConsumerActorRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.ConsumerActor;
 
 @Service
 @Transactional
 public class ConsumerActorService {
 
-	// Managed repository -----------------------------------
-
+	//Managed repository --------------------------
 	@Autowired
-	private ConsumerActorRepository	ConsumerActorRepository;
+	private ConsumerActorRepository	consumerActorRepository;
 
 
-	// Supporting services ----------------------------------
+	// Supporting services --------------------------
 
-	//@Autowired
-	//private ActorService			actorService;
-
-	// Constructors -----------------------------------------
+	// Constructors ---------------------------------
 
 	public ConsumerActorService() {
 		super();
 	}
 
-	// Simple CRUD methods ----------------------------------
+	// Simple CRUD methods --------------------------
 
-	public ConsumerActor findOne(int consumerActorID) {
-		ConsumerActor result;
+	public ConsumerActor findOne(Integer caId) {
+		Assert.isTrue(caId != 0);
 
-		result = ConsumerActorRepository.findOne(consumerActorID);
-		Assert.notNull(result);
+		ConsumerActor res;
+		res = consumerActorRepository.findOne(caId);
 
-		return result;
+		Assert.notNull(res);
+
+		return res;
 	}
 
-	public Collection<ConsumerActor> findAll() {
-		Collection<ConsumerActor> result;
+	public ConsumerActor save(ConsumerActor ca) {
+		Assert.notNull(ca);
 
-		result = ConsumerActorRepository.findAll();
-		Assert.notNull(result);
+		ConsumerActor res;
+		res = consumerActorRepository.save(ca);
 
-		return result;
-	}
-
-	public ConsumerActor save(ConsumerActor consumerActor) {
-		Assert.notNull(consumerActor);
-
-		ConsumerActor result;
-
-		result = ConsumerActorRepository.save(consumerActor);
-
-		return result;
+		return res;
 	}
 
 	public void flush() {
-		ConsumerActorRepository.flush();
+		consumerActorRepository.flush();
 	}
 
-	// Other business methods -------------------------------
+	// Other business methods -----------------------
+
+	public ConsumerActor findByPrincipal() {
+		ConsumerActor result = null;
+		UserAccount userAccount;
+
+		userAccount = LoginService.getPrincipal();
+		Assert.notNull(userAccount);
+		result = findByUserAccount(userAccount);
+
+		return result;
+	}
+
+	public ConsumerActor findByUserAccount(UserAccount userAccount) {
+		Assert.notNull(userAccount);
+
+		ConsumerActor res;
+		res = consumerActorRepository.findByUserAccountId(userAccount.getId());
+		Assert.notNull(res);
+
+		return res;
+	}
 
 }
