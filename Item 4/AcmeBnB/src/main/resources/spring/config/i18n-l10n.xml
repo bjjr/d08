@@ -18,15 +18,20 @@
 	">
 
 	<util:list id="messages">
+	
+		<value>/views/administrator/messages</value>
+		<value>/views/attribute/messages</value>
+		<value>/views/attributevalue/messages</value>
+		<value>/views/creditcard/messages</value>
+		<value>/views/finder/messages</value>
+		<value>/views/legal/messages</value>
+		<value>/views/lessor/messages</value>
 		<value>/views/master-page/messages</value>
 		<value>/views/misc/messages</value>
-		<value>/views/security/messages</value>		
+		<value>/views/security/messages</value>
+		<value>/views/tenant/messages</value>
 		<value>/views/welcome/messages</value>
-		<value>/views/legal/messages</value>
 		
-		<value>/views/administrator/messages</value>
-		<value>/views/customer/messages</value>
-		<value>/views/profile/messages</value>
 	</util:list>
 
 </beans>

@@ -5,13 +5,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.LessorRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Lessor;
 import domain.Property;
 
+@Service
+@Transactional
 public class LessorService {
 
 	// Managed repository -----------------------------------
@@ -75,6 +82,26 @@ public class LessorService {
 
 	public void flush() {
 		lessorRepository.flush();
+	}
+
+	public Lessor findByPrincipal() {
+		Lessor lessor;
+		UserAccount userAccount;
+
+		userAccount = LoginService.getPrincipal();
+
+		lessor = findByUserAccount(userAccount);
+
+		return lessor;
+	}
+
+	public Lessor findByUserAccount(UserAccount userAccount) {
+		Lessor res;
+
+		res = lessorRepository.findByUserAccountId(userAccount.getId());
+		Assert.notNull(res, "The user is not a lessor");
+
+		return res;
 	}
 
 	// Other business methods -------------------------------
@@ -157,6 +184,14 @@ public class LessorService {
 		Assert.notNull(lessorName);
 
 		return lessorName;
+	}
+
+	public Lessor lessorMaxRatio() {
+		Lessor lessor;
+
+		lessor = lessorRepository.lessorMaxRatio();
+
+		return lessor;
 	}
 
 }

@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.PropertyRepository;
+import domain.Audit;
+import domain.Book;
+import domain.Lessor;
 import domain.Property;
 
 @Service
@@ -20,8 +24,11 @@ public class PropertyService {
 	@Autowired
 	private PropertyRepository	propertyRepository;
 
-
 	// Supporting services ----------------------------------
+
+	@Autowired
+	private LessorService		lessorService;
+
 
 	// Constructors -----------------------------------------
 
@@ -33,17 +40,22 @@ public class PropertyService {
 
 	public Property create() {
 		Property result;
+		Lessor lessor;
+		Collection<Audit> audits;
+		Collection<Book> books;
 
 		result = new Property();
+		lessor = lessorService.findByPrincipal();
+		audits = new LinkedList<>();
+		books = new LinkedList<>();
 
-		result.setAddress("");
-		result.setAttributeValues(null);
-		result.setAudits(null);
-		result.setBooks(null);
-		result.setDescription("");
-		result.setLessor(null);//TODO
 		result.setName("");
 		result.setRate(0);
+		result.setAddress("");
+		result.setDescription("");
+		result.setLessor(lessor);
+		result.setAudits(audits);
+		result.setBooks(books);
 
 		return result;
 	}
@@ -80,5 +92,25 @@ public class PropertyService {
 	}
 
 	// Other business methods -------------------------------
+
+	private void addBook(Property p, Book b) {
+		b.setProperty(p);
+		p.getBooks().add(b);
+	}
+
+	private void removeBook(Property p, Book b) {
+		b.setProperty(null);
+		p.getBooks().remove(b);
+	}
+
+	private void addAudit(Property p, Audit a) {
+		a.setProperty(p);
+		p.getAudits().add(a);
+	}
+
+	private void removeAudit(Property p, Audit a) {
+		a.setProperty(null);
+		p.getAudits().remove(a);
+	}
 
 }
