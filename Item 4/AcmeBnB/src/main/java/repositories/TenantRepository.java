@@ -12,10 +12,10 @@ import domain.Tenant;
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 
-	@Query("select count(b)/(select count(t) from Tennant t) from Book b where b.status.name like 'ACCEPTED'")
+	@Query("select count(b)/(select count(t) from Tenant t) from Book b where b.status.name like 'ACCEPTED'")
 	Double avgAcceptedPerTenant();
 
-	@Query("select count(b)/(select count(t) from Tennant t) from Book b where b.status.name like 'DENIED'")
+	@Query("select count(b)/(select count(t) from Tenant t) from Book b where b.status.name like 'DENIED'")
 	Double avgDeniedPerTenant();
 
 	@Query("select t,count(b) from Tenant t join t.books b where b.status.name = 'APPROVED' group by t")

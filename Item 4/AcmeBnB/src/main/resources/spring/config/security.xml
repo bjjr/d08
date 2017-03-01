@@ -43,9 +43,20 @@
 
 		<security:intercept-url pattern="/legal/**" access="permitAll" />
 		
+		<security:intercept-url pattern="/attachment/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/attachment/auditor/edit.do" access="hasRole('AUDITOR')" />
+		
 		<security:intercept-url pattern="/attribute/**" access="hasRole('ADMINISTRATOR')"/>
 		
 		<security:intercept-url pattern="/attributeValue/**" access="hasRole('LESSOR')"/>
+		
+		<security:intercept-url pattern="/audit/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/audit/display.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/audit/auditor/list.do" access="hasRole('AUDITOR')" />
+		<security:intercept-url pattern="/audit/auditor/edit.do" access="hasRole('AUDITOR')" />
+		
+		<security:intercept-url pattern="/auditor/adminitrator/create.do" access="hasRole('ADMINISTRATOR')" />
+		
 		
 		<security:intercept-url pattern="/creditCard/**" access="hasAnyRole('LESSOR', 'TENANT')" />
 		
@@ -53,15 +64,6 @@
 
 		<security:intercept-url pattern="/tenant/create.do" access="permitAll" />
 		
-		<security:intercept-url pattern="/auditor/adminitrator/create.do" access="hasRole('ADMINISTRATOR')" />
-		
-		<security:intercept-url pattern="/audit/auditor/list.do" access="hasRole('AUDITOR')" />
-		<security:intercept-url pattern="/audit/auditor/edit.do" access="hasRole('AUDITOR')" />
-		<security:intercept-url pattern="/audit/display.do" access="isAuthenticated()" />
-		
-		<security:intercept-url pattern="/attachment/auditor/list.do" access="isAuthenticated()" />
-		<security:intercept-url pattern="/attachment/auditor/edit.do" access="hasRole('AUDITOR')" />
-	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
 		<security:form-login 

@@ -5,7 +5,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib prefix="acme" uri="/WEB-INF/tags"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <!-- Listing grid -->
 
@@ -27,22 +27,35 @@
 		</jstl:if>
 	</display:column>
 	
+	<display:column>
+		<jstl:if test="${isAuditor == false}">
+			<a href="audit/display.do?auditId=${row.id}">
+				<spring:message code="audit.display"/>
+			</a>
+		</jstl:if>
+	</display:column>
+	
 	<security:authorize access="hasRole('AUDITOR')">
-		<jstl:if test="${row.draft == false}">
-			<display:column>
-				<a href="audit/auditor.display.do?auditId=${row.id}">
+		<display:column>
+			<jstl:if test="${row.draft == false}">
+				<a href="audit/display.do?auditId=${row.id}">
 					<spring:message code="audit.display"/>
 				</a>
-			</display:column>
-		</jstl:if>
+			</jstl:if>
+			<jstl:if test="${row.draft == true}">
+				<a href="audit/display.do?auditId=${row.id}">
+					<spring:message code="audit.displayPreview"/>
+				</a>
+			</jstl:if>
+		</display:column>
 	
-		<jstl:if test="${row.draft == true}">
-			<display:column>
-				<a href="audit/auditor.edit.do?auditId=${row.id}">
+		<display:column>
+			<jstl:if test="${row.draft == true}">
+				<a href="audit/auditor/edit.do?auditId=${row.id}">
 					<spring:message code="audit.edit"/>
 				</a>
-			</display:column>
-		</jstl:if>
+			</jstl:if>
+		</display:column>
 	</security:authorize>
 	
 </display:table>
