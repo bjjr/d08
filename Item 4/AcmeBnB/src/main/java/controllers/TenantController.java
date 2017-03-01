@@ -70,7 +70,7 @@ public class TenantController extends AbstractController {
 
 		result = new ModelAndView("tenant/create");
 		result.addObject("tenantForm", tenant);
-		result.addObject("msg", message);
+		result.addObject("message", message);
 
 		return result;
 	}
