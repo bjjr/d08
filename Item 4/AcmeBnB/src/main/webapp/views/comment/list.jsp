@@ -8,32 +8,27 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <!-- Listing grid -->
 <display:table pagesize="5" class="displaytag" keepStatus="true"
 	name="comments" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
-	<spring:message code="comment.title" var="titleHeader" />
-	<display:column property="title" title="${titleHeader}" sortable="true" />
+	<acme:column code="comment.title" property="title"/>
 	
-	<spring:message code="comment.text" var="textHeader" />
-	<display:column property="text" title="${textHeader}" sortable="true" />
+	<acme:column code="comment.text" property="text"/>
 	
-	<spring:message code="comment.momentPosted" var="momentPostedHeader" />
-	<display:column property="momentPosted" title="${momentPostedHeader}" sortable="true" />
+	<acme:column code="comment.momentPosted" property="momentPosted"/>
 	
-	<spring:message code="comment.stars" var="starsHeader" />
-	<display:column property="stars" title="${starsHeader}" sortable="true" />
+	<acme:column code="comment.stars" property="stars"/>
 	
-	<spring:message code="comment.actor" var="actorHeader" />
-	<display:column property="actor.name" title="${actorHeader}" sortable="true" />
+	<acme:column code="comment.actor" property="actor.name"/>
 	
-	<spring:message code="comment.commentableEntity" var="commentableEntityHeader" />
-	<display:column property="commentableEntity.name" title="${commentableEntityHeader}" sortable="true" />
+	<acme:column code="comment.commentableEntity" property="commentableEntity.name"/>
 	
 </display:table>
 
 <!-- Action links -->
 	<security:authorize access="hasAnyRole('LESSOR, TENANT')">
-			<a href="comment/create.do"><spring:message code="comment.create"/></a>
+			<acme:link href="comment/create.do" code="comment.create"/>
 	</security:authorize>
