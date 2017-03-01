@@ -30,7 +30,8 @@
 	<acme:textbox code="finder.maxPrice" path="maxPrice" />
 	<acme:textbox code="finder.keyword" path="keyword" />
 	
+	<br />
 	<acme:submit name="save" code="finder.save"/>
-	<acme:cancel url="finder/display.do" code="finder.cancel"/>
+	<acme:cancel url="finder/tenant/display.do" code="finder.cancel"/>
 
 </form:form>

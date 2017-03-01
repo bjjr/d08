@@ -20,19 +20,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<jstl:if test="${finder.id != 0}">
+<div>
+	<spring:message	code="finder.destinationCity" />: <jstl:out value="${finder.destinationCity}"/>
+</div>
+<div>
+	<spring:message	code="finder.minPrice" />: <jstl:out value="${finder.minPrice}"/>
+</div>
+<div>
+	<spring:message	code="finder.maxPrice" />: <jstl:out value="${finder.maxPrice}"/>
+</div>
+<div>
+	<spring:message	code="finder.keyword" />: <jstl:out value="${finder.keyword}"/>
+</div>
 
-	<div>
-		<spring:message	code="finder.destinationCity" />: <jstl:out value="${finder.destinationCity}"/>
-	</div>
-	<div>
-		<spring:message	code="finder.minPrice" />: <jstl:out value="${finder.minPrice}"/>
-	</div>
-	<div>
-		<spring:message	code="finder.maxPrice" />: <jstl:out value="${finder.maxPrice}"/>
-	</div>
-	<div>
-		<spring:message	code="finder.keyword" />: <jstl:out value="${finder.keyword}"/>
-	</div>
-
-</jstl:if>
+<br /><acme:link href="finder/tenant/edit.do" code="finder.edit"/>
