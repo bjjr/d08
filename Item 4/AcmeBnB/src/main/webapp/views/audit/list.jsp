@@ -13,11 +13,36 @@
 	name="audits" requestURI="${requestURI}" id="row">
 	
 	<!-- Attributes -->
-
-	<spring:message code="endorser.name" var="nameHeader" />
-	<display:column property="name" title="${nameHeader}" sortable="true" />
-
-	<spring:message code="endorser.homepage" var="homepageHeader" />
-	<display:column property="homepage" title="${homepageHeader}" sortable="false" />
+	
+	<display:column>
+		<jstl:if test="${isAuditor == true}">
+			<spring:message code="audit.auditOf" />
+			<jstl:out value=" " />
+			<jstl:out value="${row.property.name}" />
+		</jstl:if>
+		<jstl:if test="${isAuditor == false}">
+			<spring:message code="audit.auditOf" />
+			<jstl:out value=" " />
+			<jstl:out value="${row.auditor}" />
+		</jstl:if>
+	</display:column>
+	
+	<security:authorize access="hasRole('AUDITOR')">
+		<jstl:if test="${row.draft == false}">
+			<display:column>
+				<a href="audit/auditor.display.do?auditId=${row.id}">
+					<spring:message code="audit.display"/>
+				</a>
+			</display:column>
+		</jstl:if>
+	
+		<jstl:if test="${row.draft == true}">
+			<display:column>
+				<a href="audit/auditor.edit.do?auditId=${row.id}">
+					<spring:message code="audit.edit"/>
+				</a>
+			</display:column>
+		</jstl:if>
+	</security:authorize>
 	
 </display:table>

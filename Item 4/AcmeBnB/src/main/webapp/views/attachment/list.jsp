@@ -13,23 +13,20 @@
 	name="attachments" requestURI="${requestURI}" id="row">
 	
 	<!-- Attributes -->
-
-	<spring:message code="endorser.name" var="nameHeader" />
-	<display:column property="name" title="${nameHeader}" sortable="true" />
-
-	<spring:message code="endorser.homepage" var="homepageHeader" />
-	<display:column property="homepage" title="${homepageHeader}" sortable="false" />
 	
+	<acme:column code="attachment.path" property="path"/>
+
 </display:table>
 
 <br />
 
-<input type="button" name="addAttachment"
+<security:authorize access="hasRole('AUDITOR')" >
+	<input type="button" name="addAttachment"
 		value="<spring:message code="attachment.addAttachment" />"
 		onclick="window.location='attachment/auditor/edit.do'" />
-<br />
+</security:authorize>
 
 <input type="button" name="return"
 		value="<spring:message code="attachment.return" />"
-		onclick="window.location='audit/auditor/list.do'" />
+		onclick="window.location='property/list.do'" />
 <br />

@@ -7,33 +7,26 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" uri="/WEB-INF/tags"%>
 
-<form:form action="audit/auditor/edit.do" modelAttribute="audit">
+<form:form action="attachment/auditor/edit.do" modelAttribute="attachment">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="draft"/>
-	<form:hidden path="auditor"/>
-	<form:hidden path="property"/>
+	<form:hidden path="audit" />
 	
-	<acme:textbox code="audit.momentWritten" path="momentWritten" readonly="true"/>
-	<br />
-	
-	<acme:textarea code="audit.text" path="text"/>
+	<acme:textbox code="attachment.path" path="path" />
 	<br />
 	
 	<!-- Buttons -->
 	
-	<acme:submit name="publish" code="audit.publish"/>
+	<acme:submit name="save" code="attachment.save"/>
 	
-	<acme:submit name="saveAsDraft" code="audit.saveAsDraft"/>
-		
-	<jstl:if test="${audit.id != 0 && audit.draft == true}">
+	<jstl:if test="${attachment.id != 0}">
 		<input type="submit" name="delete"
-			value="<spring:message code="audit.delete" />"
-			onclick="return confirm('<spring:message code="audit.confirm.delete" />')" />&nbsp;
+			value="<spring:message code="attachment.delete" />"
+			onclick="return confirm('<spring:message code="attachment.confirm.delete" />')" />&nbsp;
 	</jstl:if>
 	
-	<acme:cancel url="audit/auditor/list.do" code="audit.cancel"/>
+	<acme:cancel url="attachment/auditor/list.do" code="attachment.cancel"/>
 	<br />
 
 </form:form>

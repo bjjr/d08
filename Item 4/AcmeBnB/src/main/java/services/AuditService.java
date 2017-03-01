@@ -75,17 +75,13 @@ public class AuditService {
 		Date momentWritten;
 
 		if (audit.getId() == 0) {
-			momentWritten = new Date(System.currentTimeMillis() - 1000);
-			audit.setMomentWritten(momentWritten);
-
 			auditor = auditorService.findByPrincipal();
 			auditor.getAudits().add(audit);
 			auditorService.save(auditor);
-		} else if (audit.getId() != 0 && audit.getDraft() == true) {
-			momentWritten = new Date(System.currentTimeMillis() - 1000);
-			audit.setMomentWritten(momentWritten);
 		}
 
+		momentWritten = new Date(System.currentTimeMillis() - 1000);
+		audit.setMomentWritten(momentWritten);
 		audit.setDraft(false);
 		result = auditRepository.save(audit);
 
@@ -97,6 +93,7 @@ public class AuditService {
 		Assert.isTrue(audit.getId() != 0);
 
 		Assert.isTrue(auditRepository.exists(audit.getId()));
+		Assert.isTrue(audit.getDraft(), "Can't delete an audit published");
 
 		Auditor auditor;
 		Property property;
@@ -125,6 +122,7 @@ public class AuditService {
 
 		Audit result;
 		Auditor auditor;
+		Date momentWritten;
 
 		if (audit.getId() == 0) {
 			auditor = auditorService.findByPrincipal();
@@ -132,6 +130,8 @@ public class AuditService {
 			auditorService.save(auditor);
 		}
 
+		momentWritten = new Date(System.currentTimeMillis() - 1000);
+		audit.setMomentWritten(momentWritten);
 		audit.setDraft(true);
 		result = auditRepository.save(audit);
 
@@ -161,6 +161,14 @@ public class AuditService {
 
 		result = auditRepository.findMaxAuditsOfProperties();
 		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<Attachment> findAttachmentsByAudit(int auditId) {
+		Collection<Attachment> result;
+
+		result = auditRepository.findAttachmentsByAudit(auditId);
 
 		return result;
 	}
