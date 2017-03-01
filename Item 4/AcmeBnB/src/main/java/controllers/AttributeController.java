@@ -90,7 +90,7 @@ public class AttributeController extends AbstractController {
 				attributeService.save(attribute);
 				res = new ModelAndView("redirect:list.do");
 			} catch (Throwable th) {
-				res = createEditModelAndView(attribute, "attribute.commit.error");
+				res = createEditModelAndView(attribute, "misc.commit.error");
 			}
 		}
 
@@ -107,7 +107,7 @@ public class AttributeController extends AbstractController {
 			attributeService.delete(attribute);
 			res = new ModelAndView("redirect:list.do");
 		} catch (Throwable th) {
-			res = createEditModelAndView(attribute, "attribute.commit.error");
+			res = createEditModelAndView(attribute, "misc.commit.error");
 		}
 
 		return res;

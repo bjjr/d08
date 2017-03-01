@@ -1,14 +1,12 @@
 
 package domain;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -59,9 +57,8 @@ public class Audit extends DomainEntity {
 
 
 	// Relationships
-	private Property				property;
-	private Auditor					auditor;
-	private Collection<Attachment>	attachments;
+	private Property	property;
+	private Auditor		auditor;
 
 
 	@NotNull
@@ -84,16 +81,6 @@ public class Audit extends DomainEntity {
 
 	public void setAuditor(Auditor auditor) {
 		this.auditor = auditor;
-	}
-
-	@NotNull
-	@OneToMany(mappedBy = "audit")
-	public Collection<Attachment> getAttachments() {
-		return attachments;
-	}
-
-	public void setAttachments(Collection<Attachment> attachments) {
-		this.attachments = attachments;
 	}
 
 }

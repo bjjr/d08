@@ -1,6 +1,8 @@
 
 package services;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +10,6 @@ import org.springframework.util.Assert;
 
 import repositories.AttachmentRepository;
 import domain.Attachment;
-import domain.Audit;
 
 @Service
 @Transactional
@@ -19,11 +20,8 @@ public class AttachmentService {
 	@Autowired
 	private AttachmentRepository	attachmentRepository;
 
+
 	// Supporting services ----------------------------------
-
-	@Autowired
-	private AuditService			auditService;
-
 
 	// Constructors -----------------------------------------
 
@@ -50,6 +48,15 @@ public class AttachmentService {
 		return result;
 	}
 
+	public Collection<Attachment> findAll() {
+		Collection<Attachment> result;
+
+		result = attachmentRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public Attachment save(Attachment attachment) {
 		Assert.notNull(attachment);
 
@@ -66,14 +73,9 @@ public class AttachmentService {
 
 		Assert.isTrue(attachmentRepository.exists(attachment.getId()));
 
-		Audit audit;
-
-		audit = attachment.getAudit();
-		audit.getAttachments().remove(attachment);
-		auditService.save(audit);
-
 		attachmentRepository.delete(attachment);
 	}
+
 	// Other business methods -------------------------------
 
 	public void flush() {

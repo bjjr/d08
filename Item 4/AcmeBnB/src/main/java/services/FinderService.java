@@ -66,4 +66,18 @@ public class FinderService {
 		finderRepository.flush();
 	}
 
+	// Other business methods -------------------------------
+
+	public Double avgResultsPerFinder() {
+		return finderRepository.avgResultsPerFinder();
+	}
+
+	public Double maxResultsPerFinder() {
+		return finderRepository.maxResultsPerFinder();
+	}
+
+	public Double minResultsPerFinder() {
+		return finderRepository.minResultsPerFinder();
+	}
+
 }
