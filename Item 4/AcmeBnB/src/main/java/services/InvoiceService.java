@@ -64,4 +64,16 @@ public class InvoiceService {
 	public void flush() {
 		invoiceRepository.flush();
 	}
+
+	public Double findMinInvoicesOfTenants() {
+		return invoiceRepository.findMinInvoicesOfTenants();
+	}
+
+	public Double findAvgInvoicesOfTenants() {
+		return invoiceRepository.findAvgInvoicesOfTenants();
+	}
+
+	public Double findMaxInvoicesOfTenants() {
+		return invoiceRepository.findMaxInvoicesOfTenants();
+	}
 }

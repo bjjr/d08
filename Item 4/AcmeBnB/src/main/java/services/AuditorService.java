@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import repositories.AuditorRepository;
 import security.LoginService;
 import security.UserAccount;
 import security.UserAccountService;
+import domain.Audit;
 import domain.Auditor;
 
 @Service
@@ -40,11 +42,14 @@ public class AuditorService {
 	public Auditor create() {
 		Auditor result;
 		UserAccount userAccount;
+		Collection<Audit> audits;
 
 		userAccount = userAccountService.create("AUDITOR");
+		audits = new ArrayList<Audit>();
 
 		result = new Auditor();
 		result.setUserAccount(userAccount);
+		result.setAudits(audits);
 
 		return result;
 	}

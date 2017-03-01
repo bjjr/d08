@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.AuditRepository;
+import domain.Attachment;
 import domain.Audit;
 import domain.Auditor;
+import domain.Property;
 
 @Service
 @Transactional
@@ -20,12 +22,15 @@ public class AuditService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private AuditRepository	auditRepository;
+	private AuditRepository		auditRepository;
 
 	// Supporting services ----------------------------------
 
 	@Autowired
-	private AuditorService	auditorService;
+	private AuditorService		auditorService;
+
+	@Autowired
+	private AttachmentService	attachmentService;
 
 
 	// Constructors -----------------------------------------
@@ -70,21 +75,44 @@ public class AuditService {
 		Date momentWritten;
 
 		if (audit.getId() == 0) {
-			momentWritten = new Date(System.currentTimeMillis() - 1000);
-			audit.setMomentWritten(momentWritten);
-
 			auditor = auditorService.findByPrincipal();
 			auditor.getAudits().add(audit);
 			auditorService.save(auditor);
-		} else if (audit.getId() != 0 && audit.getDraft() == true) {
-			momentWritten = new Date(System.currentTimeMillis() - 1000);
-			audit.setMomentWritten(momentWritten);
 		}
 
+		momentWritten = new Date(System.currentTimeMillis() - 1000);
+		audit.setMomentWritten(momentWritten);
 		audit.setDraft(false);
 		result = auditRepository.save(audit);
 
 		return result;
+	}
+
+	public void delete(Audit audit) {
+		Assert.notNull(audit);
+		Assert.isTrue(audit.getId() != 0);
+
+		Assert.isTrue(auditRepository.exists(audit.getId()));
+		Assert.isTrue(audit.getDraft(), "Can't delete an audit published");
+
+		Auditor auditor;
+		Property property;
+		Collection<Attachment> attachments;
+
+		auditor = audit.getAuditor();
+		property = audit.getProperty();
+		attachments = attachmentService.findAll();
+
+		auditor.getAudits().remove(audit);
+		property.getAudits().remove(audit);
+
+		for (Attachment a : attachments) {
+			if (a.getAudit().equals(audit)) {
+				attachmentService.delete(a);
+			}
+		}
+
+		auditRepository.delete(audit);
 	}
 
 	// Other business methods -------------------------------
@@ -94,6 +122,7 @@ public class AuditService {
 
 		Audit result;
 		Auditor auditor;
+		Date momentWritten;
 
 		if (audit.getId() == 0) {
 			auditor = auditorService.findByPrincipal();
@@ -101,6 +130,8 @@ public class AuditService {
 			auditorService.save(auditor);
 		}
 
+		momentWritten = new Date(System.currentTimeMillis() - 1000);
+		audit.setMomentWritten(momentWritten);
 		audit.setDraft(true);
 		result = auditRepository.save(audit);
 
@@ -130,6 +161,14 @@ public class AuditService {
 
 		result = auditRepository.findMaxAuditsOfProperties();
 		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<Attachment> findAttachmentsByAudit(int auditId) {
+		Collection<Attachment> result;
+
+		result = auditRepository.findAttachmentsByAudit(auditId);
 
 		return result;
 	}

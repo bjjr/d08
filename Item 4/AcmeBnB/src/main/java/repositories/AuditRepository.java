@@ -1,10 +1,13 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import domain.Attachment;
 import domain.Audit;
 
 @Repository
@@ -18,5 +21,8 @@ public interface AuditRepository extends JpaRepository<Audit, Integer> {
 
 	@Query("select max(p.audits.size) from Property p")
 	Double findMaxAuditsOfProperties();
+
+	@Query("select a from Attachment a where a.audit = ?1")
+	Collection<Attachment> findAttachmentsByAudit(int auditId);
 
 }
