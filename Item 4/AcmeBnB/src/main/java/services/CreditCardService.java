@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import javax.transaction.Transactional;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -14,6 +12,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
@@ -160,23 +159,21 @@ public class CreditCardService {
 	public CreditCard reconstruct(CreditCardForm creditCardForm, BindingResult binding) {
 		CreditCard res;
 
-		if (creditCardForm.getCreditCard().getId() == 0) {
-			res = creditCardForm.getCreditCard();
+		if (creditCardForm.getId() == 0) {
+			res = creditCardRepository.findOne(creditCardForm.getId());
 		} else {
 			DateTimeFormatter dateFormat;
 			DateTime expiryDate;
 
-			//			res = creditCardRepository.findOne(creditCardForm.getCreditCard().getId());
-			res = creditCardForm.getCreditCard();
+			res = creditCardRepository.findOne(creditCardForm.getId());
 			dateFormat = DateTimeFormat.forPattern("dd/MM/yyyy");
 			expiryDate = dateFormat.parseDateTime(creditCardForm.getDate()).withTimeAtStartOfDay();
 
-			res.setHolderName(creditCardForm.getCreditCard().getHolderName());
-			res.setBrandName(creditCardForm.getCreditCard().getBrandName());
-			res.setNumber(creditCardForm.getCreditCard().getNumber());
+			res.setHolderName(creditCardForm.getHolderName());
+			res.setBrandName(creditCardForm.getBrandName());
+			res.setNumber(creditCardForm.getNumber());
 			res.setExpiryDate(expiryDate.toDate());
-			res.setCvv(creditCardForm.getCreditCard().getCvv());
-
+			res.setCvv(creditCardForm.getCvv());
 			validator.validate(res, binding);
 		}
 
