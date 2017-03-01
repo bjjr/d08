@@ -21,8 +21,8 @@
 	<acme:textbox code="property.address" path="address"/>
 	
 	<acme:submit name="save" code="property.save"/>
-	<acme:submit name="delete" code="property.delete"/>
-	<acme:submit name="cancel" code="property.cancel"/>
-	
+	<acme:delete confirmationCode="property.confirm.delete" buttonCode="property.delete"/>
+	<acme:cancel url="property/list.do" code="property.cancel"/>
+		
 </form:form>
 

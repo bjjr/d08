@@ -62,12 +62,14 @@ public class PropertyController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid Property property, BindingResult binding) {
 		ModelAndView result;
+		Property save;
 
+		save = propertyService.reconstruct(property, binding);
 		if (binding.hasErrors()) {
 			result = createEditModelAndView(property);
 		} else {
 			try {
-				propertyService.save(property);
+				propertyService.save(save);
 				result = new ModelAndView("redirect:/property/list.do");
 				result.addObject("message", "property.commit.ok");
 			} catch (Throwable oops) {
