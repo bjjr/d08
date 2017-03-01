@@ -55,6 +55,9 @@
 		<security:intercept-url pattern="/audit/auditor/list.do" access="hasRole('AUDITOR')" />
 		<security:intercept-url pattern="/audit/auditor/edit.do" access="hasRole('AUDITOR')" />
 		
+		<security:intercept-url pattern="/comment/list.do" access="hasAnyRole('LESSOR, TENANT')" />
+		<security:intercept-url pattern="/comment/create.do" access="hasAnyRole('LESSOR, TENANT')" />
+		
 		<security:intercept-url pattern="/auditor/adminitrator/create.do" access="hasRole('ADMINISTRATOR')" />
 		
 		

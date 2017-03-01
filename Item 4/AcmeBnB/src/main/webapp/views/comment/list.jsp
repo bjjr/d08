@@ -34,6 +34,6 @@
 </display:table>
 
 <!-- Action links -->
-	<security:authorize access="hasRole('LESSOR') || hasrole('TENANT')">
+	<security:authorize access="hasAnyRole('LESSOR, TENANT')">
 			<a href="comment/create.do"><spring:message code="comment.create"/></a>
 	</security:authorize>
