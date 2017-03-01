@@ -47,6 +47,7 @@
 	
 		<security:intercept-url pattern="/property/list.do" access="permitAll" />
 		<security:intercept-url pattern="/property/display.do" access="permitAll" />
+		<security:intercept-url pattern="/property/edit.do" access="permitAll" /> <!-- TODO -->
 	
 		<security:intercept-url pattern="/fee/display.do" access="permitAll" /><!-- TODO -->
 		<security:intercept-url pattern="/fee/edit.do" access="permitAll" /><!-- TODO -->

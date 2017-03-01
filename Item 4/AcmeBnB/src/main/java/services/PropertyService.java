@@ -3,11 +3,14 @@ package services;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.PropertyRepository;
 import domain.Audit;
@@ -28,6 +31,9 @@ public class PropertyService {
 
 	@Autowired
 	private LessorService		lessorService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Constructors -----------------------------------------
@@ -69,6 +75,13 @@ public class PropertyService {
 		return result;
 	}
 
+	public void delete(Property property) {
+		Assert.notNull(property);
+
+		Assert.isTrue(pendingAcceptedBooks(property.getId()).isEmpty(), "You have pending books");
+
+		propertyRepository.delete(property);
+	}
 	public Property findOne(int propertyID) {
 		Property result;
 
@@ -92,6 +105,33 @@ public class PropertyService {
 	}
 
 	// Other business methods -------------------------------
+
+	private List<Book> pendingAcceptedBooks(int propertyId) {
+		List<Book> result;
+
+		result = propertyRepository.pendingAcceptedBooks(propertyId);
+		Assert.notNull(result);
+
+		return result;
+	}
+	public Property reconstruct(Property property, BindingResult bindingResult) {
+		Property result;
+
+		if (property.getId() == 0) {
+			result = property;
+		} else {
+			result = propertyRepository.findOne(property.getId());
+
+			result.setName(property.getName());
+			result.setDescription(property.getDescription());
+			result.setAddress(property.getAddress());
+
+			validator.validate(result, bindingResult);
+		}
+
+		return result;
+
+	}
 
 	private void addBook(Property p, Book b) {
 		b.setProperty(p);
