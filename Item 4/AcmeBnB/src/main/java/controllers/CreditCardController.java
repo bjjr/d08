@@ -72,12 +72,10 @@ public class CreditCardController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView res;
 		CreditCard creditCard;
-		CreditCardForm creditCardForm;
 
 		creditCard = creditCardService.create();
-		creditCardForm = new CreditCardForm(creditCard);
 
-		res = createEditModelAndView(creditCardForm);
+		res = createEditModelAndView(creditCard);
 
 		return res;
 	}
@@ -88,16 +86,10 @@ public class CreditCardController extends AbstractController {
 	public ModelAndView edit(@RequestParam int creditCardId) {
 		ModelAndView res;
 		CreditCard creditCard;
-		CreditCardForm creditCardForm;
-		DateTimeFormatter dtf;
-
-		dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
 
 		creditCard = creditCardService.findOne(creditCardId);
-		creditCardForm = new CreditCardForm(creditCard);
-		creditCardForm.setDate(dtf.print(creditCard.getExpiryDate().getTime()));
 
-		res = createEditModelAndView(creditCardForm);
+		res = createEditModelAndView(creditCard);
 
 		return res;
 	}
@@ -107,12 +99,12 @@ public class CreditCardController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(CreditCardForm creditCardForm, BindingResult binding) {
 		ModelAndView res;
-		CreditCard creditCard;
+		CreditCard creditCard = null;
 
 		creditCard = creditCardService.reconstruct(creditCardForm, binding);
 
 		if (binding.hasErrors()) {
-			res = createEditModelAndView(creditCardForm);
+			res = createEditModelAndView(creditCard);
 		} else {
 			try {
 				Assert.isTrue(creditCardService.checkDatesDifference(creditCardForm));
@@ -127,9 +119,11 @@ public class CreditCardController extends AbstractController {
 	}
 
 	// Ancillary methods -------------------------------------
-	protected ModelAndView createEditModelAndView(CreditCardForm creditCardForm) {
+	protected ModelAndView createEditModelAndView(CreditCard creditCard) {
 		ModelAndView res;
+		CreditCardForm creditCardForm;
 
+		creditCardForm = new CreditCardForm(creditCard);
 		res = createEditModelAndView(creditCardForm, null);
 
 		return res;

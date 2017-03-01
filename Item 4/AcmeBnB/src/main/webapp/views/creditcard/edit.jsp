@@ -9,14 +9,14 @@
 
 <form:form action="creditCard/edit.do" modelAttribute="creditCardForm" >
 	
-	<form:hidden path="creditCard.id"/>
-	<form:hidden path="creditCard.version"/>
+	<form:hidden path="id"/>
+	<form:hidden path="version"/>
 	
-	<acme:textbox code="creditcard.holder" path="creditCard.holderName" />
-	<acme:textbox code="creditcard.brand" path="creditCard.brandName" />
-	<acme:textbox code="creditcard.number" path="creditCard.number"/>
-	<acme:textbox code="creditcard.expiryDate" path="date" id="datepicker" />
-	<acme:textbox code="creditcard.cvv" path="creditCard.cvv" />
+	<acme:textbox code="creditcard.holder" path="holderName" />
+	<acme:textbox code="creditcard.brand" path="brandName" />
+	<acme:textbox code="creditcard.number" path="number"/>
+	<acme:textbox code="creditcard.expiryDate" path="date" />
+	<acme:textbox code="creditcard.cvv" path="cvv" />
 	
 	<div>
 		<acme:submit name="save" code="misc.save"/>
