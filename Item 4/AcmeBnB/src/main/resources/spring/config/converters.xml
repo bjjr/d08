@@ -65,6 +65,9 @@
 		<bean class="converters.BookToStringConverter" />
 		<bean class="converters.StringToBookConverter" />
 		
+		<bean class="converters.StatusToStringConverter" />
+		<bean class="converters.StringToStatusConverter" />
+		
 	</util:list>
 	
 </beans>
