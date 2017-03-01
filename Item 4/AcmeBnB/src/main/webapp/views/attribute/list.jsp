@@ -17,9 +17,10 @@
 	
 	<acme:column code="attribute.name" property="name"/>
 	
-	<security:authorize access="hasRole('ADMINISTRATOR')">
-		<display:column>
-			<acme:link href="attribute/edit.do?attributeId=${row.id}" code="attribute.edit"/>
-		</display:column>
-	</security:authorize>
+	<display:column>
+		<acme:link href="attribute/edit.do?attributeId=${row.id}" code="attribute.edit"/>
+	</display:column>
+	
 </display:table>
+
+<acme:link href="attribute/create.do" code="attribute.create"/>

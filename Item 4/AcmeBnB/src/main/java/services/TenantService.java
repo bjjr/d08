@@ -100,10 +100,9 @@ public class TenantService {
 
 			result.getUserAccount().setUsername(tenant.getTenant().getUserAccount().getUsername());
 			result.getUserAccount().setPassword(tenant.getTenant().getUserAccount().getPassword());
-
-			validator.validate(result, binding);
 		}
 
+		validator.validate(result, binding);
 		return result;
 	}
 
@@ -121,6 +120,28 @@ public class TenantService {
 
 	public Tenant findByPrincipal() {
 		return tenantRepository.findByUserAccount(LoginService.getPrincipal().getId());
+	}
+
+	// Other business methods -------------------------------
+
+	public Double avgAcceptedPerTenant() {
+		return tenantRepository.avgAcceptedPerTenant();
+	}
+
+	public Double avgDeniedPerTenant() {
+		return tenantRepository.avgDeniedPerTenant();
+	}
+
+	public Collection<Tenant> tenantsMoreRequestsApproved() {
+		return tenantRepository.tenantsMoreRequestsApproved();
+	}
+
+	public Collection<Tenant> tenantsMoreRequestsDenied() {
+		return tenantRepository.tenantsMoreRequestsDenied();
+	}
+
+	public Collection<Tenant> tenantsMoreRequestsPending() {
+		return tenantRepository.tenantsMoreRequestsPending();
 	}
 
 	public String hashCodePassword(String password) {

@@ -50,6 +50,12 @@ public class AttributeValueService {
 		return result;
 	}
 
+	public void delete(AttributeValue attributeValue) {
+		Assert.notNull(attributeValue);
+
+		attributeValueRepository.delete(attributeValue);
+	}
+
 	public void flush() {
 		attributeValueRepository.flush();
 	}
@@ -78,6 +84,14 @@ public class AttributeValueService {
 		Collection<AttributeValue> res;
 
 		res = attributeValueRepository.findAttributesValuesByProperty(propertyId);
+
+		return res;
+	}
+
+	public Collection<AttributeValue> findAttributeValuesByAttribute(int attributeId) {
+		Collection<AttributeValue> res;
+
+		res = attributeValueRepository.findAttributeValuesByAttribute(attributeId);
 
 		return res;
 	}
