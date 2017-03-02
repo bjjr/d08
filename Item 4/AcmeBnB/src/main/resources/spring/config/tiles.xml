@@ -31,6 +31,7 @@
 		<value>/views/security/tiles.xml</value>
 		<value>/views/tenant/tiles.xml</value>
 		<value>/views/comment/tiles.xml</value>
+		<value>/views/book/tiles.xml</value>
 		<value>/views/welcome/tiles.xml</value>
 		
 		

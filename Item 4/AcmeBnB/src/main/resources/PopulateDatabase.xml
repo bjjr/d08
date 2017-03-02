@@ -271,6 +271,23 @@
 
 	<bean id="finder1" class="domain.Finder">
 		<property name="destinationCity" value="Madrid" />
+		<property name="minPrice" value="5.0" />
+		<property name="maxPrice" value="30.99" />
+		<property name="keyword" value="barato" />
+	</bean>
+	
+	<bean id="finder2" class="domain.Finder">
+		<property name="destinationCity" value="Sevilla" />
+		<property name="minPrice" value="10.0" />
+		<property name="maxPrice" value="32.99" />
+		<property name="keyword" value="bueno" />
+	</bean>
+	
+	<bean id="finder3" class="domain.Finder">
+		<property name="destinationCity" value="Málaga" />
+		<property name="minPrice" value="8.0" />
+		<property name="maxPrice" value="32.59" />
+		<property name="keyword" value="bonito" />
 	</bean>
 
 	<!-- CREDITCARDS -->
@@ -562,6 +579,7 @@
 		<property name="phone" value="+34000000001" />
 		<property name="picture" value="http://photo.com" />
 		<property name="userAccount" ref="userAccountT1" />
+		<property name="finder" ref="finder2" />
 		<property name="socialIdentities">
 			<list></list>
 		</property>
@@ -618,6 +636,7 @@
 		<property name="phone" value="+34000000001" />
 		<property name="picture" value="http://photo.com" />
 		<property name="userAccount" ref="userAccountT3" />
+		<property name="finder" ref="finder3" />
 		<property name="socialIdentities">
 			<list></list>
 		</property>

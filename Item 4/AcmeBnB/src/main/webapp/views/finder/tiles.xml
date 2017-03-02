@@ -26,4 +26,9 @@
 		<put-attribute name="body" value="/views/finder/edit.jsp" />
 	</definition>
 	
+	<definition name="finder/results" extends="master.page">	
+		<put-attribute name="title" value="Results of Finder" />
+		<put-attribute name="body" value="/views/finder/results.jsp" />
+	</definition>
+	
 </tiles-definitions>
