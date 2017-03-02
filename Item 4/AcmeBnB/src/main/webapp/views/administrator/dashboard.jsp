@@ -172,3 +172,6 @@ requestURI="administrator/dashboard.do" id="attributeSMTUP">
 
 <h2><spring:message code="administrator.avgBPP1A" /></h2>
 <jstl:out value="${avgBPP1A}"></jstl:out>
+
+<h2><spring:message code="administrator.avgBPPNA" /></h2>
+<jstl:out value="${avgBPPNA}"></jstl:out>

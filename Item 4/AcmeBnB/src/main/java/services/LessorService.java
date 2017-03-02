@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -152,22 +153,30 @@ public class LessorService {
 		return lessors;
 	}
 
-	public Collection<Lessor> lessorMaxRatio() {
-		Collection<Lessor> lessors;
+	public Lessor lessorMaxRatio() {
+		List<Lessor> lessors;
+		Lessor lessor;
 
-		lessors = lessorRepository.lessorMaxRatio();
+		lessors = (List<Lessor>) lessorRepository.lessorMaxRatio();
 		Assert.notNull(lessors);
 
-		return lessors;
+		lessor = lessors.get(lessors.size() - 1);
+		Assert.notNull(lessor);
+
+		return lessor;
 	}
 
-	public Collection<Lessor> lessorMinRatio() {
-		Collection<Lessor> lessors;
+	public Lessor lessorMinRatio() {
+		List<Lessor> lessors;
+		Lessor lessor;
 
-		lessors = lessorRepository.lessorMinRatio();
+		lessors = (List<Lessor>) lessorRepository.lessorMinRatio();
 		Assert.notNull(lessors);
 
-		return lessors;
+		lessor = lessors.get(lessors.size() - 1);
+		Assert.notNull(lessor);
+
+		return lessor;
 	}
 
 }

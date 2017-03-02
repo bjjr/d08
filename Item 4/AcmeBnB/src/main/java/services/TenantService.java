@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -152,6 +153,32 @@ public class TenantService {
 		result = encoder.encodePassword(password, null);
 
 		return result;
+	}
+
+	public Tenant tenantMaxRatio() {
+		List<Tenant> tenants;
+		Tenant tenant;
+
+		tenants = (List<Tenant>) tenantRepository.tenantMaxRatio();
+		Assert.notNull(tenants);
+
+		tenant = tenants.get(tenants.size() - 1);
+		Assert.notNull(tenant);
+
+		return tenant;
+	}
+
+	public Tenant tenantMinRatio() {
+		List<Tenant> tenants;
+		Tenant tenant;
+
+		tenants = (List<Tenant>) tenantRepository.tenantMinRatio();
+		Assert.notNull(tenants);
+
+		tenant = tenants.get(tenants.size() - 1);
+		Assert.notNull(tenant);
+
+		return tenant;
 	}
 
 }

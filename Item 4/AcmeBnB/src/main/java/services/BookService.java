@@ -83,4 +83,22 @@ public class BookService {
 		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
 	}
 
+	public Double findAvgBooksProperty1Audit() {
+		Double result;
+
+		result = bookRepository.findAvgBooksProperty1Audit();
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Double findAvgBooksPropertyNoAudit() {
+		Double result;
+
+		result = bookRepository.findAvgBooksPropertyNoAudit();
+		Assert.notNull(result);
+
+		return result;
+	}
+
 }
