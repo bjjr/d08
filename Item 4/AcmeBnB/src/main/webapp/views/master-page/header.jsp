@@ -62,6 +62,7 @@
 		</security:authorize>
 		
 		<!--<security:authorize access="isAuthenticated()">
+			<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialIdentities" /></a></li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 
