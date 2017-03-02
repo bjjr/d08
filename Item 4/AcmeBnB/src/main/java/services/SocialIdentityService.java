@@ -100,7 +100,7 @@ public class SocialIdentityService {
 
 		Actor actor;
 
-		actor = socialIdentity.getActor();
+		actor = actorService.findByPrincipal();
 		actor.getSocialIdentities().remove(socialIdentity);
 		actorService.save(actor);
 
@@ -141,9 +141,12 @@ public class SocialIdentityService {
 
 	public SocialIdentity reconstruct(SocialIdentity socialIdentity, BindingResult binding) {
 		SocialIdentity result;
+		Actor actor;
 
 		if (socialIdentity.getId() == 0) {
+			actor = actorService.findByPrincipal();
 			result = socialIdentity;
+			result.setActor(actor);
 		} else {
 			result = socialIdentityRepository.findOne(socialIdentity.getId());
 			result.setNick(socialIdentity.getNick());
