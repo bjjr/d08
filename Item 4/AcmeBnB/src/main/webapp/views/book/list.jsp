@@ -12,12 +12,42 @@
 	
 <!-- Listing grid -->
 <display:table pagesize="5" class="displaytag"
-	name="books" requestURI="book/tenant/list.do" id="row">
+	name="books" requestURI="${requestUri}" id="row">
 	<!-- Attributes -->
 	
+	<acme:column code="book.property.name" property="property.name"/>
 	<acme:column code="book.status" property="status.name"/>
 	<acme:column code="book.checkInDate" property="checkInDate"/>
 	<acme:column code="book.checkOutDate" property="checkOutDate"/>
 	<acme:column code="book.smoker" property="smoker"/>
+	
+	<security:authorize access="hasRole('LESSOR')">
+		<acme:column code="book.tenant.name" property="tenant.name"/>
+	
+		<display:column>
+			<spring:url var="url_accept" value="/book/lessor/accept.do">
+				<spring:param name="bookId" value="${row.id}"/>
+			</spring:url>
+			
+			<a href="${url_accept}"><spring:message code="book.accept"/></a>
+		</display:column>
+		<display:column>
+			<spring:url var="url_deny" value="/book/lesso/deny.do">
+				<spring:param name="bookId" value="${row.id}"/>
+			</spring:url>
+			
+			<a href="${url_deny}"><spring:message code="book.deny"/></a>
+		</display:column>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('TENANT')">
+		<display:column>
+			<spring:url var="url_edit" value="/book/tenant/edit.do">
+				<spring:param name="bookId" value="${row.id}"/>
+			</spring:url>
+			
+			<a href="${url_edit}"><spring:message code="book.edit"/></a>
+		</display:column>
+	</security:authorize>
 	
 </display:table>

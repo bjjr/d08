@@ -11,10 +11,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.BookRepository;
 import utilities.DateUtil;
 import domain.Book;
+import domain.Lessor;
 import domain.Property;
 
 @Transactional
@@ -29,7 +32,12 @@ public class BookService {
 
 	@Autowired
 	private StatusService	statusService;
+	
+	@Autowired
+	private LessorService lessorService;
 
+	@Autowired
+	private Validator validator;
 
 	public Book create(Property property) {
 		Book book = new Book();
@@ -57,9 +65,11 @@ public class BookService {
 
 	public Book save(Book book) {
 		Assert.notNull(book, "BookService.save: The 'book' can not be null");
-
+		
 		Assert.isTrue(DateUtil.isOneDayAfter(book.getCheckInDate(), book.getCheckOutDate()), "BookService.save: The checkoutDate has to be one day after than checkinDate");
 
+		System.out.println("Llega después comprobación un día");
+		
 		Date currentMoment = new Date(System.currentTimeMillis());
 		Assert.isTrue(book.getCheckInDate().after(currentMoment) && book.getCheckOutDate().after(currentMoment), "BookService.save: Checkin and checkout need to be planned in the future");
 
@@ -68,7 +78,8 @@ public class BookService {
 		Book result;
 
 		result = bookRepository.save(book);
-
+		System.out.println("Llega guardar");
+		
 		return result;
 	}
 
@@ -81,8 +92,20 @@ public class BookService {
 
 	// Other business methods -------------------------------
 
-	public Collection<Book> findBooksByPrincipal() {
-		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
+	public Collection<Book> findTenantBooks() {	
+		return bookRepository.findTenantBooks(tenantService.findByPrincipal().getId());
+	}
+	
+	public Collection<Book> findLessorBooks() {	
+		Lessor lessor = lessorService.findByPrincipal();
+		
+		Collection<Book> books = new ArrayList<>();
+		
+		for(Property p: lessor.getProperties()){
+			books.addAll(p.getBooks());
+		}
+		
+		return books;
 	}
 	
 	public Boolean checkJustABookPendingForTenant(Book book){
@@ -102,6 +125,24 @@ public class BookService {
 		}
 		
 		return true;
+	}
+	
+	public Book reconstruct(Book book, BindingResult bindingResult){
+		Book result;
+		
+		if(book.getId() == 0){
+			result = book;
+		}else{
+			result = bookRepository.findOne(book.getId());
+			
+			result.setSmoker(book.getSmoker());
+			result.setCheckInDate(book.getCheckInDate());
+			result.setCheckOutDate(book.getCheckOutDate());
+			
+			validator.validate(result, bindingResult);
+		}
+		
+		return result;
 	}
 
 }
