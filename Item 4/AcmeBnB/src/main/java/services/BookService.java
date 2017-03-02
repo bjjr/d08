@@ -1,8 +1,10 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -61,7 +63,7 @@ public class BookService {
 		Date currentMoment = new Date(System.currentTimeMillis());
 		Assert.isTrue(book.getCheckInDate().after(currentMoment) && book.getCheckOutDate().after(currentMoment), "BookService.save: Checkin and checkout need to be planned in the future");
 
-		//Add constraint just a request pending for tenant over a single property
+		Assert.isTrue(checkJustABookPendingForTenant(book), "BookService.save: Just a single book PENDING over a same property");
 
 		Book result;
 
@@ -81,6 +83,25 @@ public class BookService {
 
 	public Collection<Book> findBooksByPrincipal() {
 		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
+	}
+	
+	public Boolean checkJustABookPendingForTenant(Book book){
+		Collection<Book> tenantBooks = tenantService.findOne(book.getTenant().getId()).getBooks();
+		
+		List<Book> tenantBooksOverTheBookProperty = new ArrayList<>();
+		for(Book tenantBook: tenantBooks){
+			if(tenantBook.getProperty().equals(book.getProperty())){
+				tenantBooksOverTheBookProperty.add(tenantBook);
+			}
+		}
+		
+		for (Book tenantBookOverTheBookProperty: tenantBooksOverTheBookProperty) {
+			if(tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING")){
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 }
