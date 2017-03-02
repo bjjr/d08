@@ -1,6 +1,8 @@
 
 package controllers;
 
+import javax.validation.Valid;
+
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CreditCardService;
 import domain.CreditCard;
-import forms.CreditCardForm;
 
 @Controller
 @RequestMapping("/creditCard")
@@ -97,44 +98,43 @@ public class CreditCardController extends AbstractController {
 	// Saving -----------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(CreditCardForm creditCardForm, BindingResult binding) {
+	public ModelAndView save(@Valid CreditCard creditCard, BindingResult binding) {
 		ModelAndView res;
-		CreditCard creditCard = null;
 
-		creditCard = creditCardService.reconstruct(creditCardForm, binding);
+		try {
+			Assert.isTrue(creditCardService.checkDatesDifference(creditCard));
+		} catch (Throwable th) {
+			binding.rejectValue("expiryDate", "creditCard.error.dates");
+		}
 
 		if (binding.hasErrors()) {
 			res = createEditModelAndView(creditCard);
 		} else {
 			try {
-				Assert.isTrue(creditCardService.checkDatesDifference(creditCardForm));
 				creditCardService.save(creditCard);
 				res = new ModelAndView("redirect:display.do");
 			} catch (Throwable th) {
-				res = createEditModelAndView(creditCardForm, "misc.commit.error");
+				res = createEditModelAndView(creditCard, "misc.commit.error");
 			}
 		}
 
 		return res;
 	}
-
 	// Ancillary methods -------------------------------------
 	protected ModelAndView createEditModelAndView(CreditCard creditCard) {
 		ModelAndView res;
-		CreditCardForm creditCardForm;
 
-		creditCardForm = new CreditCardForm(creditCard);
-		res = createEditModelAndView(creditCardForm, null);
+		res = createEditModelAndView(creditCard, null);
 
 		return res;
 	}
 
-	protected ModelAndView createEditModelAndView(CreditCardForm creditCardForm, String message) {
+	protected ModelAndView createEditModelAndView(CreditCard creditCard, String message) {
 		ModelAndView res;
 
 		res = new ModelAndView("creditcard/edit");
 
-		res.addObject("creditCardForm", creditCardForm);
+		res.addObject("creditCard", creditCard);
 		res.addObject("message", message);
 
 		return res;

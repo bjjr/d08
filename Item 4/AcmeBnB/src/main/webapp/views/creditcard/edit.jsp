@@ -7,7 +7,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="creditCard/edit.do" modelAttribute="creditCardForm" >
+<form:form action="creditCard/edit.do" modelAttribute="creditCard" >
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
@@ -15,7 +15,11 @@
 	<acme:textbox code="creditcard.holder" path="holderName" />
 	<acme:textbox code="creditcard.brand" path="brandName" />
 	<acme:textbox code="creditcard.number" path="number"/>
-	<acme:textbox code="creditcard.expiryDate" path="date" />
+	<acme:textbox code="creditcard.expiryDate" path="expiryDate" />
+	<p>
+		<spring:message code="creditcard.expiryDate.warning" var="warning"></spring:message>
+		<jstl:out value="${warning}" />
+	</p>
 	<acme:textbox code="creditcard.cvv" path="cvv" />
 	
 	<div>
