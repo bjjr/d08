@@ -20,8 +20,11 @@
 	<util:list id="tiles">
 	
 		<value>/views/administrator/tiles.xml</value>
+		<value>/views/attachment/tiles.xml</value>
 		<value>/views/attribute/tiles.xml</value>
 		<value>/views/attributevalue/tiles.xml</value>
+		<value>/views/audit/tiles.xml</value>
+		<value>/views/auditor/tiles.xml</value>
 		<value>/views/creditcard/tiles.xml</value>
 		<value>/views/finder/tiles.xml</value>
 		<value>/views/legal/tiles.xml</value>
@@ -29,13 +32,10 @@
 		<value>/views/master-page/tiles.xml</value>		
 		<value>/views/misc/tiles.xml</value>		
 		<value>/views/security/tiles.xml</value>
+		<value>/views/socialIdentity/tiles.xml</value>
 		<value>/views/tenant/tiles.xml</value>
 		<value>/views/welcome/tiles.xml</value>
 		
-		
-		<value>/views/attachment/tiles.xml</value>
-		<value>/views/audit/tiles.xml</value>
-		<value>/views/auditor/tiles.xml</value>
 	</util:list>
 
 </beans>
