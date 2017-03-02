@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.LessorRepository;
 import security.LoginService;
@@ -31,6 +33,9 @@ public class LessorService {
 	@Autowired
 	private ConsumerActorService	consumerActorService;
 
+	@Autowired
+	private Validator				validator;
+
 
 	// Constructors -----------------------------------------
 
@@ -40,10 +45,10 @@ public class LessorService {
 
 	// Simple CRUD methods ----------------------------------
 
-	public Lessor findOne(int lessorID) {
+	public Lessor findOne(int lessorId) {
 		Lessor result;
 
-		result = lessorRepository.findOne(lessorID);
+		result = lessorRepository.findOne(lessorId);
 		Assert.notNull(result);
 
 		return result;
@@ -104,6 +109,27 @@ public class LessorService {
 	}
 
 	// Other business methods -------------------------------
+
+	public Lessor reconstruct(Lessor lessor, BindingResult bindingResult) {
+		Lessor result;
+
+		if (lessor.getId() == 0) {
+			result = lessor;
+		} else {
+			result = lessorRepository.findOne(lessor.getId());
+
+			result.setName(lessor.getName());
+			result.setSurname(lessor.getSurname());
+			result.setEmail(lessor.getEmail());
+			result.setPhone(lessor.getPhone());
+			result.setPicture(lessor.getPicture());
+
+			validator.validate(result, bindingResult);
+		}
+
+		return result;
+
+	}
 
 	public Double avgAcceptedPerLessor() {
 		Double avg;

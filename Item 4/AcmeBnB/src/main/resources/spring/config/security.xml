@@ -43,8 +43,9 @@
 
 		<security:intercept-url pattern="/legal/**" access="permitAll" />
 		
-		<security:intercept-url pattern="/lessor/list.do" access="permitAll" />
+		<security:intercept-url pattern="/lessor/*" access="permitAll" />
 	
+		<security:intercept-url pattern="/property/ownList.do" access="hasRole('LESSOR')" />
 		<security:intercept-url pattern="/property/list.do" access="permitAll" />
 		<security:intercept-url pattern="/property/display.do" access="permitAll" />
 		<security:intercept-url pattern="/property/edit.do" access="permitAll" /> <!-- TODO -->
