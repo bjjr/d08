@@ -1,7 +1,10 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Attribute;
@@ -9,9 +12,6 @@ import domain.Attribute;
 @Repository
 public interface AttributeRepository extends JpaRepository<Attribute, Integer> {
 
-	/*
-	 * @Query("select a from Attribute a join a.attributeValues av join av.properties p group by a order by count(a) desc")
-	 * Collection<Attribute> getAttributesOrderedByUse();
-	 */
-
+	@Query("select a.attribute from AttributeValue a group by a.attribute")
+	Collection<Attribute> findListAttributesSortedByTimesUsed();
 }

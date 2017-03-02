@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.AttributeService;
 import services.AuditService;
 import services.BookService;
 import services.FinderService;
 import services.InvoiceService;
 import services.LessorService;
+import services.SocialIdentityService;
 import services.TenantService;
 import controllers.AbstractController;
 import domain.Attribute;
@@ -28,22 +30,28 @@ public class DashboardAdministratorController extends AbstractController {
 	// Supporting services -----------------------------------------------------------
 
 	@Autowired
-	private LessorService	lessorService;
+	private LessorService			lessorService;
 
 	@Autowired
-	private TenantService	tenantService;
+	private TenantService			tenantService;
 
 	@Autowired
-	private FinderService	finderService;
+	private FinderService			finderService;
 
 	@Autowired
-	private AuditService	auditService;
+	private AuditService			auditService;
 
 	@Autowired
-	private InvoiceService	invoiceService;
+	private InvoiceService			invoiceService;
 
 	@Autowired
-	private BookService		bookService;
+	private BookService				bookService;
+
+	@Autowired
+	private SocialIdentityService	socialIdentityService;
+
+	@Autowired
+	private AttributeService		attributeService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -129,7 +137,10 @@ public class DashboardAdministratorController extends AbstractController {
 		maxAPP = numbers(auditService.findMaxAuditsOfProperties());
 		minAPP = numbers(auditService.findMinAuditsOfProperties());
 		avgAPP = numbers(auditService.findAvgAuditsOfProperties());
-		//TODO esperar a que javitoon y javi parra hagan queries
+		attributeSMTUP = attributes(attributeService.findListAttributesSortedByTimesUsed());
+		maxSIPA = numbers(socialIdentityService.findMaxSocialIdentities());
+		minSIPA = numbers(socialIdentityService.findMinSocialIdentities());
+		avgSIPA = numbers(socialIdentityService.findAvgSocialIdentities());
 		maxIPT = numbers(invoiceService.findMaxInvoicesOfTenants());
 		minIPT = numbers(invoiceService.findMinInvoicesOfTenants());
 		avgIPT = numbers(invoiceService.findAvgInvoicesOfTenants());
@@ -153,14 +164,18 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("tenantMaxABB", tenantMaxABB);
 		result.addObject("tenantMinABB", tenantMinABB);
 		result.addObject("maxRPF", maxRPF);
-		result.addObject("maxRPF", minRPF);
-		result.addObject("maxRPF", avgRPF);
+		result.addObject("minRPF", minRPF);
+		result.addObject("avgRPF", avgRPF);
 		result.addObject("maxAPP", maxAPP);
-		result.addObject("maxAPP", minAPP);
-		result.addObject("maxAPP", avgAPP);
+		result.addObject("minAPP", minAPP);
+		result.addObject("avgAPP", avgAPP);
+		result.addObject("attributeSMTUP", attributeSMTUP);
+		result.addObject("maxSIPA", maxSIPA);
+		result.addObject("minSIPA", minSIPA);
+		result.addObject("avgSIPA", avgSIPA);
 		result.addObject("maxIPT", maxIPT);
-		result.addObject("maxIPT", minIPT);
-		result.addObject("maxIPT", avgIPT);
+		result.addObject("minIPT", minIPT);
+		result.addObject("avgIPT", avgIPT);
 		result.addObject("totalMoney", totalMoney);
 		result.addObject("avgBPP1A", avgBPP1A);
 		result.addObject("avgBPPNA", avgBPPNA);
