@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -126,72 +125,49 @@ public class LessorService {
 		return avg;
 	}
 
-	public String lessorMaxNumApproved() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumApproved() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumApproved();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public String lessorMaxNumPending() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumPending() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumPending();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public String lessorMaxNumDenied() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumDenied() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumDenied();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public Lessor lessorMaxRatio() {
-		Lessor lessor;
+	public Collection<Lessor> lessorMaxRatio() {
+		Collection<Lessor> lessors;
 
-		lessor = lessorRepository.lessorMaxRatio();
+		lessors = lessorRepository.lessorMaxRatio();
+		Assert.notNull(lessors);
 
-		return lessor;
+		return lessors;
+	}
+
+	public Collection<Lessor> lessorMinRatio() {
+		Collection<Lessor> lessors;
+
+		lessors = lessorRepository.lessorMinRatio();
+		Assert.notNull(lessors);
+
+		return lessors;
 	}
 
 }
