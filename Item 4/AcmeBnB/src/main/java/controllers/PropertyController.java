@@ -3,8 +3,6 @@ package controllers;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -52,7 +50,7 @@ public class PropertyController {
 		ModelAndView result;
 		Property property;
 
-		property = propertyService.findOne(propertyId);
+		property = propertyService.findOneToEdit(propertyId);
 		Assert.notNull(property);
 		result = createEditModelAndView(property);
 
@@ -60,7 +58,7 @@ public class PropertyController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid Property property, BindingResult binding) {
+	public ModelAndView save(Property property, BindingResult binding) {
 		ModelAndView result;
 		Property save;
 
@@ -70,7 +68,7 @@ public class PropertyController {
 		} else {
 			try {
 				propertyService.save(save);
-				result = new ModelAndView("redirect:/property/list.do");
+				result = new ModelAndView("redirect:/property/ownList.do");
 				result.addObject("message", "property.commit.ok");
 			} catch (Throwable oops) {
 				result = createEditModelAndView(property, "property.commit.error");
@@ -87,22 +85,26 @@ public class PropertyController {
 
 		try {
 			propertyService.delete(property);
-			res = new ModelAndView("redirect:list.do");
+			res = new ModelAndView("redirect:ownList.do");
 		} catch (Throwable th) {
-			res = createEditModelAndView(property, "property.commit.error");
+			if (th.getMessage().equals("You have pending books")) {
+				res = createEditModelAndView(property, "property.commit.error.books");
+			} else {
+				res = createEditModelAndView(property, "property.commit.error");
+			}
 		}
 
 		return res;
 	}
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int propertyID) {
+	public ModelAndView display(@RequestParam int propertyId) {
 		ModelAndView result;
 		Property property;
 		Collection<AttributeValue> attributeValues;
 
-		property = propertyService.findOne(propertyID);
-		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyID);
+		property = propertyService.findOne(propertyId);
+		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyId);
 		result = new ModelAndView("property/display");
 		result.addObject("requestURI", "property/display.do");
 		result.addObject("property", property);
@@ -118,7 +120,21 @@ public class PropertyController {
 
 		properties = propertyService.findAll();
 		result = new ModelAndView("property/list");
-		result.addObject("requestURI", "property/list.do");
+		result.addObject("isLessor", false);
+		result.addObject("properties", properties);
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/ownList", method = RequestMethod.GET)
+	public ModelAndView listOwn() {
+		ModelAndView result;
+		Collection<Property> properties;
+
+		properties = propertyService.findAllToEdit();
+		result = new ModelAndView("property/list");
+		result.addObject("isLessor", true);
 		result.addObject("properties", properties);
 
 		return result;
