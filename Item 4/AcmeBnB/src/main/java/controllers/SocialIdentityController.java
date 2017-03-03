@@ -88,6 +88,10 @@ public class SocialIdentityController extends AbstractController {
 		socialIdentity = socialIdentityService.reconstruct(socialIdentity, binding);
 		if (binding.hasErrors()) {
 			result = createEditModelAndView(socialIdentity);
+			//			binding.rejectValue("nick", "org.hibernate.validator.constraints.NotBlank.message");
+			//			binding.rejectValue("nameSN", "org.hibernate.validator.constraints.NotBlank.message");
+			//			binding.rejectValue("urlSN", "org.hibernate.validator.constraints.NotBlank.message");
+			//			binding.rejectValue("urlSN", "org.hibernate.validator.constraints.URL.message ");
 		} else {
 			try {
 				socialIdentityService.save(socialIdentity);

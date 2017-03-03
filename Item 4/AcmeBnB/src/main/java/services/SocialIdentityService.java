@@ -15,6 +15,7 @@ import domain.Actor;
 import domain.SocialIdentity;
 
 @Service
+@Transactional
 public class SocialIdentityService {
 
 	// Managed repository -----------------------------------
@@ -41,7 +42,6 @@ public class SocialIdentityService {
 
 	// Simple CRUD methods ----------------------------------
 
-	@Transactional
 	public SocialIdentity create() {
 		SocialIdentity result;
 		Actor actor;
@@ -53,7 +53,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional
 	public SocialIdentity findOne(int socialIdentityId) {
 		SocialIdentity result;
 
@@ -63,7 +62,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional
 	public Collection<SocialIdentity> findAll() {
 		Collection<SocialIdentity> result;
 
@@ -73,7 +71,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional
 	public SocialIdentity save(SocialIdentity socialIdentity) {
 		Assert.notNull(socialIdentity);
 
@@ -91,7 +88,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional
 	public void delete(SocialIdentity socialIdentity) {
 		Assert.notNull(socialIdentity);
 		Assert.isTrue(socialIdentity.getId() != 0);
@@ -109,7 +105,6 @@ public class SocialIdentityService {
 
 	// Other business methods -------------------------------
 
-	@Transactional
 	public Double findMinSocialIdentities() {
 		Double result;
 
@@ -119,7 +114,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional
 	public Double findMaxSocialIdentities() {
 		Double result;
 
@@ -129,7 +123,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional
 	public Double findAvgSocialIdentities() {
 		Double result;
 
@@ -139,6 +132,7 @@ public class SocialIdentityService {
 		return result;
 	}
 
+	@Transactional(readOnly = true)
 	public SocialIdentity reconstruct(SocialIdentity socialIdentity, BindingResult binding) {
 		SocialIdentity result;
 		Actor actor;
