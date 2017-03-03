@@ -67,6 +67,9 @@
 		
 		<bean class="converters.PropertyToStringConverter" />
 		<bean class="converters.StringToPropertyConverter" />
+		
+		<bean class="converters.SocialIdentityToStringConverter" />
+		<bean class="converters.StringToSocialIdentityConverter" />
 
 		<bean class="converters.TenantToStringConverter" />
 		<bean class="converters.StringToTenantConverter" />

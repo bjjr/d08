@@ -53,8 +53,9 @@
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 		</security:authorize>
 		
-		<!--<security:authorize access="isAuthenticated()">
-			<li>
+		<security:authorize access="isAuthenticated()">
+			<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialIdentities" /></a></li>
+		<%--	<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 
 			        (<security:authentication property="principal.username" />)
@@ -66,8 +67,8 @@
 					<li><a href="profile/action-3.do"><spring:message code="master.page.profile.action.3" /></a></li>					
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				</ul>
-			</li>
-		</security:authorize>-->
+		</li>--%>
+		</security:authorize>
 		
 		<security:authorize access="hasRole('TENANT')">
 			<li>
