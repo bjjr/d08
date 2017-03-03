@@ -18,6 +18,7 @@ import utilities.DateUtil;
 import domain.Book;
 import domain.Lessor;
 import domain.Property;
+import domain.Status;
 import domain.Tenant;
 
 @Transactional
@@ -108,7 +109,7 @@ public class BookService {
 	}
 	
 	public Boolean checkJustABookPendingForTenant(Book book){
-		Tenant myself = tenantService.findByPrincipal();
+		Tenant myself = tenantService.findOne(book.getTenant().getId());
 		
 		Collection<Book> tenantBooks = myself.getBooks();
 		
@@ -127,6 +128,28 @@ public class BookService {
 		}
 		
 		return true;
+	}
+	
+	public void acceptBook(int bookId){
+		Book bookToAccept = this.findOne(bookId);
+		
+		Status status = bookToAccept.getStatus();
+		status.setName("ACCEPTED");
+		
+		bookToAccept.setStatus(status);
+		
+		this.save(bookToAccept);
+	}
+	
+	public void denyBook(int bookId){
+		Book bookToAccept = this.findOne(bookId);
+		
+		Status status = bookToAccept.getStatus();
+		status.setName("DENIED");
+		
+		bookToAccept.setStatus(status);
+		
+		this.save(bookToAccept);
 	}
 	
 	@Transactional(readOnly=true)

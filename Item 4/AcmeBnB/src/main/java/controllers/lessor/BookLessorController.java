@@ -47,6 +47,24 @@ public class BookLessorController extends AbstractController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/accept", method = RequestMethod.GET)
+	public ModelAndView accept(@RequestParam int bookId){
+		ModelAndView view = new ModelAndView("redirect:list.do");
+		
+		bookService.acceptBook(bookId);
+		
+		return view;
+	}
+	
+	@RequestMapping(value = "/deny", method = RequestMethod.GET)
+	public ModelAndView deny(@RequestParam int bookId){
+		ModelAndView view = new ModelAndView("redirect:list.do");
+		
+		bookService.denyBook(bookId);
+		
+		return view;
+	}
+	
 	
 
 }

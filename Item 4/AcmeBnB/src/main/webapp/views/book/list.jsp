@@ -40,7 +40,7 @@
 			<a href="${url_accept}"><spring:message code="book.accept"/></a>
 		</display:column>
 		<display:column>
-			<spring:url var="url_deny" value="/book/lesso/deny.do">
+			<spring:url var="url_deny" value="/book/lessor/deny.do">
 				<spring:param name="bookId" value="${row.id}"/>
 			</spring:url>
 			
