@@ -72,6 +72,8 @@
 		<security:intercept-url pattern="/creditCard/**" access="hasAnyRole('LESSOR', 'TENANT')" />
 		
 		<security:intercept-url pattern="/finder/tenant/**" access="hasRole('TENANT')" />
+		
+		<security:intercept-url pattern="/book/tenant/**" access="hasRole('TENANT')" />
 
 		<security:intercept-url pattern="/tenant/create.do" access="permitAll" />
 		
