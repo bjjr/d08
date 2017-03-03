@@ -31,13 +31,13 @@ public class PropertyController {
 	}
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int propertyID) {
+	public ModelAndView display(@RequestParam int propertyId) {
 		ModelAndView result;
 		Property property;
 		Collection<AttributeValue> attributeValues;
 
-		property = propertyService.findOne(propertyID);
-		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyID);
+		property = propertyService.findOne(propertyId);
+		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyId);
 		result = new ModelAndView("property/display");
 		result.addObject("requestURI", "property/display.do");
 		result.addObject("property", property);

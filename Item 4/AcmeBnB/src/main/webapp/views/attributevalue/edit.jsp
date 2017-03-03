@@ -11,8 +11,12 @@
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-	<form:hidden path="property"/>
 	
-	<acme:select items="${attributes}" itemLabel="title" code="attributeValue.attribute" path="attribute"/>
+	<acme:select items="${attributes}" itemLabel="name" code="attributeValue.attribute" path="attribute"/>
 	<acme:textbox code="attributeValue.value" path="value"/>
+	
+	<div>
+		<acme:submit name="save" code="misc.save"/>
+		<acme:delete confirmationCode="attributeValue.delete.conf" buttonCode="misc.delete" id="${attributeValue.id}"/>
+	</div>
 </form:form>
