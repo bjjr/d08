@@ -23,7 +23,9 @@ public class StatusService {
 		Status status = new Status();
 		status.setName("PENDING");
 		
-		return status;
+		Status result = this.save(status);
+		
+		return result;
 	}
 	
 	public Status save(Status status){

@@ -6,10 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
@@ -19,6 +18,7 @@ import utilities.DateUtil;
 import domain.Book;
 import domain.Lessor;
 import domain.Property;
+import domain.Tenant;
 
 @Transactional
 @Service
@@ -67,8 +67,6 @@ public class BookService {
 		Assert.notNull(book, "BookService.save: The 'book' can not be null");
 		
 		Assert.isTrue(DateUtil.isOneDayAfter(book.getCheckInDate(), book.getCheckOutDate()), "BookService.save: The checkoutDate has to be one day after than checkinDate");
-
-		System.out.println("Llega después comprobación un día");
 		
 		Date currentMoment = new Date(System.currentTimeMillis());
 		Assert.isTrue(book.getCheckInDate().after(currentMoment) && book.getCheckOutDate().after(currentMoment), "BookService.save: Checkin and checkout need to be planned in the future");
@@ -77,8 +75,9 @@ public class BookService {
 
 		Book result;
 
+		System.out.println(book);
+		
 		result = bookRepository.save(book);
-		System.out.println("Llega guardar");
 		
 		return result;
 	}
@@ -109,7 +108,10 @@ public class BookService {
 	}
 	
 	public Boolean checkJustABookPendingForTenant(Book book){
-		Collection<Book> tenantBooks = tenantService.findOne(book.getTenant().getId()).getBooks();
+		Tenant myself = tenantService.findByPrincipal();
+		
+		Collection<Book> tenantBooks = myself.getBooks();
+		
 		
 		List<Book> tenantBooksOverTheBookProperty = new ArrayList<>();
 		for(Book tenantBook: tenantBooks){
@@ -119,7 +121,7 @@ public class BookService {
 		}
 		
 		for (Book tenantBookOverTheBookProperty: tenantBooksOverTheBookProperty) {
-			if(tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING")){
+			if(tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING") && tenantBookOverTheBookProperty.getId() != book.getId()){
 				return false;
 			}
 		}
@@ -127,6 +129,7 @@ public class BookService {
 		return true;
 	}
 	
+	@Transactional(readOnly=true)
 	public Book reconstruct(Book book, BindingResult bindingResult){
 		Book result;
 		

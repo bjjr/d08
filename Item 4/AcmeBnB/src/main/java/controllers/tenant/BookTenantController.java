@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.BookService;
+import services.PropertyService;
 import services.TenantService;
 import controllers.AbstractController;
 import domain.Book;
+import domain.Property;
 import domain.Tenant;
 
 @Controller
@@ -28,6 +30,24 @@ public class BookTenantController extends AbstractController {
 
 	@Autowired
 	private BookService		bookService;
+	
+	@Autowired
+	private PropertyService propertyService;
+	
+	
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam int propertyId) {
+		ModelAndView result;
+		Book book;
+
+		
+		Property property = propertyService.findOne(propertyId);
+		book = bookService.create(property);
+		
+		result = createEditModelAndView(book);
+		
+		return result;
+	}
 
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -66,17 +86,14 @@ public class BookTenantController extends AbstractController {
 
 		Book book_reconstructed = bookService.reconstruct(book, bindingResult);
 		
-		System.out.println("Hay errores? "+bindingResult.hasErrors());
 		if (bindingResult.hasErrors()){
 			result = createEditModelAndView(book_reconstructed);
 		} else {
 			try {
 				bookService.save(book_reconstructed);
-				System.out.println("Llega redirreción");
 				result = new ModelAndView("redirect:list.do");
 			} catch (IllegalArgumentException oops) {
-				System.out.println("Llega error");
-				result = createEditModelAndView(book_reconstructed, "book.commit.error");				
+				result = createEditModelAndView(book_reconstructed, "misc.commit.error");				
 			}
 		}
 
@@ -85,8 +102,16 @@ public class BookTenantController extends AbstractController {
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Book book, BindingResult bindingResult){
-		//Todo
-		return null;
+		ModelAndView res;
+
+		try {
+			bookService.delete(book);
+			res = new ModelAndView("redirect:list.do");
+		} catch (Throwable th) {
+			res = createEditModelAndView(book, "misc.commit.error");
+		}
+
+		return res;
 	}
 	
 	
