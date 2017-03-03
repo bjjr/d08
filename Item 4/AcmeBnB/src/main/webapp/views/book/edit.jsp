@@ -18,7 +18,16 @@
 	
 	<acme:datebox code="book.checkInDate" path="checkInDate" />
 	<acme:datebox code="book.checkOutDate" path="checkOutDate" />
-	<acme:textbox code="book.smoker" path="smoker" />
+		
+	<jstl:choose>
+		<jstl:when test="${book.smoker == true}">
+			<spring:message code="book.smoker"/><input name="smoker" type="checkbox" value="true" checked="checked"/>
+		</jstl:when>
+		<jstl:otherwise>
+			<spring:message code="book.smoker"/><input name="smoker" type="checkbox" value="true"/>
+		</jstl:otherwise>
+	</jstl:choose>
+	
 	
 	<br />
 	

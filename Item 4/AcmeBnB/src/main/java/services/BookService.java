@@ -138,7 +138,11 @@ public class BookService {
 		}else{
 			result = bookRepository.findOne(book.getId());
 			
-			result.setSmoker(book.getSmoker());
+			if(book.getSmoker()== null){
+				result.setSmoker(false); //Si el checkbox no está marcado
+			}else{
+				result.setSmoker(book.getSmoker());
+			}
 			result.setCheckInDate(book.getCheckInDate());
 			result.setCheckOutDate(book.getCheckOutDate());
 			
