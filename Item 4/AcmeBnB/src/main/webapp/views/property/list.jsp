@@ -33,4 +33,14 @@
 			</display:column>
 	</jstl:if>
 	
+	<security:authorize access="hasRole('TENANT')">
+		<display:column>
+			<spring:url var="url_request" value="/book/tenant/create.do">
+				<spring:param name="propertyId" value="${row.id}"/>
+			</spring:url>
+			
+			<a href="${url_request}"><spring:message code="property.make.request"/></a>
+		</display:column>
+	</security:authorize>
+	
 </display:table>
