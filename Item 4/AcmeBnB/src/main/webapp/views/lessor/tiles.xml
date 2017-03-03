@@ -26,7 +26,7 @@
 		<put-attribute name="body" value="/views/lessor/display.jsp" />
 	</definition>
 	
-	<definition name="lessor/edit" extends="master.page">	
+	<definition name="lessor/create" extends="master.page">	
 		<put-attribute name="title" value="Edit lessor" />
 		<put-attribute name="body" value="/views/lessor/edit.jsp" />
 	</definition>

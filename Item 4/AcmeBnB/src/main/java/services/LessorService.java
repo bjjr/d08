@@ -18,6 +18,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Lessor;
 import domain.Property;
+import forms.LessorForm;
 
 @Service
 @Transactional
@@ -110,25 +111,28 @@ public class LessorService {
 
 	// Other business methods -------------------------------
 
-	public Lessor reconstruct(Lessor lessor, BindingResult bindingResult) {
+	public Lessor reconstruct(LessorForm lessor, BindingResult binding) {
 		Lessor result;
 
-		if (lessor.getId() == 0) {
-			result = lessor;
+		if (lessor.getLessor().getId() == 0) {
+			result = lessor.getLessor();
 		} else {
-			result = lessorRepository.findOne(lessor.getId());
+			result = lessorRepository.findOne(lessor.getLessor().getId());
 
-			result.setName(lessor.getName());
-			result.setSurname(lessor.getSurname());
-			result.setEmail(lessor.getEmail());
-			result.setPhone(lessor.getPhone());
-			result.setPicture(lessor.getPicture());
+			result.setName(lessor.getLessor().getName());
+			result.setSurname(lessor.getLessor().getSurname());
+			result.setEmail(lessor.getLessor().getEmail());
+			result.setPhone(lessor.getLessor().getPhone());
+			result.setPicture(lessor.getLessor().getPicture());
 
-			validator.validate(result, bindingResult);
+			result.getUserAccount().setUsername(lessor.getLessor().getUserAccount().getUsername());
+			result.getUserAccount().setPassword(lessor.getLessor().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+
 		}
 
 		return result;
-
 	}
 
 	public Double avgAcceptedPerLessor() {

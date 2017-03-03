@@ -7,26 +7,33 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="lessor/edit.do" modelAttribute="lessor" >
+<form:form action="lessor/create.do" modelAttribute="lessorForm" >
 	
-	<form:hidden path="id"/>
-	<form:hidden path="version"/>
-	<form:hidden path="creditCard"/>
-	<form:hidden path="properties"/>
-	<form:hidden path="socialIdentities"/>
-	<form:hidden path="userAccount"/>
-	<form:hidden path="comments"/>
+	<form:hidden path="lessor.id"/>
+	<form:hidden path="lessor.version"/>
+	<form:hidden path="lessor.creditCard"/>
+	<form:hidden path="lessor.properties"/>
+	<form:hidden path="lessor.socialIdentities"/>
+	<form:hidden path="lessor.userAccount"/>
+	<form:hidden path="lessor.comments"/>
 	
-	<acme:textbox code="lessor.name" path="name" />
-	<acme:textbox code="lessor.surname" path="surname" />
-	<acme:textbox code="lessor.email" path="email"/>
-	<acme:textbox code="lessor.phone" path="phone"/>
-	<acme:textbox code="lessor.picture" path="picture"/>
+	<acme:textbox code="lessor.name" path="lessor.name" />
+	<acme:textbox code="lessor.surname" path="lessor.surname" />
+	<acme:textbox code="lessor.email" path="lessor.email"/>
+	<acme:textbox code="lessor.phone" path="lessor.phone"/>
+	<acme:textbox code="lessor.picture" path="lessor.picture"/>
 	
+	<br />
+	<acme:textbox code="lessor.userAccount.username" path="lessor.userAccount.username" />
+	<acme:password code="lessor.userAccount.password" path="lessor.userAccount.password" />
+	<acme:password code="lessor.userAccount.confirmPassword" path="confirmPassword" />
 	
+	<br />
+	<form:checkbox path="eula" /><spring:message code="lessor.eula" />
+	
+	<br /><br />
 	<acme:submit name="save" code="lessor.save"/>
-	<acme:delete confirmationCode="lessor.confirm.delete" buttonCode="lessor.delete" id="${lessor.id}"/>
-	<acme:cancel url="lessor/list.do" code="lessor.cancel"/>
+	<acme:cancel url="welcome/index.do" code="lessor.cancel"/>
 		
 </form:form>
 

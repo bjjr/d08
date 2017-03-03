@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.LessorService;
 import domain.Lessor;
+import forms.LessorForm;
 
 @Controller
 @RequestMapping("/lessor")
@@ -30,43 +30,34 @@ public class LessorController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Lessor lessor;
+		Lessor lessor = lessorService.create();
 
-		lessor = lessorService.create();
-		result = createEditModelAndView(lessor);
-
-		return result;
-	}
-
-	//Edition ----------------------------------------------------------
-
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int lessorId) {
-		ModelAndView result;
-		Lessor lessor;
-
-		lessor = lessorService.findByPrincipal();
-		Assert.notNull(lessor);
-		result = createEditModelAndView(lessor);
+		result = new ModelAndView("lessor/create");
+		result.addObject("lessorForm", new LessorForm(lessor));
 
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Lessor lessor, BindingResult binding) {
+	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(LessorForm lessorForm, BindingResult binding) {
 		ModelAndView result;
-		Lessor save;
+		Lessor lessor;
 
-		save = lessorService.reconstruct(lessor, binding);
+		lessor = lessorService.reconstruct(lessorForm, binding);
 		if (binding.hasErrors()) {
-			result = createEditModelAndView(lessor);
+			result = createEditModelAndView(lessorForm);
 		} else {
-			try {
-				lessorService.save(save);
-				result = new ModelAndView("redirect:/lessor/ownList.do");
-				result.addObject("message", "lessor.commit.ok");
-			} catch (Throwable oops) {
-				result = createEditModelAndView(lessor, "lessor.commit.error");
+			if (!lessor.getUserAccount().getPassword().equals(lessorForm.getConfirmPassword())) {
+				result = createEditModelAndView(lessorForm, "lessor.commit.password");
+			} else if (!lessorForm.isEula()) {
+				result = createEditModelAndView(lessorForm, "lessor.commit.eula");
+			} else {
+				try {
+					lessorService.save(lessor);
+					result = new ModelAndView("redirect:/welcome/index.do");
+				} catch (IllegalArgumentException oops) {
+					result = createEditModelAndView(lessorForm, "lessor.commit.error");
+				}
 			}
 		}
 
@@ -119,19 +110,19 @@ public class LessorController {
 
 	}
 
-	protected ModelAndView createEditModelAndView(Lessor lessor) {
+	protected ModelAndView createEditModelAndView(LessorForm lessorForm) {
 		ModelAndView result;
 
-		result = createEditModelAndView(lessor, null);
+		result = createEditModelAndView(lessorForm, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(Lessor lessor, String message) {
+	protected ModelAndView createEditModelAndView(LessorForm lessorForm, String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("lessor/edit");
-		result.addObject("lessor", lessor);
+		result = new ModelAndView("lessor/create");
+		result.addObject("lessor", lessorForm);
 		result.addObject("message", message);
 
 		return result;
