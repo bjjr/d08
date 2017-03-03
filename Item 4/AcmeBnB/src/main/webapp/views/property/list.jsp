@@ -21,9 +21,16 @@
 	<acme:column code="property.address" property="address"/>
 	
 	<display:column>
-			<a href="property/display.do?propertyID=${row.id}">
+			<a href="property/display.do?propertyId=${row.id}">
 				<spring:message	code="property.display" />
 			</a>
 	</display:column>
+	<jstl:if test="${isLessor == true}">
+			<display:column>			
+				<a href="property/edit.do?propertyId=${row.id}">
+					<spring:message	code="property.edit" />
+				</a>
+			</display:column>
+	</jstl:if>
 	
 </display:table>

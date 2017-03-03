@@ -5,7 +5,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib prefix="acme" uri="/WEB-INF/tags"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="audit/auditor/edit.do" modelAttribute="audit">
 
@@ -23,7 +23,9 @@
 	
 	<!-- Buttons -->
 	
-	<acme:submit name="publish" code="audit.publish"/>
+	<input type="submit" name="publish"
+			value="<spring:message code="audit.publish" />"
+			onclick="return confirm('<spring:message code="audit.confirm.publish" />')" />&nbsp;
 	
 	<acme:submit name="saveAsDraft" code="audit.saveAsDraft"/>
 		

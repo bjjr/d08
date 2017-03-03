@@ -76,4 +76,10 @@ public class BookService {
 		bookRepository.delete(book);
 	}
 
+	// Other business methods -------------------------------
+
+	public Collection<Book> findBooksByPrincipal() {
+		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
+	}
+
 }

@@ -26,11 +26,20 @@
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
 		
+		<bean class="converters.AttachmentToStringConverter" />
+		<bean class="converters.StringToAttachmentConverter" />
+		
 		<bean class="converters.AttributeToStringConverter" />
 		<bean class="converters.StringToAttributeConverter" />
 		
 		<bean class="converters.AttributeValueToStringConverter" />
 		<bean class="converters.StringToAttributeValueConverter" />
+		
+		<bean class="converters.AuditToStringConverter" />
+		<bean class="converters.StringToAuditConverter" />
+		
+		<bean class="converters.AuditorToStringConverter" />
+		<bean class="converters.StringToAuditorConverter" />
 		
 		<bean class="converters.CommentableEntityToStringConverter" />
 		<bean class="converters.StringToCommentableEntityConverter" />
@@ -58,6 +67,9 @@
 		
 		<bean class="converters.PropertyToStringConverter" />
 		<bean class="converters.StringToPropertyConverter" />
+		
+		<bean class="converters.SocialIdentityToStringConverter" />
+		<bean class="converters.StringToSocialIdentityConverter" />
 
 		<bean class="converters.TenantToStringConverter" />
 		<bean class="converters.StringToTenantConverter" />
