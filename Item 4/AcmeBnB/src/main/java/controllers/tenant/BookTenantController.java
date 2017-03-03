@@ -74,6 +74,7 @@ public class BookTenantController extends AbstractController {
 		
 		Book book = bookService.findOne(bookId);
 		Assert.notNull(book);
+		Assert.isTrue(book.getTenant().equals(tenantService.findByPrincipal()), "You are just allowed to edit your own requests");
 		
 		view.addObject("book", book);
 		
