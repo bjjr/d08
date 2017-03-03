@@ -23,12 +23,14 @@ public class StatusService {
 		Status status = new Status();
 		status.setName("PENDING");
 
-		return status;
+		Status result = this.save(status);
+		
+		return result;
 	}
 
 	public Status save(Status status) {
 		Assert.notNull(status, "StatusService.save: 'status' cannot be null");
-		Assert.isTrue(status.getName().equals("PENDING") || status.getName().equals("ACCEPTED") || status.getName().equals("PENDING"), "StatusService.save: The status have to match any of the status");
+		Assert.isTrue(status.getName().equals("PENDING") || status.getName().equals("ACCEPTED") || status.getName().equals("DENIED"), "StatusService.save: The status have to match any of the status");
 
 		Status result;
 
