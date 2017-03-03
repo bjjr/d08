@@ -159,15 +159,16 @@ public class BookService {
 		if(book.getId() == 0){
 			result = book;
 		}else{
-			result = bookRepository.findOne(book.getId());
+			Book aux = bookRepository.findOne(book.getId());
+			result = book;
 			
-			if(book.getSmoker()== null){
+			if(result.getSmoker()== null){
 				result.setSmoker(false); //Si el checkbox no está marcado
-			}else{
-				result.setSmoker(book.getSmoker());
 			}
-			result.setCheckInDate(book.getCheckInDate());
-			result.setCheckOutDate(book.getCheckOutDate());
+			
+			result.setProperty(aux.getProperty());
+			result.setStatus(aux.getStatus());
+			result.setTenant(aux.getTenant());
 			
 			validator.validate(result, bindingResult);
 		}
