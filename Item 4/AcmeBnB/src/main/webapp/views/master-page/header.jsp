@@ -20,12 +20,12 @@
 <div>
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
-		<security:authorize access="hasRole('ADMIN')">
+		<security:authorize access="hasRole('ADMINISTRATOR')">
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="administrator/edit.do"><spring:message code="master.page.administrator.edit" /></a></li>
-					<li><a href="administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>					
+					<li><a href="dashboard/administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>					
 				</ul>
 			</li>
 		</security:authorize>
@@ -61,7 +61,7 @@
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 		</security:authorize>
 		
-		<!--<security:authorize access="isAuthenticated()">
+		<security:authorize access="isAuthenticated()">
 			<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialIdentities" /></a></li>
 			<li>
 				<a class="fNiv"> 
@@ -70,13 +70,10 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="profile/action-1.do"><spring:message code="master.page.profile.action.1" /></a></li>
-					<li><a href="profile/action-2.do"><spring:message code="master.page.profile.action.2" /></a></li>
-					<li><a href="profile/action-3.do"><spring:message code="master.page.profile.action.3" /></a></li>					
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				</ul>
 			</li>
-		</security:authorize>-->
+		</security:authorize>
 		
 		<security:authorize access="hasRole('TENANT')">
 			<li>
