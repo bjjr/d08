@@ -23,16 +23,22 @@
 		<value>/views/attribute/messages</value>
 		<value>/views/attributevalue/messages</value>
 		<value>/views/creditcard/messages</value>
+		<value>/views/fee/messages</value>
 		<value>/views/finder/messages</value>
 		<value>/views/legal/messages</value>
 		<value>/views/lessor/messages</value>
 		<value>/views/master-page/messages</value>
 		<value>/views/misc/messages</value>
+		<value>/views/property/messages</value>
 		<value>/views/security/messages</value>
 		<value>/views/tenant/messages</value>
 		<value>/views/book/messages</value>
 		<value>/views/welcome/messages</value>
 		
+		
+		<value>/views/attachment/messages</value>
+		<value>/views/audit/messages</value>
+		<value>/views/auditor/messages</value>
 	</util:list>
 
 </beans>

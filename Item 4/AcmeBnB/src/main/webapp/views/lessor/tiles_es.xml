@@ -16,8 +16,18 @@
       
 <tiles-definitions>
 
+	<definition name="lessor/list" extends="master.page">	
+		<put-attribute name="title" value="Arrendadores" />
+		<put-attribute name="body" value="/views/lessor/list.jsp" />
+	</definition>
+	
+	<definition name="lessor/display" extends="master.page">	
+		<put-attribute name="title" value="Arrendador" />
+		<put-attribute name="body" value="/views/lessor/display.jsp" />
+	</definition>
+	
 	<definition name="lessor/edit" extends="master.page">	
-		<put-attribute name="title" value="Attributos" />
+		<put-attribute name="title" value="Editar arrendador" />
 		<put-attribute name="body" value="/views/lessor/edit.jsp" />
 	</definition>
 	
