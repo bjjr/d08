@@ -15,7 +15,15 @@
 	name="books" requestURI="${requestUri}" id="row">
 	<!-- Attributes -->
 	
-	<acme:column code="book.property.name" property="property.name"/>
+	<spring:message code="book.property" var="title"/>
+	<display:column title="${title}">
+		<spring:url var="url_property" value="/property/display.do">
+			<spring:param name="propertyId" value="${row.property.id}"/>
+		</spring:url>
+			
+		<a href="${url_property}"><jstl:out value="${row.property.name}"/></a>
+	</display:column>
+	
 	<acme:column code="book.status" property="status.name"/>
 	<acme:column code="book.checkInDate" property="checkInDate"/>
 	<acme:column code="book.checkOutDate" property="checkOutDate"/>
