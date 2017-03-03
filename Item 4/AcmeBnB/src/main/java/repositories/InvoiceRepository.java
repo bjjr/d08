@@ -19,4 +19,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
 	@Query("select max(t.invoices.size) from Tenant t")
 	Double findMaxInvoicesOfTenants();
 
+	@Query("select sum(i.totalDue) from Invoice i")
+	Double totalMoney();
+
 }

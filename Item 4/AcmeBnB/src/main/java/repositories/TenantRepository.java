@@ -27,6 +27,12 @@ public interface TenantRepository extends JpaRepository<Tenant, Integer> {
 	@Query("select t,count(b) from Tenant t join t.books b where b.status.name = 'PENDING' group by t")
 	Collection<Tenant> tenantsMoreRequestsPending();
 
+	@Query("select t from Tenant t order by ((select count(b1) from Tenant t1 join t1.books b1)/(select count(b2) from Tenant t2 join t2.books b2 where b2.status.name = 'ACCEPTED')) asc")
+	Collection<Tenant> tenantMaxRatio();
+
+	@Query("select t from Tenant t order by ((select count(b1) from Tenant t1 join t1.books b1)/(select count(b2) from Tenant t2 join t2.books b2 where b2.status.name = 'ACCEPTED')) desc")
+	Collection<Tenant> tenantMinRatio();
+
 	@Query("select t from Tenant t where t.userAccount.id = ?1")
 	Tenant findByUserAccount(int id);
 
