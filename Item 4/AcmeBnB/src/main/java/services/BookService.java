@@ -16,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.BookRepository;
 import utilities.DateUtil;
 import domain.Book;
+import domain.CreditCard;
 import domain.Lessor;
 import domain.Property;
 import domain.Status;
@@ -108,7 +109,7 @@ public class BookService {
 		return books;
 	}
 	
-	public Boolean checkJustABookPendingForTenant(Book book){
+	private Boolean checkJustABookPendingForTenant(Book book){
 		Tenant myself = tenantService.findOne(book.getTenant().getId());
 		
 		Collection<Book> tenantBooks = myself.getBooks();
@@ -130,8 +131,23 @@ public class BookService {
 		return true;
 	}
 	
+	private Boolean isAValidCreditCard(CreditCard creditCard){
+		Boolean res = false;
+		
+		Date currentMoment = new Date(System.currentTimeMillis());
+		
+		if(creditCard != null && creditCard.getExpiryDate().after(currentMoment)){
+			res = true;
+		}
+		
+		return res;
+	}
+	
 	public void acceptBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
+		
+		CreditCard lessorCreditCard = bookToAccept.getProperty().getLessor().getCreditCard();
+		Assert.isTrue(isAValidCreditCard(lessorCreditCard), "You need a valid credit card in order to accept the book");
 		
 		Status status = bookToAccept.getStatus();
 		status.setName("ACCEPTED");
