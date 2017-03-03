@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
@@ -16,6 +15,7 @@ import org.springframework.validation.Validator;
 import repositories.LessorRepository;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountService;
 import domain.Lessor;
 import domain.Property;
 import forms.LessorForm;
@@ -33,6 +33,9 @@ public class LessorService {
 
 	@Autowired
 	private ConsumerActorService	consumerActorService;
+
+	@Autowired
+	private UserAccountService		userAccountService;
 
 	@Autowired
 	private Validator				validator;
@@ -70,11 +73,11 @@ public class LessorService {
 		result = new Lessor();
 
 		consumerActorService.setConsumerActorProperties(result);
+		result.setUserAccount(userAccountService.create("LESSOR"));
 		result.setProperties(new ArrayList<Property>());
 
 		return result;
 	}
-
 	public Lessor save(Lessor lessor) {
 		Assert.notNull(lessor);
 

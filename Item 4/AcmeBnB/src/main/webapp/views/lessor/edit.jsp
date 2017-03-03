@@ -14,7 +14,9 @@
 	<form:hidden path="lessor.creditCard"/>
 	<form:hidden path="lessor.properties"/>
 	<form:hidden path="lessor.socialIdentities"/>
-	<form:hidden path="lessor.userAccount"/>
+	<form:hidden path="lessor.userAccount.authorities" id="authorities"/>
+	<form:hidden path="lessor.userAccount.id"/>
+	<form:hidden path="lessor.userAccount.version"/>
 	<form:hidden path="lessor.comments"/>
 	
 	<acme:textbox code="lessor.name" path="lessor.name" />
