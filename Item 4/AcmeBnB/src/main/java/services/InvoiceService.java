@@ -75,4 +75,13 @@ public class InvoiceService {
 	public Double findMaxInvoicesOfTenants() {
 		return invoiceRepository.findMaxInvoicesOfTenants();
 	}
+
+	public Double totalMoney() {
+		Double result;
+
+		result = invoiceRepository.totalMoney();
+		Assert.notNull(result);
+
+		return result;
+	}
 }

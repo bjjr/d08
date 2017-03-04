@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -20,6 +21,7 @@ import domain.Book;
 import domain.CreditCard;
 import domain.Finder;
 import domain.Invoice;
+import domain.SocialIdentity;
 import domain.Tenant;
 import forms.TenantForm;
 
@@ -28,13 +30,10 @@ import forms.TenantForm;
 public class TenantService {
 
 	@Autowired
-	private TenantRepository		tenantRepository;
+	private TenantRepository	tenantRepository;
 
 	@Autowired
-	private ConsumerActorService	consumerActorService;
-
-	@Autowired
-	private Validator				validator;
+	private Validator			validator;
 
 
 	public Tenant create() {
@@ -47,8 +46,12 @@ public class TenantService {
 		userAccount.setPassword("");
 
 		tenant = new Tenant();
-		consumerActorService.setConsumerActorProperties(tenant);
-
+		tenant.setName("");
+		tenant.setSurname("");
+		tenant.setEmail("");
+		tenant.setPhone("");
+		tenant.setPicture("");
+		tenant.setSocialIdentities(new ArrayList<SocialIdentity>());
 		tenant.setUserAccount(userAccount);
 
 		tenant.setCreditCard(new CreditCard());
@@ -81,27 +84,25 @@ public class TenantService {
 		return result;
 	}
 
-	@Transactional(readOnly = true)
-	public Tenant reconstruct(TenantForm tenantForm, BindingResult binding) {
+	public Tenant reconstruct(TenantForm tenant, BindingResult binding) {
 		Tenant result;
 
-		if (tenantForm.getTenant().getId() == 0) {
-			result = tenantForm.getTenant();
+		if (tenant.getTenant().getId() == 0) {
+			result = tenant.getTenant();
 		} else {
-			result = tenantRepository.findOne(tenantForm.getTenant().getId());
+			result = tenantRepository.findOne(tenant.getTenant().getId());
 
-			result.setName(tenantForm.getName());
-			result.setSurname(tenantForm.getSurname());
-			result.setEmail(tenantForm.getEmail());
-			result.setPhone(tenantForm.getPhone());
-			result.setPicture(tenantForm.getPicture());
+			result.setName(tenant.getTenant().getName());
+			result.setSurname(tenant.getTenant().getSurname());
+			result.setEmail(tenant.getTenant().getEmail());
+			result.setPhone(tenant.getTenant().getPhone());
+			result.setPicture(tenant.getTenant().getPicture());
 
-			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
-			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
-
-			validator.validate(result, binding);
+			result.getUserAccount().setUsername(tenant.getTenant().getUserAccount().getUsername());
+			result.getUserAccount().setPassword(tenant.getTenant().getUserAccount().getPassword());
 		}
 
+		validator.validate(result, binding);
 		return result;
 	}
 
@@ -151,6 +152,32 @@ public class TenantService {
 		result = encoder.encodePassword(password, null);
 
 		return result;
+	}
+
+	public Tenant tenantMaxRatio() {
+		List<Tenant> tenants;
+		Tenant tenant;
+
+		tenants = (List<Tenant>) tenantRepository.tenantMaxRatio();
+		Assert.notNull(tenants);
+
+		tenant = tenants.get(tenants.size() - 1);
+		Assert.notNull(tenant);
+
+		return tenant;
+	}
+
+	public Tenant tenantMinRatio() {
+		List<Tenant> tenants;
+		Tenant tenant;
+
+		tenants = (List<Tenant>) tenantRepository.tenantMinRatio();
+		Assert.notNull(tenants);
+
+		tenant = tenants.get(tenants.size() - 1);
+		Assert.notNull(tenant);
+
+		return tenant;
 	}
 
 }

@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AttributeValueRepository;
 import domain.AttributeValue;
+import domain.Lessor;
+import domain.Property;
 
 @Service
 @Transactional
@@ -20,8 +24,17 @@ public class AttributeValueService {
 	@Autowired
 	private AttributeValueRepository	attributeValueRepository;
 
-
 	// Supporting services ----------------------------------
+
+	@Autowired
+	private LessorService				lessorService;
+
+	@Autowired
+	private PropertyService				propertyService;
+
+	@Autowired
+	private Validator					validator;
+
 
 	// Constructors -----------------------------------------
 
@@ -59,10 +72,10 @@ public class AttributeValueService {
 		attributeValueRepository.flush();
 	}
 
-	public AttributeValue findOne(int attributeValueID) {
+	public AttributeValue findOne(int attributeValueId) {
 		AttributeValue result;
 
-		result = attributeValueRepository.findOne(attributeValueID);
+		result = attributeValueRepository.findOne(attributeValueId);
 		Assert.notNull(result);
 
 		return result;
@@ -95,4 +108,44 @@ public class AttributeValueService {
 		return res;
 	}
 
+	public AttributeValue findOneToEdit(int attributeValueId, int propertyId) {
+		Lessor lessor;
+		AttributeValue res;
+		Property property;
+
+		lessor = lessorService.findByPrincipal();
+		res = findOne(attributeValueId);
+		property = propertyService.findOne(propertyId);
+
+		Assert.notNull(lessor);
+		Assert.notNull(res);
+		Assert.notNull(property);
+
+		Assert.isTrue(res.getProperty().equals(property));
+		Assert.isTrue(property.getLessor().equals(lessor));
+
+		return res;
+	}
+
+	public AttributeValue reconstruct(AttributeValue attributeValue, int propertyId, BindingResult binding) {
+		AttributeValue res;
+
+		if (attributeValue.getId() == 0) {
+			Property property;
+
+			res = attributeValue;
+			property = propertyService.findOne(propertyId);
+			res.setProperty(property);
+		} else {
+			AttributeValue aux = findOne(attributeValue.getId());
+			res = attributeValue;
+
+			res.setVersion(aux.getVersion());
+			res.setProperty(aux.getProperty());
+		}
+
+		validator.validate(res, binding);
+
+		return res;
+	}
 }

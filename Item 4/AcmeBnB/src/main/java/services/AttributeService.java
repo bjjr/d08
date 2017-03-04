@@ -44,6 +44,7 @@ public class AttributeService {
 
 		return result;
 	}
+
 	public Attribute save(Attribute attribute) {
 		Assert.notNull(attribute);
 
@@ -90,5 +91,14 @@ public class AttributeService {
 	}
 
 	// Other business methods -------------------------------
+
+	public Collection<Attribute> findListAttributesSortedByTimesUsed() {
+		Collection<Attribute> result;
+
+		result = attributeRepository.findListAttributesSortedByTimesUsed();
+		Assert.notNull(result);
+
+		return result;
+	}
 
 }

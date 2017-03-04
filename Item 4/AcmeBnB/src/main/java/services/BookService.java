@@ -21,8 +21,8 @@ import domain.Property;
 import domain.Status;
 import domain.Tenant;
 
-@Transactional
 @Service
+@Transactional
 public class BookService {
 
 	@Autowired
@@ -32,13 +32,14 @@ public class BookService {
 	private TenantService	tenantService;
 
 	@Autowired
-	private StatusService	statusService;
-	
-	@Autowired
-	private LessorService lessorService;
+	private LessorService	lessorService;
 
 	@Autowired
-	private Validator validator;
+	private StatusService	statusService;
+
+	@Autowired
+	private Validator		validator;
+
 
 	public Book create(Property property) {
 		Book book = new Book();
@@ -66,9 +67,9 @@ public class BookService {
 
 	public Book save(Book book) {
 		Assert.notNull(book, "BookService.save: The 'book' can not be null");
-		
+
 		Assert.isTrue(DateUtil.isOneDayAfter(book.getCheckInDate(), book.getCheckOutDate()), "BookService.save: The checkoutDate has to be one day after than checkinDate");
-		
+
 		Date currentMoment = new Date(System.currentTimeMillis());
 		Assert.isTrue(book.getCheckInDate().after(currentMoment) && book.getCheckOutDate().after(currentMoment), "BookService.save: Checkin and checkout need to be planned in the future");
 
@@ -77,9 +78,9 @@ public class BookService {
 		Book result;
 
 		System.out.println(book);
-		
+
 		result = bookRepository.save(book);
-		
+
 		return result;
 	}
 
@@ -92,86 +93,103 @@ public class BookService {
 
 	// Other business methods -------------------------------
 
-	public Collection<Book> findTenantBooks() {	
-		return bookRepository.findTenantBooks(tenantService.findByPrincipal().getId());
+	public Collection<Book> findBooksByPrincipal() {
+		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
 	}
-	
-	public Collection<Book> findLessorBooks() {	
+
+	public Collection<Book> findLessorBooks() {
 		Lessor lessor = lessorService.findByPrincipal();
-		
+
 		Collection<Book> books = new ArrayList<>();
-		
-		for(Property p: lessor.getProperties()){
+
+		for (Property p : lessor.getProperties()) {
 			books.addAll(p.getBooks());
 		}
-		
+
 		return books;
 	}
-	
-	public Boolean checkJustABookPendingForTenant(Book book){
+
+	public Boolean checkJustABookPendingForTenant(Book book) {
 		Tenant myself = tenantService.findOne(book.getTenant().getId());
-		
+
 		Collection<Book> tenantBooks = myself.getBooks();
-		
-		
+
 		List<Book> tenantBooksOverTheBookProperty = new ArrayList<>();
-		for(Book tenantBook: tenantBooks){
-			if(tenantBook.getProperty().equals(book.getProperty())){
+		for (Book tenantBook : tenantBooks) {
+			if (tenantBook.getProperty().equals(book.getProperty())) {
 				tenantBooksOverTheBookProperty.add(tenantBook);
 			}
 		}
-		
-		for (Book tenantBookOverTheBookProperty: tenantBooksOverTheBookProperty) {
-			if(tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING") && tenantBookOverTheBookProperty.getId() != book.getId()){
+
+		for (Book tenantBookOverTheBookProperty : tenantBooksOverTheBookProperty) {
+			if (tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING") && tenantBookOverTheBookProperty.getId() != book.getId()) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	public void acceptBook(int bookId){
+
+	public void acceptBook(int bookId) {
 		Book bookToAccept = this.findOne(bookId);
-		
+
 		Status status = bookToAccept.getStatus();
 		status.setName("ACCEPTED");
-		
+
 		bookToAccept.setStatus(status);
-		
+
 		this.save(bookToAccept);
 	}
-	
-	public void denyBook(int bookId){
+
+	public void denyBook(int bookId) {
 		Book bookToAccept = this.findOne(bookId);
-		
+
 		Status status = bookToAccept.getStatus();
 		status.setName("DENIED");
-		
+
 		bookToAccept.setStatus(status);
-		
+
 		this.save(bookToAccept);
 	}
-	
-	@Transactional(readOnly=true)
-	public Book reconstruct(Book book, BindingResult bindingResult){
+
+	@Transactional(readOnly = true)
+	public Book reconstruct(Book book, BindingResult bindingResult) {
 		Book result;
-		
-		if(book.getId() == 0){
+
+		if (book.getId() == 0) {
 			result = book;
-		}else{
+		} else {
 			result = bookRepository.findOne(book.getId());
-			
-			if(book.getSmoker()== null){
+
+			if (book.getSmoker() == null) {
 				result.setSmoker(false); //Si el checkbox no está marcado
-			}else{
+			} else {
 				result.setSmoker(book.getSmoker());
 			}
 			result.setCheckInDate(book.getCheckInDate());
 			result.setCheckOutDate(book.getCheckOutDate());
-			
+
 			validator.validate(result, bindingResult);
 		}
-		
+
+		return result;
+	}
+
+	public Double findAvgBooksProperty1Audit() {
+		Double result;
+
+		result = bookRepository.findAvgBooksProperty1Audit();
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Double findAvgBooksPropertyNoAudit() {
+		Double result;
+
+		result = bookRepository.findAvgBooksPropertyNoAudit();
+		Assert.notNull(result);
+
 		return result;
 	}
 

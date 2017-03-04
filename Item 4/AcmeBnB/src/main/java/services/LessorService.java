@@ -158,70 +158,55 @@ public class LessorService {
 		return avg;
 	}
 
-	public String lessorMaxNumApproved() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumApproved() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumApproved();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public String lessorMaxNumPending() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumPending() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumPending();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public String lessorMaxNumDenied() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumDenied() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumDenied();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
 	public Lessor lessorMaxRatio() {
+		List<Lessor> lessors;
 		Lessor lessor;
 
-		lessor = lessorRepository.lessorMaxRatio();
+		lessors = (List<Lessor>) lessorRepository.lessorMaxRatio();
+		Assert.notNull(lessors);
+
+		lessor = lessors.get(lessors.size() - 1);
+		Assert.notNull(lessor);
+
+		return lessor;
+	}
+
+	public Lessor lessorMinRatio() {
+		List<Lessor> lessors;
+		Lessor lessor;
+
+		lessors = (List<Lessor>) lessorRepository.lessorMinRatio();
+		Assert.notNull(lessors);
+
+		lessor = lessors.get(lessors.size() - 1);
+		Assert.notNull(lessor);
 
 		return lessor;
 	}

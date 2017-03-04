@@ -8,19 +8,14 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 
 import repositories.CreditCardRepository;
 import domain.ConsumerActor;
 import domain.CreditCard;
-import forms.CreditCardForm;
 
 @Service
 @Transactional
@@ -35,9 +30,6 @@ public class CreditCardService {
 
 	@Autowired
 	private ConsumerActorService	consumerActorService;
-
-	@Autowired
-	private Validator				validator;
 
 
 	// Constructors -----------------------------------------
@@ -70,10 +62,17 @@ public class CreditCardService {
 
 	public CreditCard save(CreditCard creditCard) {
 		Assert.notNull(creditCard);
+		ConsumerActor consumerActor;
 
 		CreditCard result;
 
 		result = creditCardRepository.save(creditCard);
+		consumerActor = consumerActorService.findByPrincipal();
+
+		if (creditCard.getId() == 0) {
+			consumerActor.setCreditCard(result);
+			consumerActorService.save(consumerActor);
+		}
 
 		return result;
 	}
@@ -82,10 +81,10 @@ public class CreditCardService {
 		creditCardRepository.flush();
 	}
 
-	public CreditCard findOne(int creditCardID) {
+	public CreditCard findOne(int creditCardId) {
 		CreditCard result;
 
-		result = creditCardRepository.findOne(creditCardID);
+		result = creditCardRepository.findOne(creditCardId);
 		Assert.notNull(result);
 
 		return result;
@@ -106,21 +105,21 @@ public class CreditCardService {
 	 * Given a credit card this method checks if its expiry date
 	 * is at least seven days in the future.
 	 * 
-	 * @param creditCardForm
+	 * @param creditCard
 	 *            The credit card to be checked.
 	 * @return The result of the check.
 	 */
 
-	public Boolean checkDatesDifference(CreditCardForm creditCardForm) {
+	public Boolean checkDatesDifference(CreditCard creditCard) {
 		long diff;
 		Boolean res;
 		Date today;
-		DateTimeFormatter dtf;
-
-		dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+		Date expiryDate;
 
 		today = new DateTime().withTimeAtStartOfDay().toDate();
-		diff = dtf.parseMillis(creditCardForm.getDate()) - today.getTime();
+		expiryDate = new DateTime(creditCard.getExpiryDate()).withTimeAtStartOfDay().toDate();
+
+		diff = expiryDate.getTime() - today.getTime();
 		res = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) >= 7;
 
 		return res;
@@ -156,30 +155,16 @@ public class CreditCardService {
 		return creditCard;
 	}
 
-	public CreditCard reconstruct(CreditCardForm creditCardForm, BindingResult binding) {
-		CreditCard res;
+	public CreditCard findOneToEdit(int creditCardId) {
+		CreditCard result;
+		ConsumerActor consumerActor;
 
-		if (creditCardForm.getCreditCard().getId() == 0) {
-			res = creditCardForm.getCreditCard();
-		} else {
-			DateTimeFormatter dateFormat;
-			DateTime expiryDate;
+		consumerActor = consumerActorService.findByPrincipal();
+		result = creditCardRepository.findOne(creditCardId);
+		Assert.notNull(result, "The credit card does no exist");
+		Assert.isTrue(consumerActor.getCreditCard().equals(result), "This is not your credit card");
 
-			//			res = creditCardRepository.findOne(creditCardForm.getCreditCard().getId());
-			res = creditCardForm.getCreditCard();
-			dateFormat = DateTimeFormat.forPattern("dd/MM/yyyy");
-			expiryDate = dateFormat.parseDateTime(creditCardForm.getDate()).withTimeAtStartOfDay();
-
-			res.setHolderName(creditCardForm.getCreditCard().getHolderName());
-			res.setBrandName(creditCardForm.getCreditCard().getBrandName());
-			res.setNumber(creditCardForm.getCreditCard().getNumber());
-			res.setExpiryDate(expiryDate.toDate());
-			res.setCvv(creditCardForm.getCreditCard().getCvv());
-
-			validator.validate(res, binding);
-		}
-
-		return res;
-
+		return result;
 	}
+
 }
