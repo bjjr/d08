@@ -59,3 +59,7 @@
 	</security:authorize>
 	
 </display:table>
+
+<security:authorize access="hasRole('LESSOR')">
+	<b><spring:message code="book.fee.topay"/> <jstl:out value="${feeToPay}" />&euro;</b>
+</security:authorize>
