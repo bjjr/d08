@@ -1,6 +1,8 @@
 
 package controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,14 +27,13 @@ public class TenantController extends AbstractController {
 		ModelAndView result;
 		Tenant tenant = tenantService.create();
 
-		result = new ModelAndView("tenant/create");
-		result.addObject("tenantForm", new TenantForm(tenant));
+		result = createEditModelAndView(new TenantForm(tenant));
 
 		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(TenantForm tenantForm, BindingResult binding) {
+	public ModelAndView save(@Valid TenantForm tenantForm, BindingResult binding) {
 		ModelAndView result;
 		Tenant tenant;
 

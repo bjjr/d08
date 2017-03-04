@@ -5,20 +5,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.SocialIdentity;
+import security.Authority;
 
 @Component
 @Transactional
-public class SocialIdentityToStringConverter implements Converter<SocialIdentity, String> {
+public class AuthorityToStringConverter implements Converter<Authority, String> {
 
 	@Override
-	public String convert(SocialIdentity socialIdentity) {
+	public String convert(Authority authority) {
 		String res;
 
-		if (socialIdentity == null) {
+		if (authority == null) {
 			res = null;
 		} else {
-			res = String.valueOf(socialIdentity.getId());
+			res = String.valueOf(authority.getAuthority());
 		}
 		return res;
 	}
