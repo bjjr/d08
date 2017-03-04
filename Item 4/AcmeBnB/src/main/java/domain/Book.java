@@ -44,7 +44,7 @@ public class Book extends DomainEntity {
 		this.checkOutDate = checkOutDate;
 	}
 
-	public boolean getSmoker() {
+	public Boolean getSmoker() {
 		return smoker;
 	}
 

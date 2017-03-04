@@ -20,7 +20,6 @@ import domain.Book;
 import domain.CreditCard;
 import domain.Finder;
 import domain.Invoice;
-import domain.SocialIdentity;
 import domain.Tenant;
 import forms.TenantForm;
 
@@ -29,10 +28,13 @@ import forms.TenantForm;
 public class TenantService {
 
 	@Autowired
-	private TenantRepository	tenantRepository;
+	private TenantRepository		tenantRepository;
 
 	@Autowired
-	private Validator			validator;
+	private ConsumerActorService	consumerActorService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	public Tenant create() {
@@ -45,12 +47,8 @@ public class TenantService {
 		userAccount.setPassword("");
 
 		tenant = new Tenant();
-		tenant.setName("");
-		tenant.setSurname("");
-		tenant.setEmail("");
-		tenant.setPhone("");
-		tenant.setPicture("");
-		tenant.setSocialIdentities(new ArrayList<SocialIdentity>());
+		consumerActorService.setConsumerActorProperties(tenant);
+
 		tenant.setUserAccount(userAccount);
 
 		tenant.setCreditCard(new CreditCard());
@@ -83,25 +81,27 @@ public class TenantService {
 		return result;
 	}
 
-	public Tenant reconstruct(TenantForm tenant, BindingResult binding) {
+	@Transactional(readOnly = true)
+	public Tenant reconstruct(TenantForm tenantForm, BindingResult binding) {
 		Tenant result;
 
-		if (tenant.getTenant().getId() == 0) {
-			result = tenant.getTenant();
+		if (tenantForm.getTenant().getId() == 0) {
+			result = tenantForm.getTenant();
 		} else {
-			result = tenantRepository.findOne(tenant.getTenant().getId());
+			result = tenantRepository.findOne(tenantForm.getTenant().getId());
 
-			result.setName(tenant.getTenant().getName());
-			result.setSurname(tenant.getTenant().getSurname());
-			result.setEmail(tenant.getTenant().getEmail());
-			result.setPhone(tenant.getTenant().getPhone());
-			result.setPicture(tenant.getTenant().getPicture());
+			result.setName(tenantForm.getName());
+			result.setSurname(tenantForm.getSurname());
+			result.setEmail(tenantForm.getEmail());
+			result.setPhone(tenantForm.getPhone());
+			result.setPicture(tenantForm.getPicture());
 
-			result.getUserAccount().setUsername(tenant.getTenant().getUserAccount().getUsername());
-			result.getUserAccount().setPassword(tenant.getTenant().getUserAccount().getPassword());
+			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
+			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
 		}
 
-		validator.validate(result, binding);
 		return result;
 	}
 

@@ -13,5 +13,6 @@ import domain.Book;
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
 	@Query("select t.books from Tenant t where t.id = ?1")
-	Collection<Book> findBooksByPrincipal(int id);
+	Collection<Book> findTenantBooks(int id);
+	
 }

@@ -76,6 +76,8 @@
 		<security:intercept-url pattern="/socialIdentity/list.do" access="permitAll" />
 		<security:intercept-url pattern="/socialIdentity/create.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/socialIdentity/edit.do" access="isAuthenticated()" />
+		
+		<security:intercept-url pattern="/book/lessor/**" access="hasRole('LESSOR')" />
 
 		<security:intercept-url pattern="/tenant/create.do" access="permitAll" />
 		

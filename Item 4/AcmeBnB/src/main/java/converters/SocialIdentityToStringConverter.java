@@ -13,15 +13,13 @@ public class SocialIdentityToStringConverter implements Converter<SocialIdentity
 
 	@Override
 	public String convert(SocialIdentity socialIdentity) {
-		String result;
+		String res;
 
 		if (socialIdentity == null) {
-			result = null;
+			res = null;
 		} else {
-			result = String.valueOf(socialIdentity.getId());
+			res = String.valueOf(socialIdentity.getId());
 		}
-
-		return result;
+		return res;
 	}
-
 }
