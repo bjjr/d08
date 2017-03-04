@@ -3,6 +3,8 @@ package controllers;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -32,14 +34,13 @@ public class LessorController {
 		ModelAndView result;
 		Lessor lessor = lessorService.create();
 
-		result = new ModelAndView("lessor/create");
-		result.addObject("lessorForm", new LessorForm(lessor));
+		result = createEditModelAndView(new LessorForm(lessor));
 
 		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(LessorForm lessorForm, BindingResult binding) {
+	public ModelAndView save(@Valid LessorForm lessorForm, BindingResult binding) {
 		ModelAndView result;
 		Lessor lessor;
 
@@ -110,19 +111,19 @@ public class LessorController {
 
 	}
 
-	protected ModelAndView createEditModelAndView(LessorForm lessorForm) {
+	protected ModelAndView createEditModelAndView(LessorForm lessor) {
 		ModelAndView result;
 
-		result = createEditModelAndView(lessorForm, null);
+		result = createEditModelAndView(lessor, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(LessorForm lessorForm, String message) {
+	protected ModelAndView createEditModelAndView(LessorForm lessor, String message) {
 		ModelAndView result;
 
 		result = new ModelAndView("lessor/create");
-		result.addObject("lessor", lessorForm);
+		result.addObject("lessorForm", lessor);
 		result.addObject("message", message);
 
 		return result;

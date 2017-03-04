@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -79,11 +80,18 @@ public class LessorService {
 		return result;
 	}
 	public Lessor save(Lessor lessor) {
+		Lessor result, authenticatedLessor;
 		Assert.notNull(lessor);
 
-		Lessor result;
-
+		if (lessor.getId() != 0) {
+			authenticatedLessor = findByPrincipal();
+			Assert.isTrue(lessor.equals(authenticatedLessor));
+		} else {
+			Assert.isTrue(lessor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("TENANT"));
+			lessor.getUserAccount().setPassword(hashCodePassword(lessor.getUserAccount().getPassword()));
+		}
 		result = lessorRepository.save(lessor);
+		Assert.notNull(result);
 
 		return result;
 	}
@@ -131,10 +139,9 @@ public class LessorService {
 			result.getUserAccount().setUsername(lessor.getLessor().getUserAccount().getUsername());
 			result.getUserAccount().setPassword(lessor.getLessor().getUserAccount().getPassword());
 
-			validator.validate(result, binding);
-
 		}
 
+		validator.validate(result, binding);
 		return result;
 	}
 
@@ -209,6 +216,16 @@ public class LessorService {
 		Assert.notNull(lessor);
 
 		return lessor;
+	}
+
+	public String hashCodePassword(String password) {
+		String result;
+		Md5PasswordEncoder encoder;
+
+		encoder = new Md5PasswordEncoder();
+		result = encoder.encodePassword(password, null);
+
+		return result;
 	}
 
 }
