@@ -53,6 +53,15 @@
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 		</security:authorize>
 		
+		<security:authorize access="isAnonymous()">
+			<li><a class="fNiv" href="#"><spring:message code="master.page.signup" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="tenant/create.do"><spring:message code="master.page.signup.tenant" /></a></li>
+				</ul>
+			</li>
+		</security:authorize>
+		
 		<!--<security:authorize access="isAuthenticated()">
 			<li>
 				<a class="fNiv"> 
@@ -77,6 +86,7 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
+					<li><a href="tenant/tenant/edit.do"><spring:message code="master.page.tenant.edit" /></a></li>
 					<li><a href="finder/tenant/display.do"><spring:message code="master.page.tenant.finder" /></a></li>	
 					<li><a href="book/tenant/list.do"><spring:message code="master.page.tenant.book" /></a></li>	
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				

@@ -88,7 +88,7 @@ public class TenantService {
 		if (tenantForm.getTenant().getId() == 0) {
 			result = tenantForm.getTenant();
 		} else {
-			result = tenantRepository.findOne(tenantForm.getTenant().getId());
+			result = findByPrincipal();
 
 			result.setName(tenantForm.getName());
 			result.setSurname(tenantForm.getSurname());
@@ -105,6 +105,29 @@ public class TenantService {
 		return result;
 	}
 
+	@Transactional(readOnly = true)
+	public Tenant reconstruct(Tenant tenant, BindingResult binding) {
+		Tenant result;
+
+		if (tenant.getId() == 0) {
+			result = tenant;
+		} else {
+			result = findByPrincipal();
+
+			result.setName(tenant.getName());
+			result.setSurname(tenant.getSurname());
+			result.setEmail(tenant.getEmail());
+			result.setPhone(tenant.getPhone());
+			result.setPicture(tenant.getPicture());
+
+			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
+			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+		}
+
+		return result;
+	}
 	public Tenant findOne(int id) {
 		return tenantRepository.findOne(id);
 	}
