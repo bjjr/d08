@@ -16,9 +16,9 @@ import org.springframework.validation.Validator;
 import repositories.BookRepository;
 import utilities.DateUtil;
 import domain.Book;
+import domain.CreditCard;
 import domain.Lessor;
 import domain.Property;
-import domain.Status;
 import domain.Tenant;
 
 @Transactional
@@ -51,7 +51,7 @@ public class BookService {
 
 		book.setTenant(tenantService.findByPrincipal());
 		book.setProperty(property);
-		book.setStatus(statusService.create());
+		book.setStatus(statusService.findStatus("PENDING"));
 
 		return book;
 	}
@@ -108,7 +108,7 @@ public class BookService {
 		return books;
 	}
 	
-	public Boolean checkJustABookPendingForTenant(Book book){
+	private Boolean checkJustABookPendingForTenant(Book book){
 		Tenant myself = tenantService.findOne(book.getTenant().getId());
 		
 		Collection<Book> tenantBooks = myself.getBooks();
@@ -130,13 +130,25 @@ public class BookService {
 		return true;
 	}
 	
+	private Boolean isAValidCreditCard(CreditCard creditCard){
+		Boolean res = false;
+		
+		Date currentMoment = new Date(System.currentTimeMillis());
+		
+		if(creditCard != null && creditCard.getExpiryDate().after(currentMoment)){
+			res = true;
+		}
+		
+		return res;
+	}
+	
 	public void acceptBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
 		
-		Status status = bookToAccept.getStatus();
-		status.setName("ACCEPTED");
+		CreditCard lessorCreditCard = bookToAccept.getProperty().getLessor().getCreditCard();
+		Assert.isTrue(isAValidCreditCard(lessorCreditCard), "You need a valid credit card in order to accept the book");
 		
-		bookToAccept.setStatus(status);
+		bookToAccept.setStatus(statusService.findStatus("ACCEPTED"));
 		
 		this.save(bookToAccept);
 	}
@@ -144,10 +156,7 @@ public class BookService {
 	public void denyBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
 		
-		Status status = bookToAccept.getStatus();
-		status.setName("DENIED");
-		
-		bookToAccept.setStatus(status);
+		bookToAccept.setStatus(statusService.findStatus("DENIED"));
 		
 		this.save(bookToAccept);
 	}
@@ -159,15 +168,16 @@ public class BookService {
 		if(book.getId() == 0){
 			result = book;
 		}else{
-			result = bookRepository.findOne(book.getId());
+			Book aux = bookRepository.findOne(book.getId());
+			result = book;
 			
-			if(book.getSmoker()== null){
+			if(result.getSmoker()== null){
 				result.setSmoker(false); //Si el checkbox no está marcado
-			}else{
-				result.setSmoker(book.getSmoker());
 			}
-			result.setCheckInDate(book.getCheckInDate());
-			result.setCheckOutDate(book.getCheckOutDate());
+			
+			result.setProperty(aux.getProperty());
+			result.setStatus(aux.getStatus());
+			result.setTenant(aux.getTenant());
 			
 			validator.validate(result, bindingResult);
 		}
