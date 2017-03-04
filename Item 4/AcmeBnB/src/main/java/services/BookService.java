@@ -1,4 +1,5 @@
 
+
 package services;
 
 import java.util.ArrayList;
@@ -16,13 +17,13 @@ import org.springframework.validation.Validator;
 import repositories.BookRepository;
 import utilities.DateUtil;
 import domain.Book;
+import domain.CreditCard;
 import domain.Lessor;
 import domain.Property;
-import domain.Status;
 import domain.Tenant;
 
-@Service
 @Transactional
+@Service
 public class BookService {
 
 	@Autowired
@@ -32,14 +33,13 @@ public class BookService {
 	private TenantService	tenantService;
 
 	@Autowired
-	private LessorService	lessorService;
-
-	@Autowired
 	private StatusService	statusService;
+	
+	@Autowired
+	private LessorService lessorService;
 
 	@Autowired
-	private Validator		validator;
-
+	private Validator validator;
 
 	public Book create(Property property) {
 		Book book = new Book();
@@ -52,7 +52,7 @@ public class BookService {
 
 		book.setTenant(tenantService.findByPrincipal());
 		book.setProperty(property);
-		book.setStatus(statusService.create());
+		book.setStatus(statusService.findStatus("PENDING"));
 
 		return book;
 	}
@@ -67,9 +67,9 @@ public class BookService {
 
 	public Book save(Book book) {
 		Assert.notNull(book, "BookService.save: The 'book' can not be null");
-
+		
 		Assert.isTrue(DateUtil.isOneDayAfter(book.getCheckInDate(), book.getCheckOutDate()), "BookService.save: The checkoutDate has to be one day after than checkinDate");
-
+		
 		Date currentMoment = new Date(System.currentTimeMillis());
 		Assert.isTrue(book.getCheckInDate().after(currentMoment) && book.getCheckOutDate().after(currentMoment), "BookService.save: Checkin and checkout need to be planned in the future");
 
@@ -78,9 +78,9 @@ public class BookService {
 		Book result;
 
 		System.out.println(book);
-
+		
 		result = bookRepository.save(book);
-
+		
 		return result;
 	}
 
@@ -93,85 +93,96 @@ public class BookService {
 
 	// Other business methods -------------------------------
 
-	public Collection<Book> findBooksByPrincipal() {
-		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
+	public Collection<Book> findTenantBooks() {	
+		return bookRepository.findTenantBooks(tenantService.findByPrincipal().getId());
 	}
-
-	public Collection<Book> findLessorBooks() {
+	
+	public Collection<Book> findLessorBooks() {	
 		Lessor lessor = lessorService.findByPrincipal();
-
+		
 		Collection<Book> books = new ArrayList<>();
-
-		for (Property p : lessor.getProperties()) {
+		
+		for(Property p: lessor.getProperties()){
 			books.addAll(p.getBooks());
 		}
-
+		
 		return books;
 	}
-
-	public Boolean checkJustABookPendingForTenant(Book book) {
+	
+	private Boolean checkJustABookPendingForTenant(Book book){
 		Tenant myself = tenantService.findOne(book.getTenant().getId());
-
+		
 		Collection<Book> tenantBooks = myself.getBooks();
-
+		
+		
 		List<Book> tenantBooksOverTheBookProperty = new ArrayList<>();
-		for (Book tenantBook : tenantBooks) {
-			if (tenantBook.getProperty().equals(book.getProperty())) {
+		for(Book tenantBook: tenantBooks){
+			if(tenantBook.getProperty().equals(book.getProperty())){
 				tenantBooksOverTheBookProperty.add(tenantBook);
 			}
 		}
-
-		for (Book tenantBookOverTheBookProperty : tenantBooksOverTheBookProperty) {
-			if (tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING") && tenantBookOverTheBookProperty.getId() != book.getId()) {
+		
+		for (Book tenantBookOverTheBookProperty: tenantBooksOverTheBookProperty) {
+			if(tenantBookOverTheBookProperty.getStatus().getName().equals("PENDING") && tenantBookOverTheBookProperty.getId() != book.getId()){
 				return false;
 			}
 		}
-
+		
 		return true;
 	}
-
-	public void acceptBook(int bookId) {
+	
+	private Boolean isAValidCreditCard(CreditCard creditCard){
+		Boolean res = false;
+		
+		Date currentMoment = new Date(System.currentTimeMillis());
+		
+		if(creditCard != null && creditCard.getExpiryDate().after(currentMoment)){
+			res = true;
+		}
+		
+		return res;
+	}
+	
+	public void acceptBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
-
-		Status status = bookToAccept.getStatus();
-		status.setName("ACCEPTED");
-
-		bookToAccept.setStatus(status);
-
+		
+		CreditCard lessorCreditCard = bookToAccept.getProperty().getLessor().getCreditCard();
+		Assert.isTrue(isAValidCreditCard(lessorCreditCard), "You need a valid credit card in order to accept the book");
+		
+		bookToAccept.setStatus(statusService.findStatus("ACCEPTED"));
+		
 		this.save(bookToAccept);
 	}
-
-	public void denyBook(int bookId) {
+	
+	public void denyBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
-
-		Status status = bookToAccept.getStatus();
-		status.setName("DENIED");
-
-		bookToAccept.setStatus(status);
-
+		
+		bookToAccept.setStatus(statusService.findStatus("DENIED"));
+		
 		this.save(bookToAccept);
 	}
-
-	@Transactional(readOnly = true)
-	public Book reconstruct(Book book, BindingResult bindingResult) {
+	
+	@Transactional(readOnly=true)
+	public Book reconstruct(Book book, BindingResult bindingResult){
 		Book result;
-
-		if (book.getId() == 0) {
+		
+		if(book.getId() == 0){
 			result = book;
-		} else {
-			result = bookRepository.findOne(book.getId());
-
-			if (book.getSmoker() == null) {
+		}else{
+			Book aux = bookRepository.findOne(book.getId());
+			result = book;
+			
+			if(result.getSmoker()== null){
 				result.setSmoker(false); //Si el checkbox no está marcado
-			} else {
-				result.setSmoker(book.getSmoker());
 			}
-			result.setCheckInDate(book.getCheckInDate());
-			result.setCheckOutDate(book.getCheckOutDate());
-
+			
+			result.setProperty(aux.getProperty());
+			result.setStatus(aux.getStatus());
+			result.setTenant(aux.getTenant());
+			
 			validator.validate(result, bindingResult);
 		}
-
+		
 		return result;
 	}
 

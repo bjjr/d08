@@ -89,13 +89,16 @@ public class TenantService {
 		if (tenantForm.getTenant().getId() == 0) {
 			result = tenantForm.getTenant();
 		} else {
-			result = findByPrincipal();
+			Tenant aux = findByPrincipal();
+			result = tenantForm.getTenant();
 
-			result.setName(tenantForm.getName());
-			result.setSurname(tenantForm.getSurname());
-			result.setEmail(tenantForm.getEmail());
-			result.setPhone(tenantForm.getPhone());
-			result.setPicture(tenantForm.getPicture());
+			result.setInvoices(aux.getInvoices());
+			result.setFinder(aux.getFinder());
+			result.setBooks(aux.getBooks());
+			result.setCreditCard(aux.getCreditCard());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
 
 			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
 			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
@@ -106,20 +109,22 @@ public class TenantService {
 		return result;
 	}
 
-	@Transactional(readOnly = true)
 	public Tenant reconstruct(Tenant tenant, BindingResult binding) {
 		Tenant result;
 
 		if (tenant.getId() == 0) {
 			result = tenant;
 		} else {
-			result = findByPrincipal();
+			Tenant aux = findByPrincipal();
+			result = tenant;
 
-			result.setName(tenant.getName());
-			result.setSurname(tenant.getSurname());
-			result.setEmail(tenant.getEmail());
-			result.setPhone(tenant.getPhone());
-			result.setPicture(tenant.getPicture());
+			result.setInvoices(aux.getInvoices());
+			result.setFinder(aux.getFinder());
+			result.setBooks(aux.getBooks());
+			result.setCreditCard(aux.getCreditCard());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
 
 			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
 			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
