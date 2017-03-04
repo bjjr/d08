@@ -18,5 +18,6 @@
 	<div>
 		<acme:submit name="save" code="misc.save"/>
 		<acme:delete confirmationCode="attributeValue.delete.conf" buttonCode="misc.delete" id="${attributeValue.id}"/>
+		<acme:cancel url="property/display.do?propertyId=${attributeValue.property.id}" code="misc.cancel"/>
 	</div>
 </form:form>

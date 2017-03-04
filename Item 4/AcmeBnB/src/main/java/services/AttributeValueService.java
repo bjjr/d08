@@ -72,10 +72,10 @@ public class AttributeValueService {
 		attributeValueRepository.flush();
 	}
 
-	public AttributeValue findOne(int attributeValueID) {
+	public AttributeValue findOne(int attributeValueId) {
 		AttributeValue result;
 
-		result = attributeValueRepository.findOne(attributeValueID);
+		result = attributeValueRepository.findOne(attributeValueId);
 		Assert.notNull(result);
 
 		return result;
@@ -137,13 +137,14 @@ public class AttributeValueService {
 			property = propertyService.findOne(propertyId);
 			res.setProperty(property);
 		} else {
-			res = attributeValueRepository.findOne(attributeValue.getId());
+			AttributeValue aux = findOne(attributeValue.getId());
+			res = attributeValue;
 
-			res.setAttribute(attributeValue.getAttribute());
-			res.setValue(attributeValue.getValue());
-
-			validator.validate(res, binding);
+			res.setVersion(aux.getVersion());
+			res.setProperty(aux.getProperty());
 		}
+
+		validator.validate(res, binding);
 
 		return res;
 	}
