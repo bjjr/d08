@@ -19,7 +19,6 @@ import domain.Book;
 import domain.CreditCard;
 import domain.Lessor;
 import domain.Property;
-import domain.Status;
 import domain.Tenant;
 
 @Transactional
@@ -52,7 +51,7 @@ public class BookService {
 
 		book.setTenant(tenantService.findByPrincipal());
 		book.setProperty(property);
-		book.setStatus(statusService.create());
+		book.setStatus(statusService.findStatus("PENDING"));
 
 		return book;
 	}
@@ -149,10 +148,7 @@ public class BookService {
 		CreditCard lessorCreditCard = bookToAccept.getProperty().getLessor().getCreditCard();
 		Assert.isTrue(isAValidCreditCard(lessorCreditCard), "You need a valid credit card in order to accept the book");
 		
-		Status status = bookToAccept.getStatus();
-		status.setName("ACCEPTED");
-		
-		bookToAccept.setStatus(status);
+		bookToAccept.setStatus(statusService.findStatus("ACCEPTED"));
 		
 		this.save(bookToAccept);
 	}
@@ -160,10 +156,7 @@ public class BookService {
 	public void denyBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
 		
-		Status status = bookToAccept.getStatus();
-		status.setName("DENIED");
-		
-		bookToAccept.setStatus(status);
+		bookToAccept.setStatus(statusService.findStatus("DENIED"));
 		
 		this.save(bookToAccept);
 	}
