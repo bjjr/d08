@@ -25,6 +25,7 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="properties" />
+	<form:hidden path="accumulatedCharges" />
 	<form:hidden path="creditCard" />
 	<form:hidden path="socialIdentities" />
 	<form:hidden path="userAccount.authorities" />

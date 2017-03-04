@@ -74,6 +74,7 @@ public class LessorService {
 		result = new Lessor();
 
 		consumerActorService.setConsumerActorProperties(result);
+		result.setAccumulatedCharges(0.0);
 		result.setUserAccount(userAccountService.create("LESSOR"));
 		result.setProperties(new ArrayList<Property>());
 
@@ -87,7 +88,7 @@ public class LessorService {
 			authenticatedLessor = findByPrincipal();
 			Assert.isTrue(lessor.equals(authenticatedLessor));
 		} else {
-			Assert.isTrue(lessor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("TENANT"));
+			Assert.isTrue(lessor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("LESSOR"));
 			lessor.getUserAccount().setPassword(hashCodePassword(lessor.getUserAccount().getPassword()));
 		}
 		result = lessorRepository.save(lessor);

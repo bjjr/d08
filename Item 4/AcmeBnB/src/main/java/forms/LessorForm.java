@@ -30,6 +30,7 @@ public class LessorForm {
 	private Collection<SocialIdentity>	socialIdentities;
 	private UserAccount					userAccount;
 	private Collection<Comment>			comments;
+	private double						accumulatedCharges;
 
 	// Form
 	private String						confirmPassword;
@@ -63,8 +64,8 @@ public class LessorForm {
 		this.socialIdentities = lessor.getSocialIdentities();
 		this.userAccount = lessor.getUserAccount();
 		this.comments = lessor.getComments();
+		this.accumulatedCharges = lessor.getAccumulatedCharges();
 	}
-
 	/**
 	 * Reconstruir Lessor a partir de LessorForm
 	 * 
@@ -84,6 +85,7 @@ public class LessorForm {
 		lessor.setSocialIdentities(socialIdentities);
 		lessor.setUserAccount(userAccount);
 		lessor.setComments(comments);
+		lessor.setAccumulatedCharges(accumulatedCharges);
 
 		return lessor;
 	}
@@ -142,6 +144,14 @@ public class LessorForm {
 
 	public void setProperties(Collection<Property> properties) {
 		this.properties = properties;
+	}
+
+	public double getAccumulatedCharges() {
+		return accumulatedCharges;
+	}
+
+	public void setAccumulatedCharges(double accumulatedCharges) {
+		this.accumulatedCharges = accumulatedCharges;
 	}
 
 	@NotBlank
