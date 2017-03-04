@@ -85,6 +85,7 @@
 		<security:intercept-url pattern="/socialIdentity/edit.do" access="isAuthenticated()" />
 
 		<security:intercept-url pattern="/tenant/create.do" access="isAnonymous()" />
+		<security:intercept-url pattern="/tenant/tenant/edit.do" access="hasRole('TENANT')" />
 		
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
