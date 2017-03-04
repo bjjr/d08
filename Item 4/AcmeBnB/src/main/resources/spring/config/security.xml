@@ -43,7 +43,7 @@
 
 		<security:intercept-url pattern="/legal/**" access="permitAll" />
 		
-		<security:intercept-url pattern="/lessor/*" access="permitAll" />
+		<security:intercept-url pattern="/lessor/**" access="isAnonymous()" />
 	
 		<security:intercept-url pattern="/property/ownList.do" access="hasRole('LESSOR')" />
 		<security:intercept-url pattern="/property/list.do" access="permitAll" />
@@ -84,7 +84,7 @@
 		<security:intercept-url pattern="/socialIdentity/create.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/socialIdentity/edit.do" access="isAuthenticated()" />
 
-		<security:intercept-url pattern="/tenant/create.do" access="permitAll" />
+		<security:intercept-url pattern="/tenant/create.do" access="isAnonymous()" />
 		
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
