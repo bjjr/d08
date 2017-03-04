@@ -214,7 +214,6 @@
 		<property name="phone" value="+34000000000" />
 		<property name="picture" value="http://photo.com" />
 		<property name="userAccount" ref="userAccountL3" />
-		<property name="creditCard" ref="creditCard2"/>
 		<property name="socialIdentities">
 			<list></list>
 		</property>
@@ -267,14 +266,6 @@
 	<bean id="status3" class="domain.Status">
 		<property name="name" value="DENIED" />
 	</bean>
-	
-	<bean id="status4" class="domain.Status">
-		<property name="name" value="DENIED" />
-	</bean>
-	
-	<bean id="status5" class="domain.Status">
-		<property name="name" value="DENIED" />
-	</bean>
 
 	<!-- FINDERS -->
 
@@ -307,14 +298,6 @@
 		<property name="number" value="4929890168968091" />
 		<property name="expiryDate" value="02/02/2018 00:00" />
 		<property name="cvv" value="113" />
-	</bean>
-	
-	<bean id="creditCard2" class="domain.CreditCard">
-		<property name="holderName" value="holderName2" />
-		<property name="brandName" value="brandName2" />
-		<property name="number" value="4929890168968091" />
-		<property name="expiryDate" value="02/02/2018 00:00" />
-		<property name="cvv" value="133" />
 	</bean>
 
 	<!-- PROPERTIES -->
@@ -717,7 +700,7 @@
 		<property name="smoker" value="false" />
 		<property name="tenant" ref="tenant1" />
 		<property name="property" ref="property2" />
-		<property name="status" ref="status4" />
+		<property name="status" ref="status1" />
 	</bean>
 	
 	<bean id="book5" class="domain.Book">
@@ -726,7 +709,7 @@
 		<property name="smoker" value="false" />
 		<property name="tenant" ref="tenant1" />
 		<property name="property" ref="property1" />
-		<property name="status" ref="status5" />
+		<property name="status" ref="status1" />
 	</bean>
 
 	<!-- COMMENTS -->
