@@ -34,7 +34,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.lessor" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="lessor/comment/list.do"><spring:message code="master.page.lessor.list.comment" /></a></li>
+					<li><a href="comment/list.do"><spring:message code="master.page.lessor.list.comment" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
@@ -43,7 +43,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.tenant" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="tenant/comment/list.do"><spring:message code="master.page.tenant.list.comment" /></a></li>
+					<li><a href="comment/list.do"><spring:message code="master.page.tenant.list.comment" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
