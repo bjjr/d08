@@ -22,22 +22,25 @@
 
 <form:form action="tenant/create.do" modelAttribute="tenantForm">
 
-	<form:hidden path="tenant.id" />
-	<form:hidden path="tenant.version" />
-	<form:hidden path="tenant.invoices" />
-	<form:hidden path="tenant.finder" />
-	<form:hidden path="tenant.books" />
-	<form:hidden path="tenant.creditCard" />
+	<form:hidden path="id" />
+	<form:hidden path="version" />
+	<form:hidden path="invoices" />
+	<form:hidden path="finder" />
+	<form:hidden path="books" />
+	<form:hidden path="creditCard" />
+	<form:hidden path="socialIdentities" />
+	<form:hidden path="userAccount.authorities" />
+	<form:hidden path="comments" />
 	
-	<acme:textbox code="tenant.name" path="tenant.name" />
-	<acme:textbox code="tenant.surname" path="tenant.surname" />
-	<acme:textbox code="tenant.email" path="tenant.email" />
-	<acme:textbox code="tenant.phone" path="tenant.phone" />
-	<acme:textbox code="tenant.picture" path="tenant.picture" />
+	<acme:textbox code="tenant.name" path="name" />
+	<acme:textbox code="tenant.surname" path="surname" />
+	<acme:textbox code="tenant.email" path="email" />
+	<acme:textbox code="tenant.phone" path="phone" />
+	<acme:textbox code="tenant.picture" path="picture" />
 	
 	<br />
-	<acme:textbox code="tenant.userAccount.username" path="tenant.userAccount.username" />
-	<acme:password code="tenant.userAccount.password" path="tenant.userAccount.password" />
+	<acme:textbox code="tenant.userAccount.username" path="userAccount.username" />
+	<acme:password code="tenant.userAccount.password" path="userAccount.password" />
 	<acme:password code="tenant.userAccount.confirmPassword" path="confirmPassword" />
 	
 	<br />
