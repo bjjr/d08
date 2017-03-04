@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.LessorRepository;
 import security.LoginService;
 import security.UserAccount;
 import domain.Lessor;
 import domain.Property;
+import forms.LessorForm;
 
 @Service
 @Transactional
@@ -24,13 +26,16 @@ public class LessorService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private LessorRepository	lessorRepository;
-
+	private LessorRepository		lessorRepository;
 
 	// Supporting services ----------------------------------
 
-	//	@Autowired
-	//TODO	private UserAccountService	UserAccountService;
+	@Autowired
+	private ConsumerActorService	consumerActorService;
+
+	@Autowired
+	private Validator				validator;
+
 
 	// Constructors -----------------------------------------
 
@@ -40,10 +45,10 @@ public class LessorService {
 
 	// Simple CRUD methods ----------------------------------
 
-	public Lessor findOne(int lessorID) {
+	public Lessor findOne(int lessorId) {
 		Lessor result;
 
-		result = lessorRepository.findOne(lessorID);
+		result = lessorRepository.findOne(lessorId);
 		Assert.notNull(result);
 
 		return result;
@@ -63,8 +68,7 @@ public class LessorService {
 
 		result = new Lessor();
 
-		//TODO
-
+		consumerActorService.setConsumerActorProperties(result);
 		result.setProperties(new ArrayList<Property>());
 
 		return result;
@@ -105,6 +109,30 @@ public class LessorService {
 	}
 
 	// Other business methods -------------------------------
+
+	public Lessor reconstruct(LessorForm lessor, BindingResult binding) {
+		Lessor result;
+
+		if (lessor.getLessor().getId() == 0) {
+			result = lessor.getLessor();
+		} else {
+			result = lessorRepository.findOne(lessor.getLessor().getId());
+
+			result.setName(lessor.getLessor().getName());
+			result.setSurname(lessor.getLessor().getSurname());
+			result.setEmail(lessor.getLessor().getEmail());
+			result.setPhone(lessor.getLessor().getPhone());
+			result.setPicture(lessor.getLessor().getPicture());
+
+			result.getUserAccount().setUsername(lessor.getLessor().getUserAccount().getUsername());
+			result.getUserAccount().setPassword(lessor.getLessor().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+
+		}
+
+		return result;
+	}
 
 	public Double avgAcceptedPerLessor() {
 		Double avg;

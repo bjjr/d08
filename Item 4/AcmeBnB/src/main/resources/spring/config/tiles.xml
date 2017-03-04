@@ -26,11 +26,13 @@
 		<value>/views/audit/tiles.xml</value>
 		<value>/views/auditor/tiles.xml</value>
 		<value>/views/creditcard/tiles.xml</value>
+		<value>/views/fee/tiles.xml</value>
 		<value>/views/finder/tiles.xml</value>
 		<value>/views/legal/tiles.xml</value>
 		<value>/views/lessor/tiles.xml</value>
 		<value>/views/master-page/tiles.xml</value>		
 		<value>/views/misc/tiles.xml</value>		
+		<value>/views/property/tiles.xml</value>
 		<value>/views/security/tiles.xml</value>
 		<value>/views/socialIdentity/tiles.xml</value>
 		<value>/views/tenant/tiles.xml</value>

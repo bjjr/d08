@@ -40,6 +40,7 @@ public class SocialIdentity extends DomainEntity {
 	}
 
 	@URL
+	@NotBlank
 	public String getUrlSN() {
 		return urlSN;
 	}
