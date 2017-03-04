@@ -130,7 +130,7 @@ public class BookTenantController extends AbstractController {
 		
 		result = new ModelAndView("book/edit");
 		result.addObject("book", book);
-		result.addObject("msg", message);
+		result.addObject("message", message);
 
 		return result;
 	}
