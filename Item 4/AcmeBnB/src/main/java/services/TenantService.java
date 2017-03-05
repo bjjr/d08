@@ -4,12 +4,13 @@ package services;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.TenantRepository;
 import security.Authority;
@@ -19,15 +20,21 @@ import domain.Book;
 import domain.CreditCard;
 import domain.Finder;
 import domain.Invoice;
-import domain.SocialIdentity;
 import domain.Tenant;
+import forms.TenantForm;
 
 @Service
 @Transactional
 public class TenantService {
 
 	@Autowired
-	private TenantRepository	tenantRepository;
+	private TenantRepository		tenantRepository;
+
+	@Autowired
+	private ConsumerActorService	consumerActorService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	public Tenant create() {
@@ -40,12 +47,8 @@ public class TenantService {
 		userAccount.setPassword("");
 
 		tenant = new Tenant();
-		tenant.setName("");
-		tenant.setSurname("");
-		tenant.setEmail("");
-		tenant.setPhone("");
-		tenant.setPicture("");
-		tenant.setSocialIdentities(new ArrayList<SocialIdentity>());
+		consumerActorService.setConsumerActorProperties(tenant);
+
 		tenant.setUserAccount(userAccount);
 
 		tenant.setCreditCard(new CreditCard());
@@ -65,7 +68,7 @@ public class TenantService {
 		Tenant result, authenticatedTenant;
 		Assert.notNull(tenant);
 
-		if (tenant.getId() == 0) {
+		if (tenant.getId() != 0) {
 			authenticatedTenant = findByPrincipal();
 			Assert.isTrue(tenant.equals(authenticatedTenant));
 		} else {
@@ -78,6 +81,58 @@ public class TenantService {
 		return result;
 	}
 
+	@Transactional(readOnly = true)
+	public Tenant reconstruct(TenantForm tenantForm, BindingResult binding) {
+		Tenant result;
+
+		if (tenantForm.getTenant().getId() == 0) {
+			result = tenantForm.getTenant();
+		} else {
+			Tenant aux = findByPrincipal();
+			result = tenantForm.getTenant();
+
+			result.setInvoices(aux.getInvoices());
+			result.setFinder(aux.getFinder());
+			result.setBooks(aux.getBooks());
+			result.setCreditCard(aux.getCreditCard());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
+
+			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
+			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+		}
+
+		return result;
+	}
+
+	public Tenant reconstruct(Tenant tenant, BindingResult binding) {
+		Tenant result;
+
+		if (tenant.getId() == 0) {
+			result = tenant;
+		} else {
+			Tenant aux = findByPrincipal();
+			result = tenant;
+
+			result.setInvoices(aux.getInvoices());
+			result.setFinder(aux.getFinder());
+			result.setBooks(aux.getBooks());
+			result.setCreditCard(aux.getCreditCard());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
+
+			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
+			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+		}
+
+		return result;
+	}
 	public Tenant findOne(int id) {
 		return tenantRepository.findOne(id);
 	}
@@ -92,6 +147,28 @@ public class TenantService {
 
 	public Tenant findByPrincipal() {
 		return tenantRepository.findByUserAccount(LoginService.getPrincipal().getId());
+	}
+
+	// Other business methods -------------------------------
+
+	public Double avgAcceptedPerTenant() {
+		return tenantRepository.avgAcceptedPerTenant();
+	}
+
+	public Double avgDeniedPerTenant() {
+		return tenantRepository.avgDeniedPerTenant();
+	}
+
+	public Collection<Tenant> tenantsMoreRequestsApproved() {
+		return tenantRepository.tenantsMoreRequestsApproved();
+	}
+
+	public Collection<Tenant> tenantsMoreRequestsDenied() {
+		return tenantRepository.tenantsMoreRequestsDenied();
+	}
+
+	public Collection<Tenant> tenantsMoreRequestsPending() {
+		return tenantRepository.tenantsMoreRequestsPending();
 	}
 
 	public String hashCodePassword(String password) {

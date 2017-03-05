@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.FinderRepository;
 import domain.Finder;
+import domain.Property;
 import domain.Tenant;
 
 @Service
@@ -37,23 +38,22 @@ public class FinderService {
 	}
 
 	public Finder save(Finder finder) {
-		Finder result;
+		Finder result, originalFinder;
 		Tenant tenant;
 
-		Assert.notNull(finder);
+		originalFinder = finderRepository.findOne(finder.getId());
+		Assert.notNull(originalFinder);
+
 		tenant = tenantService.findByPrincipal();
 		Assert.notNull(tenant);
 
-		// Only the logged Tenant can edit his Finder
-		if (finder.getId() != 0) {
-			Assert.isTrue(tenant.getFinder().getId() == finder.getId());
-		}
+		Assert.isTrue(tenant.getFinder().equals(originalFinder));
 
 		result = finderRepository.save(finder);
 		Assert.notNull(result);
+
 		return result;
 	}
-
 	public Finder findOne(int id) {
 		return finderRepository.findOne(id);
 	}
@@ -64,6 +64,28 @@ public class FinderService {
 
 	public void flush() {
 		finderRepository.flush();
+	}
+
+	// Other business methods -------------------------------
+
+	public Finder findByPrincipal() {
+		return finderRepository.findByPrincipal(tenantService.findByPrincipal().getId());
+	}
+
+	public Collection<Property> resultsPerFinder(Finder finder) {
+		return finderRepository.resultsPerFinder(finder.getKeyword(), finder.getMinPrice(), finder.getMaxPrice());
+	}
+
+	public Double avgResultsPerFinder() {
+		return finderRepository.avgResultsPerFinder();
+	}
+
+	public Double maxResultsPerFinder() {
+		return finderRepository.maxResultsPerFinder();
+	}
+
+	public Double minResultsPerFinder() {
+		return finderRepository.minResultsPerFinder();
 	}
 
 }
