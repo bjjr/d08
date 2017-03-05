@@ -73,7 +73,7 @@ public class FinderService {
 		return finderRepository.findByPrincipal(tenantService.findByPrincipal().getId());
 	}
 
-	@Cacheable("propertiesPerFinder")
+	@Cacheable(value = "propertiesPerFinder", key = "#finder.id")
 	public Collection<Property> resultsPerFinder(Finder finder) {
 		return finderRepository.resultsPerFinder(finder.getKeyword(), finder.getMinPrice(), finder.getMaxPrice());
 	}
