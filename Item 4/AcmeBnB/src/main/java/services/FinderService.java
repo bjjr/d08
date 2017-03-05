@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -72,6 +73,7 @@ public class FinderService {
 		return finderRepository.findByPrincipal(tenantService.findByPrincipal().getId());
 	}
 
+	@Cacheable("propertiesPerFinder")
 	public Collection<Property> resultsPerFinder(Finder finder) {
 		return finderRepository.resultsPerFinder(finder.getKeyword(), finder.getMinPrice(), finder.getMaxPrice());
 	}
