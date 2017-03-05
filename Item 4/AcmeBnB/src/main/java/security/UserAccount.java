@@ -1,11 +1,11 @@
-/* UserAccount.java
- *
+/*
+ * UserAccount.java
+ * 
  * Copyright (C) 2017 Universidad de Sevilla
  * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
+ * The use of this project is hereby constrained to the conditions of the
+ * TDG Licence, a copy of which you may download from
  * http://www.tdg-seville.info/License.html
- * 
  */
 
 package security;
@@ -18,6 +18,8 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -30,11 +32,15 @@ import domain.DomainEntity;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@Index(columnList = "username")
+})
 public class UserAccount extends DomainEntity implements UserDetails {
 
 	// Constructors -----------------------------------------------------------
 
-	private static final long serialVersionUID = 7254823034213841482L;
+	private static final long	serialVersionUID	= 7254823034213841482L;
+
 
 	public UserAccount() {
 		super();
@@ -42,13 +48,15 @@ public class UserAccount extends DomainEntity implements UserDetails {
 		this.authorities = new ArrayList<Authority>();
 	}
 
+
 	// Attributes -------------------------------------------------------------
 
 	// UserDetails interface --------------------------------------------------
 
-	private String username;
-	private String password;
-	private Collection<Authority> authorities;
+	private String					username;
+	private String					password;
+	private Collection<Authority>	authorities;
+
 
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
@@ -94,7 +102,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	public void removeAuthority(Authority authority) {
 		Assert.notNull(authority);
 		Assert.isTrue(authorities.contains(authority));
-		
+
 		authorities.remove(authority);
 	}
 
