@@ -146,6 +146,30 @@ public class LessorService {
 		return result;
 	}
 
+	public Lessor reconstruct(Lessor lessor, BindingResult binding) {
+		Lessor result;
+
+		if (lessor.getId() == 0) {
+			result = lessor;
+		} else {
+			Lessor aux = findByPrincipal();
+			result = lessor;
+
+			result.setProperties(aux.getProperties());
+			result.setAccumulatedCharges(aux.getAccumulatedCharges());
+			result.setCreditCard(aux.getCreditCard());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
+
+			//result.getUserAccount().setUsername(lessorForm.getLessor().getUserAccount().getUsername());
+			//result.getUserAccount().setPassword(lessorForm.getLessor().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+		}
+
+		return result;
+	}
 	public Double avgAcceptedPerLessor() {
 		Double avg;
 
@@ -227,6 +251,56 @@ public class LessorService {
 		result = encoder.encodePassword(password, null);
 
 		return result;
+	}
+
+	//	@Query("select p from Property p where p.lessor.id=?1 order by p.audits.size desc")
+	public List<Property> propertiesSortedByAudits(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByAudits(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p where p.lessor.id=?1 order by p.books.size desc")
+	public List<Property> propertiesSortedByBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p join p.books b where b.status.name = 'ACCEPTED' AND p.lessor.id = 15 order by b.size")
+	public List<Property> propertiesSortedByAcceptedBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByAcceptedBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p join p.books b where b.status.name = 'DENIED' AND p.lessor.id = 15 order by b.size")
+	public List<Property> propertiesSortedByDeniedBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByDeniedBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p join p.books b where b.status.name = 'PENDING' AND p.lessor.id = 15 order by b.size")
+	public List<Property> propertiesSortedByPendingBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByPendingBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
 	}
 
 }
