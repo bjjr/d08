@@ -56,7 +56,7 @@ public class FinderTenantController extends AbstractController {
 		finder = finderService.findByPrincipal();
 		Assert.notNull(finder);
 
-		properties = finderService.resultsPerFinder();
+		properties = finderService.resultsPerFinder(finder);
 
 		result = new ModelAndView("finder/results");
 		result.addObject("properties", properties);

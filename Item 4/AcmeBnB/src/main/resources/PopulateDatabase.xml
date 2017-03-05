@@ -273,21 +273,21 @@
 		<property name="destinationCity" value="Madrid" />
 		<property name="minPrice" value="5.0" />
 		<property name="maxPrice" value="30.99" />
-		<property name="keyword" value="barato" />
+		<property name="keyword" value="property" />
 	</bean>
 	
 	<bean id="finder2" class="domain.Finder">
 		<property name="destinationCity" value="Sevilla" />
 		<property name="minPrice" value="10.0" />
 		<property name="maxPrice" value="32.99" />
-		<property name="keyword" value="bueno" />
+		<property name="keyword" value="property" />
 	</bean>
 	
 	<bean id="finder3" class="domain.Finder">
 		<property name="destinationCity" value="Málaga" />
 		<property name="minPrice" value="8.0" />
 		<property name="maxPrice" value="32.59" />
-		<property name="keyword" value="bonito" />
+		<property name="keyword" value="property" />
 	</bean>
 
 	<!-- CREDITCARDS -->

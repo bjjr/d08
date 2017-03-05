@@ -72,8 +72,8 @@ public class FinderService {
 		return finderRepository.findByPrincipal(tenantService.findByPrincipal().getId());
 	}
 
-	public Collection<Property> resultsPerFinder() {
-		return finderRepository.resultsPerFinder(findByPrincipal().getId());
+	public Collection<Property> resultsPerFinder(Finder finder) {
+		return finderRepository.resultsPerFinder(finder.getKeyword(), finder.getMinPrice(), finder.getMaxPrice());
 	}
 
 	public Double avgResultsPerFinder() {
