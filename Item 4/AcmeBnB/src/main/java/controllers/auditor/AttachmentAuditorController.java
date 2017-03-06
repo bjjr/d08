@@ -3,11 +3,8 @@ package controllers.auditor;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +24,8 @@ public class AttachmentAuditorController extends AbstractController {
 	@Autowired
 	private AttachmentService	attachmentService;
 
+	private int					auditId;
+
 
 	// Constructors -------------------------------------------
 
@@ -37,12 +36,13 @@ public class AttachmentAuditorController extends AbstractController {
 	// Creating -----------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam int auditId) {
 		ModelAndView result;
 		Attachment attachment;
 
 		attachment = attachmentService.create();
 		result = createEditModelAndView(attachment);
+		result.addObject("auditId", auditId);
 
 		return result;
 	}
@@ -50,27 +50,31 @@ public class AttachmentAuditorController extends AbstractController {
 	// Edition -----------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int attachmentId) {
+	public ModelAndView edit(@RequestParam int attachmentId, @RequestParam int auditId) {
 		ModelAndView result;
 		Attachment attachment;
 
-		attachment = attachmentService.findOne(attachmentId);
-		Assert.notNull(attachment);
+		attachment = attachmentService.findOneToEdit(attachmentId, auditId);
+		setAuditId(auditId);
+
 		result = createEditModelAndView(attachment);
+		result.addObject("auditId", auditId);
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid Attachment attachment, BindingResult binding) {
+	public ModelAndView save(Attachment attachment, BindingResult binding) {
 		ModelAndView result;
+
+		attachment = attachmentService.reconstruct(attachment, getAuditId(), binding);
 
 		if (binding.hasErrors()) {
 			result = createEditModelAndView(attachment);
 		} else {
 			try {
 				attachmentService.save(attachment);
-				result = new ModelAndView("redirect:list.do");
+				result = new ModelAndView("redirect:/attachment/list.do?auditId=" + getAuditId());
 			} catch (Throwable oops) {
 				result = createEditModelAndView(attachment, "attachment.commit.error");
 			}
@@ -85,7 +89,7 @@ public class AttachmentAuditorController extends AbstractController {
 
 		try {
 			attachmentService.delete(attachment);
-			result = new ModelAndView("redirect:list.do");
+			result = new ModelAndView("redirect:/attachment/list.do?auditId=" + getAuditId());
 		} catch (Throwable oops) {
 			result = createEditModelAndView(attachment, "attachment.commit.error");
 		}
@@ -94,6 +98,14 @@ public class AttachmentAuditorController extends AbstractController {
 	}
 
 	// Ancillary methods -------------------------------------
+
+	public int getAuditId() {
+		return auditId;
+	}
+
+	public void setAuditId(int auditId) {
+		this.auditId = auditId;
+	}
 
 	protected ModelAndView createEditModelAndView(Attachment attachment) {
 		ModelAndView result;
@@ -109,7 +121,7 @@ public class AttachmentAuditorController extends AbstractController {
 
 		attachments = attachmentService.findAll();
 
-		result = new ModelAndView("audit/edit");
+		result = new ModelAndView("attachment/edit");
 		result.addObject("attachment", attachment);
 		result.addObject("attachments", attachments);
 		result.addObject("message", message);

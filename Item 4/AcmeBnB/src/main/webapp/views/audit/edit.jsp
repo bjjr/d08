@@ -11,15 +11,10 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
+	<form:hidden path="momentWritten"/>
 	<form:hidden path="draft"/>
-	<form:hidden path="auditor"/>
-	<form:hidden path="property"/>
-	
-	<acme:textbox code="audit.momentWritten" path="momentWritten" readonly="true"/>
-	<br />
 	
 	<acme:textarea code="audit.text" path="text"/>
-	<br />
 	
 	<!-- Buttons -->
 	
@@ -29,13 +24,15 @@
 	
 	<acme:submit name="saveAsDraft" code="audit.saveAsDraft"/>
 		
-	<jstl:if test="${audit.id != 0 && audit.draft == true}">
-		<input type="submit" name="delete"
-			value="<spring:message code="audit.delete" />"
-			onclick="return confirm('<spring:message code="audit.confirm.delete" />')" />&nbsp;
+	<acme:delete confirmationCode="audit.confirm.delete" buttonCode="audit.delete" id="${audit.id}"/>
+	
+	<jstl:if test="${audit.id == 0}">
+		<acme:cancel url="property/list.do" code="audit.cancel"/>
 	</jstl:if>
 	
-	<acme:cancel url="audit/auditor/list.do" code="audit.cancel"/>
+	<jstl:if test="${audit.id != 0}">
+		<acme:cancel url="audit/auditor/list.do" code="audit.cancel"/>
+	</jstl:if>
 	<br />
 
 </form:form>

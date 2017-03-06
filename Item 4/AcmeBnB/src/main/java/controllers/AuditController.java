@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AuditService;
-import services.PropertyService;
+import domain.Attachment;
 import domain.Audit;
-import domain.Property;
 
 @Controller
 @RequestMapping("/audit")
@@ -24,9 +23,6 @@ public class AuditController extends AbstractController {
 
 	@Autowired
 	private AuditService	auditService;
-
-	@Autowired
-	private PropertyService	propertyService;
 
 
 	// Constructors -------------------------------------------
@@ -38,14 +34,12 @@ public class AuditController extends AbstractController {
 	// Listing ------------------------------------------------
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam int auditId) {
+	public ModelAndView list(@RequestParam int propertyId) {
 		ModelAndView result;
 		Collection<Audit> audits;
-		Property property;
 		Boolean isAuditor;
 
-		property = propertyService.findOne(auditId);
-		audits = property.getAudits();
+		audits = auditService.findAuditsPublishedByProperty(propertyId);
 		isAuditor = false;
 
 		result = new ModelAndView("audit/list");
@@ -62,13 +56,16 @@ public class AuditController extends AbstractController {
 	public ModelAndView display(@RequestParam int auditId) {
 		ModelAndView result;
 		Audit audit;
+		Collection<Attachment> attachments;
 
 		audit = auditService.findOne(auditId);
 		Assert.notNull(audit);
+		attachments = auditService.findAttachmentsByAudit(auditId);
 
 		result = new ModelAndView("audit/display");
 		result.addObject("audit", audit);
-		result.addObject("requestURI", "audit/auditor/display.do");
+		result.addObject("attachments", attachments);
+		result.addObject("requestURI", "audit/display.do");
 
 		return result;
 	}
