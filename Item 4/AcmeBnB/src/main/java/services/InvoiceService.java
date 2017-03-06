@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.InvoiceRepository;
@@ -100,5 +99,14 @@ public class InvoiceService {
 
 	public Double findMaxInvoicesOfTenants() {
 		return invoiceRepository.findMaxInvoicesOfTenants();
+	}
+
+	public Double totalMoney() {
+		Double result;
+
+		result = invoiceRepository.totalMoney();
+		Assert.notNull(result);
+
+		return result;
 	}
 }

@@ -3,12 +3,12 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.transaction.Transactional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
@@ -152,6 +152,32 @@ public class TenantService {
 		result = encoder.encodePassword(password, null);
 
 		return result;
+	}
+
+	public Tenant tenantMaxRatio() {
+		List<Tenant> tenants;
+		Tenant tenant;
+
+		tenants = (List<Tenant>) tenantRepository.tenantMaxRatio();
+		Assert.notNull(tenants);
+
+		tenant = tenants.get(tenants.size() - 1);
+		Assert.notNull(tenant);
+
+		return tenant;
+	}
+
+	public Tenant tenantMinRatio() {
+		List<Tenant> tenants;
+		Tenant tenant;
+
+		tenants = (List<Tenant>) tenantRepository.tenantMinRatio();
+		Assert.notNull(tenants);
+
+		tenant = tenants.get(tenants.size() - 1);
+		Assert.notNull(tenant);
+
+		return tenant;
 	}
 
 }

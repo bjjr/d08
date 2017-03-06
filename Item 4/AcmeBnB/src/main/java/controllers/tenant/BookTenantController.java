@@ -30,25 +30,23 @@ public class BookTenantController extends AbstractController {
 
 	@Autowired
 	private BookService		bookService;
-	
+
 	@Autowired
-	private PropertyService propertyService;
-	
-	
+	private PropertyService	propertyService;
+
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam int propertyId) {
 		ModelAndView result;
 		Book book;
 
-		
 		Property property = propertyService.findOne(propertyId);
 		book = bookService.create(property);
-		
+
 		result = createEditModelAndView(book);
-		
+
 		return result;
 	}
-
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView display() {
@@ -67,42 +65,42 @@ public class BookTenantController extends AbstractController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int bookId){
+	public ModelAndView edit(@RequestParam int bookId) {
 		ModelAndView view = new ModelAndView("book/edit");
-		
+
 		Book book = bookService.findOne(bookId);
 		Assert.notNull(book);
 		Assert.isTrue(book.getTenant().equals(tenantService.findByPrincipal()), "You are just allowed to edit your own requests");
-		
+
 		view.addObject("book", book);
-		
+
 		return view;
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Book book, BindingResult bindingResult){
+	public ModelAndView save(Book book, BindingResult bindingResult) {
 		ModelAndView result;
 
 		Book book_reconstructed = bookService.reconstruct(book, bindingResult);
-		
-		if (bindingResult.hasErrors()){
+
+		if (bindingResult.hasErrors()) {
 			result = createEditModelAndView(book_reconstructed);
 		} else {
 			try {
 				bookService.save(book_reconstructed);
 				result = new ModelAndView("redirect:list.do");
 			} catch (IllegalArgumentException oops) {
-				result = createEditModelAndView(book_reconstructed, "misc.commit.error");				
+				result = createEditModelAndView(book_reconstructed, "misc.commit.error");
 			}
 		}
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Book book, BindingResult bindingResult){
+	public ModelAndView delete(Book book, BindingResult bindingResult) {
 		ModelAndView res;
 
 		try {
@@ -114,20 +112,18 @@ public class BookTenantController extends AbstractController {
 
 		return res;
 	}
-	
-	
-	
+
 	protected ModelAndView createEditModelAndView(Book book) {
 		ModelAndView result;
 
 		result = createEditModelAndView(book, null);
-		
+
 		return result;
-	}	
-	
+	}
+
 	protected ModelAndView createEditModelAndView(Book book, String message) {
 		ModelAndView result;
-		
+
 		result = new ModelAndView("book/edit");
 		result.addObject("book", book);
 		result.addObject("message", message);

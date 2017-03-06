@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
@@ -18,6 +17,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Lessor;
 import domain.Property;
+import forms.LessorForm;
 
 @Service
 @Transactional
@@ -110,25 +110,28 @@ public class LessorService {
 
 	// Other business methods -------------------------------
 
-	public Lessor reconstruct(Lessor lessor, BindingResult bindingResult) {
+	public Lessor reconstruct(LessorForm lessor, BindingResult binding) {
 		Lessor result;
 
-		if (lessor.getId() == 0) {
-			result = lessor;
+		if (lessor.getLessor().getId() == 0) {
+			result = lessor.getLessor();
 		} else {
-			result = lessorRepository.findOne(lessor.getId());
+			result = lessorRepository.findOne(lessor.getLessor().getId());
 
-			result.setName(lessor.getName());
-			result.setSurname(lessor.getSurname());
-			result.setEmail(lessor.getEmail());
-			result.setPhone(lessor.getPhone());
-			result.setPicture(lessor.getPicture());
+			result.setName(lessor.getLessor().getName());
+			result.setSurname(lessor.getLessor().getSurname());
+			result.setEmail(lessor.getLessor().getEmail());
+			result.setPhone(lessor.getLessor().getPhone());
+			result.setPicture(lessor.getLessor().getPicture());
 
-			validator.validate(result, bindingResult);
+			result.getUserAccount().setUsername(lessor.getLessor().getUserAccount().getUsername());
+			result.getUserAccount().setPassword(lessor.getLessor().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
+
 		}
 
 		return result;
-
 	}
 
 	public Double avgAcceptedPerLessor() {
@@ -151,70 +154,55 @@ public class LessorService {
 		return avg;
 	}
 
-	public String lessorMaxNumApproved() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumApproved() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumApproved();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public String lessorMaxNumPending() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumPending() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumPending();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
-	public String lessorMaxNumDenied() {
-		List<Object[]> lessors;
-		Lessor lessor;
-		String lessorName;
+	public Collection<Lessor> lessorNumDenied() {
+		Collection<Lessor> lessors;
 
 		lessors = lessorRepository.lessorsOrderByNumDenied();
-
 		Assert.notNull(lessors);
 
-		lessor = (Lessor) lessors.get(0)[0];
-
-		Assert.notNull(lessor);
-
-		lessorName = lessor.getName();
-
-		Assert.notNull(lessorName);
-
-		return lessorName;
+		return lessors;
 	}
 
 	public Lessor lessorMaxRatio() {
+		List<Lessor> lessors;
 		Lessor lessor;
 
-		lessor = lessorRepository.lessorMaxRatio();
+		lessors = (List<Lessor>) lessorRepository.lessorMaxRatio();
+		Assert.notNull(lessors);
+
+		lessor = lessors.get(lessors.size() - 1);
+		Assert.notNull(lessor);
+
+		return lessor;
+	}
+
+	public Lessor lessorMinRatio() {
+		List<Lessor> lessors;
+		Lessor lessor;
+
+		lessors = (List<Lessor>) lessorRepository.lessorMinRatio();
+		Assert.notNull(lessors);
+
+		lessor = lessors.get(lessors.size() - 1);
+		Assert.notNull(lessor);
 
 		return lessor;
 	}
