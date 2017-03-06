@@ -20,7 +20,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="lessor/edit.do" modelAttribute="lessor">
+<form:form action="lessor/create.do" modelAttribute="lessorForm">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -36,6 +36,14 @@
 	<acme:textbox code="lessor.email" path="email" />
 	<acme:textbox code="lessor.phone" path="phone" />
 	<acme:textbox code="lessor.picture" path="picture" />
+	
+	<br />
+	<acme:textbox code="lessor.userAccount.username" path="userAccount.username" />
+	<acme:password code="lessor.userAccount.password" path="userAccount.password" />
+	<acme:password code="lessor.userAccount.confirmPassword" path="confirmPassword" />
+	
+	<br />
+	<form:checkbox path="eula" /><spring:message code="lessor.eula" />
 	
 	<br /><br />
 	<acme:submit name="save" code="lessor.save"/>

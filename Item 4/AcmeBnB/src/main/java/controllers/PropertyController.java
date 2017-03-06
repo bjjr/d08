@@ -102,13 +102,19 @@ public class PropertyController {
 		ModelAndView result;
 		Property property;
 		Collection<AttributeValue> attributeValues;
+		Boolean isOwner = false;
 
 		property = propertyService.findOne(propertyId);
 		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyId);
+		if (propertyService.findAllToEdit().contains(property)) {
+			isOwner = true;
+		}
+
 		result = new ModelAndView("property/display");
 		result.addObject("requestURI", "property/display.do");
 		result.addObject("property", property);
 		result.addObject("attributes", attributeValues);
+		result.addObject("isOwner", isOwner);
 
 		return result;
 
