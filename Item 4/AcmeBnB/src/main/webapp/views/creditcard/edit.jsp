@@ -15,7 +15,15 @@
 	<acme:textbox code="creditcard.holder" path="holderName" />
 	<acme:textbox code="creditcard.brand" path="brandName" />
 	<acme:textbox code="creditcard.number" path="number"/>
-	<acme:textbox code="creditcard.expirationMonth" path="expirationMonth" />
-	<acme:textbox code="creditcard.expirationYear" path="expirationYear"/>
+	<acme:textbox code="creditcard.expiryDate" path="expiryDate" />
+	<p>
+		<spring:message code="creditcard.expiryDate.warning" var="warning"></spring:message>
+		<jstl:out value="${warning}" />
+	</p>
 	<acme:textbox code="creditcard.cvv" path="cvv" />
+	
+	<div>
+		<acme:submit name="save" code="misc.save"/>
+		<acme:cancel url="creditCard/display.do" code="misc.cancel"/>
+	</div>
 </form:form>

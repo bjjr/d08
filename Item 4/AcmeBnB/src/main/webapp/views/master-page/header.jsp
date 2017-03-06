@@ -20,55 +20,80 @@
 <div>
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
-		<security:authorize access="hasRole('ADMIN')">
-			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
+		<security:authorize access="hasRole('ADMINISTRATOR')">
+			<li><a class="fNiv"><spring:message	code="master.page.administrator" />(<security:authentication property="principal.username" />)</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>					
+					<li><a href="administrator/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
+					<li><a href="administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
+					<li><a href="attribute/list.do"><spring:message code="master.page.administrator.attributes" /></a></li>
+					<li><a href="auditor/adminitrator/create.do"><spring:message code="master.page.administrator.auditor" /></a></li>
+					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>
+					<li><a href="socialIdentity/list.do"><spring:message code="master.page.si.list" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
 		
-		<security:authorize access="hasRole('CUSTOMER')">
-			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
+		<security:authorize access="hasRole('LESSOR')">
+			<li><a class="fNiv"><spring:message	code="master.page.lessor" />(<security:authentication property="principal.username" />)</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
+					<li><a href="lessor/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
+					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
+					<li><a href="comment/create.do"><spring:message code="master.page.comment.create" /></a></li>
+					<li><a href="property/ownList.do"><spring:message code="master.page.lessor.properties.list" /></a></li>
+					<li><a href="creditCard/display.do"><spring:message code="master.page.creditCard.display" /></a></li>
+					<li><a href="book/lessor/list.do"><spring:message code="master.page.lessor.book" /></a></li>
+					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>
+					<li><a href="socialIdentity/list.do"><spring:message code="master.page.si.list" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /></a></li>
+				</ul>
+			</li>
+		</security:authorize>
+		
+		<security:authorize access="hasRole('TENANT')">
+			<li><a class="fNiv"><spring:message	code="master.page.tenant" />(<security:authentication property="principal.username" />)</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="tenant/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
+					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
+					<li><a href="comment/create.do"><spring:message code="master.page.comment.create" /></a></li>
+					<li><a href="creditCard/display.do"><spring:message code="master.page.creditCard.display" /></a></li>
+					<li><a href="finder/tenant/display.do"><spring:message code="master.page.finder.display" /></a></li>
+					<li><a href="book/tenant/list.do"><spring:message code="master.page.tenant.book" /></a></li>
+					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>
+					<li><a href="socialIdentity/list.do"><spring:message code="master.page.si.list" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
 		
 		<security:authorize access="hasRole('AUDITOR')">
-			<li><a class="fNiv"><spring:message	code="master.page.auditor" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.auditor" />(<security:authentication property="principal.username" />)</a>
 				<ul>
 					<li class="arrow"></li>
+					<li><a href="auditor/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
 					<li><a href="audit/auditor/list.do"><spring:message code="master.page.auditor.audit.list" /></a></li>
+					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>
+					<li><a href="socialIdentity/list.do"><spring:message code="master.page.si.list" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /></a></li>
 				</ul>
 			</li>
+		</security:authorize>
+		
+		<security:authorize access="isAuthenticated()">
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
-		</security:authorize>
-		
-		<security:authorize access="isAuthenticated()">
-			<li><a href="socialIdentity/list.do"><spring:message code="master.page.socialIdentities" /></a></li>
-			<li>
-				<a class="fNiv"> 
-					<spring:message code="master.page.profile" /> 
-			        (<security:authentication property="principal.username" />)
-				</a>
+			<li><a class="fNiv"><spring:message code="master.page.account" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="profile/action-1.do"><spring:message code="master.page.profile.action.1" /></a></li>
-					<li><a href="profile/action-2.do"><spring:message code="master.page.profile.action.2" /></a></li>
-					<li><a href="profile/action-3.do"><spring:message code="master.page.profile.action.3" /></a></li>					
-					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
+					<li><a href="tenant/create.do"><spring:message code="master.page.tenant.create" /></a>
+					<li><a href="lessor/create.do"><spring:message code="master.page.lessor.create" /></a>
 				</ul>
 			</li>
-			
 		</security:authorize>
 	</ul>
 </div>

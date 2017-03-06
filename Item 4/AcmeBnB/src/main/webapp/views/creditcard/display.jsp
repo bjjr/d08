@@ -16,9 +16,8 @@
 <jstl:if test="${card != null}" >
 	<acme:display code="creditcard.holder" property="${card.holderName}"/>
 	<acme:display code="creditcard.brand" property="${card.brandName}"/>
-	<acme:display code="creditcard.number" property="${card.number}"/>
-	<acme:display code="creditcard.expirationMonth" property="${card.expirationMonth}"/>
-	<acme:display code="creditcard.expirationYear" property="${card.expirationYear}"/>
+	<acme:display code="creditcard.number" property="${maskedNumber}"/>
+	<acme:display code="creditcard.expiryDate" property="${expiryDate}"/>
 	<acme:display code="creditcard.cvv" property="${card.cvv}"/>
 
 	<acme:link code="creditcard.edit" href="creditCard/edit.do?creditCardId=${card.id}" />
