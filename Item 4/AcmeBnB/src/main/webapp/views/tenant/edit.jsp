@@ -20,7 +20,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="tenant/create.do" modelAttribute="tenantForm">
+<form:form action="tenant/tenant/edit.do" modelAttribute="tenant">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -29,7 +29,7 @@
 	<form:hidden path="books" />
 	<form:hidden path="creditCard" />
 	<form:hidden path="socialIdentities" />
-	<form:hidden path="userAccount.authorities" />
+	<form:hidden path="userAccount" />
 	<form:hidden path="comments" />
 	
 	<acme:textbox code="tenant.name" path="name" />
@@ -37,14 +37,6 @@
 	<acme:textbox code="tenant.email" path="email" />
 	<acme:textbox code="tenant.phone" path="phone" />
 	<acme:textbox code="tenant.picture" path="picture" />
-	
-	<br />
-	<acme:textbox code="tenant.userAccount.username" path="userAccount.username" />
-	<acme:password code="tenant.userAccount.password" path="userAccount.password" />
-	<acme:password code="tenant.userAccount.confirmPassword" path="confirmPassword" />
-	
-	<br />
-	<form:checkbox path="eula" /><spring:message code="tenant.eula" />
 	
 	<br /><br />
 	<acme:submit name="save" code="tenant.save"/>
