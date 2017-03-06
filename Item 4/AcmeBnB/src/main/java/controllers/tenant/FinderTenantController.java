@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.FinderService;
-import services.TenantService;
 import controllers.AbstractController;
 import domain.Finder;
 import domain.Property;
@@ -23,9 +22,6 @@ import domain.Property;
 @Controller
 @RequestMapping("/finder/tenant")
 public class FinderTenantController extends AbstractController {
-
-	@Autowired
-	private TenantService	tenantService;
 
 	@Autowired
 	private FinderService	finderService;

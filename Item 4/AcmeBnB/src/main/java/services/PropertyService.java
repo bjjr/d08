@@ -206,24 +206,5 @@ public class PropertyService {
 		return result;
 
 	}
-	private void addBook(Property p, Book b) {
-		b.setProperty(p);
-		p.getBooks().add(b);
-	}
-
-	private void removeBook(Property p, Book b) {
-		b.setProperty(null);
-		p.getBooks().remove(b);
-	}
-
-	private void addAudit(Property p, Audit a) {
-		a.setProperty(p);
-		p.getAudits().add(a);
-	}
-
-	private void removeAudit(Property p, Audit a) {
-		a.setProperty(null);
-		p.getAudits().remove(a);
-	}
 
 }
