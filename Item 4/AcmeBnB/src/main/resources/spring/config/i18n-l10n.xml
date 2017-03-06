@@ -34,6 +34,7 @@
 		<value>/views/tenant/messages</value>
 		<value>/views/book/messages</value>
 		<value>/views/welcome/messages</value>
+		<value>/views/invoice/messages</value>
 		
 		
 		<value>/views/attachment/messages</value>

@@ -79,6 +79,7 @@
 					<li class="arrow"></li>
 					<li><a href="finder/tenant/display.do"><spring:message code="master.page.tenant.finder" /></a></li>	
 					<li><a href="book/tenant/list.do"><spring:message code="master.page.tenant.book" /></a></li>	
+					<li><a href="invoice/tenant/list.do"><spring:message code="master.page.tenant.invoice" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				
 				</ul>
 			</li>

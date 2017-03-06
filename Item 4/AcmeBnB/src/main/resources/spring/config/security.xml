@@ -73,6 +73,8 @@
 		
 		<security:intercept-url pattern="/finder/tenant/**" access="hasRole('TENANT')" />
 		
+		<security:intercept-url pattern="/invoice/tenant/**" access="hasRole('TENANT')" />
+		
 		<security:intercept-url pattern="/book/tenant/**" access="hasRole('TENANT')" />
 		
 		<security:intercept-url pattern="/book/lessor/**" access="hasRole('LESSOR')" />
