@@ -26,19 +26,22 @@ import domain.Tenant;
 public class BookService {
 
 	@Autowired
-	private BookRepository	bookRepository;
+	private BookRepository		bookRepository;
 
 	@Autowired
-	private TenantService	tenantService;
+	private TenantService		tenantService;
 
 	@Autowired
-	private LessorService	lessorService;
+	private LessorService		lessorService;
 
 	@Autowired
-	private StatusService	statusService;
+	private StatusService		statusService;
 
 	@Autowired
-	private Validator		validator;
+	private CreditCardService	creditCardService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	public Book create(Property property) {
@@ -93,7 +96,7 @@ public class BookService {
 
 	// Other business methods -------------------------------
 
-	public Collection<Book> findTenantBooks() {	
+	public Collection<Book> findTenantBooks() {
 		return bookRepository.findTenantBooks(tenantService.findByPrincipal().getId());
 	}
 
@@ -108,8 +111,8 @@ public class BookService {
 
 		return books;
 	}
-	
-	private Boolean checkJustABookPendingForTenant(Book book){
+
+	private Boolean checkJustABookPendingForTenant(Book book) {
 		Tenant myself = tenantService.findOne(book.getTenant().getId());
 
 		Collection<Book> tenantBooks = myself.getBooks();
@@ -129,33 +132,21 @@ public class BookService {
 
 		return true;
 	}
-	
-	private Boolean isAValidCreditCard(CreditCard creditCard){
-		Boolean res = false;
-		
-		Date currentMoment = new Date(System.currentTimeMillis());
-		
-		if(creditCard != null && creditCard.getExpiryDate().after(currentMoment)){
-			res = true;
-		}
-		
-		return res;
-	}
-	
-	public void acceptBook(int bookId){
+
+	public void acceptBook(int bookId) {
 		Book bookToAccept = this.findOne(bookId);
-		
+
 		CreditCard lessorCreditCard = bookToAccept.getProperty().getLessor().getCreditCard();
-		Assert.isTrue(isAValidCreditCard(lessorCreditCard), "You need a valid credit card in order to accept the book");
-		
+		Assert.isTrue(creditCardService.checkDatesDifference(lessorCreditCard), "You need a valid credit card in order to accept the book");
+
 		bookToAccept.setStatus(statusService.findStatus("ACCEPTED"));
-		
+
 		this.save(bookToAccept);
 	}
 
 	public void denyBook(int bookId) {
 		Book bookToAccept = this.findOne(bookId);
-		
+
 		bookToAccept.setStatus(statusService.findStatus("DENIED"));
 
 		this.save(bookToAccept);
@@ -167,18 +158,18 @@ public class BookService {
 
 		if (book.getId() == 0) {
 			result = book;
-		}else{
+		} else {
 			Book aux = bookRepository.findOne(book.getId());
 			result = book;
-			
-			if(result.getSmoker()== null){
+
+			if (result.getSmoker() == null) {
 				result.setSmoker(false); //Si el checkbox no está marcado
 			}
-			
+
 			result.setProperty(aux.getProperty());
 			result.setStatus(aux.getStatus());
 			result.setTenant(aux.getTenant());
-			
+
 			validator.validate(result, bindingResult);
 		}
 
