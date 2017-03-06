@@ -42,6 +42,7 @@
 					<li><a href="lessor/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
 					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
 					<li><a href="comment/create.do"><spring:message code="master.page.comment.create" /></a></li>
+					<li><a href="property/create.do"><spring:message code="master.page.lessor.properties.create" /></a></li>
 					<li><a href="property/ownList.do"><spring:message code="master.page.lessor.properties.list" /></a></li>
 					<li><a href="creditCard/display.do"><spring:message code="master.page.creditCard.display" /></a></li>
 					<li><a href="book/lessor/list.do"><spring:message code="master.page.lessor.book" /></a></li>
