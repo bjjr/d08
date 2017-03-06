@@ -93,8 +93,8 @@ public class BookService {
 
 	// Other business methods -------------------------------
 
-	public Collection<Book> findBooksByPrincipal() {
-		return bookRepository.findBooksByPrincipal(tenantService.findByPrincipal().getId());
+	public Collection<Book> findTenantBooks() {	
+		return bookRepository.findTenantBooks(tenantService.findByPrincipal().getId());
 	}
 
 	public Collection<Book> findLessorBooks() {

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.BookService;
+import services.FeeService;
 import services.LessorService;
 import controllers.AbstractController;
 import domain.Book;
+import domain.Fee;
 import domain.Lessor;
 
 @Controller
@@ -27,6 +29,9 @@ public class BookLessorController extends AbstractController {
 
 	@Autowired
 	private BookService		bookService;
+	
+	@Autowired
+	private FeeService feeService;
 
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -39,10 +44,19 @@ public class BookLessorController extends AbstractController {
 		Assert.notNull(lessor);
 
 		books = bookService.findLessorBooks();
-
+		
+		Fee currentFee = feeService.findFee();
+		Double feeToPay = 0.0;
+		for(Book b: books){
+			if(b.getStatus().getName().equals("ACCEPTED")){
+				feeToPay += currentFee.getValue();
+			}
+		}
+		
 		result = new ModelAndView("book/list");
 		result.addObject("requestUri", "/book/lessor/list.do");
 		result.addObject("books", books);
+		result.addObject("feeToPay", feeToPay);
 
 		return result;
 	}

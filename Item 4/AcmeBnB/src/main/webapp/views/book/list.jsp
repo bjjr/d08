@@ -56,6 +56,21 @@
 			
 			<a href="${url_edit}"><spring:message code="book.edit"/></a>
 		</display:column>
+		
+		<display:column>
+		<jstl:if test="${row.status.name == 'ACCEPTED'}">
+			<spring:url var="url_create_invoice" value="/invoice/tenant/createInvoice.do">
+				<spring:param name="bookId" value="${row.id}"/>
+			</spring:url>
+				
+			<a href="${url_create_invoice}"><spring:message code="book.create.invoice"/></a>
+		</jstl:if>
+			
+		</display:column>
 	</security:authorize>
 	
 </display:table>
+
+<security:authorize access="hasRole('LESSOR')">
+	<b><spring:message code="book.fee.topay"/> <jstl:out value="${feeToPay}" />&euro;</b>
+</security:authorize>
