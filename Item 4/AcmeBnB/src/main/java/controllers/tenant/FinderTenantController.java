@@ -23,6 +23,7 @@ import domain.Property;
 @RequestMapping("/finder/tenant")
 public class FinderTenantController extends AbstractController {
 
+
 	@Autowired
 	private FinderService	finderService;
 
