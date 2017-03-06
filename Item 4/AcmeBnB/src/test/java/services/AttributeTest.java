@@ -22,11 +22,11 @@ public class AttributeTest extends AbstractTest {
 	// Service under test --------------------------
 
 	@Autowired
-	private AttributeService	attributeService;
+	private AttributeService		attributeService;
 
+	@Autowired
+	private AttributeValueService	attributeValueService;
 
-	//	@Autowired
-	//	private AttributeValueService	attributeValueService;
 
 	// Tests ---------------------------------------
 
@@ -40,51 +40,59 @@ public class AttributeTest extends AbstractTest {
 
 	}
 
-	//	@Test
-	//	public void testSave() {
-	//		Attribute attribute, saved;
-	//
-	//		attribute = attributeService.create();
-	//
-	//		attribute.setName("prueba test");
-	//
-	//		saved = attributeService.save(attribute);
-	//
-	//		Assert.isTrue(saved.getId() != 0);
-	//		Assert.isTrue(saved.getName().equals(attribute.getName()));
-	//		Assert.isTrue(saved.getAttributeValues().equals(attribute.getAttributeValues()));
-	//
-	//	}
+	@Test
+	public void testSave() {
+		Attribute attribute, saved;
 
-	//	@Test
-	//	public void testAddAttibuteValue() {
-	//		Attribute attribute;
-	//		AttributeValue attributeValue;
-	//
-	//		attribute = attributeService.create();
-	//
-	//		attributeService.addAttributeValue(attribute, attributeValue);
-	//
-	//		Assert.notEmpty(attribute.getAttributeValues());
-	//		Assert.notNull(attributeValue);
-	//	}
-	//
-	//	@Test
-	//	public void testRemoveAttibuteValue() {
-	//		Attribute attribute;
-	//		AttributeValue attributeValue;
-	//
-	//		attribute = attributeService.create();
-	//
-	//		attributeService.addAttributeValue(attribute, attributeValue);
-	//
-	//		Assert.notEmpty(attribute.getAttributeValues());
-	//		Assert.notNull(attributeValue);
-	//
-	//		attributeService.removeAttributeValue(attribute, attributeValue);
-	//
-	//		Assert.isTrue(attribute.getAttributeValues().isEmpty());
-	//		Assert.isNull(attributeValue);
-	//	}
+		attribute = attributeService.create();
+
+		attribute.setName("prueba test");
+
+		saved = attributeService.save(attribute);
+		attributeService.flush();
+
+		Assert.isTrue(saved.getId() != 0);
+		Assert.isTrue(saved.getName().equals(attribute.getName()));
+	}
+	
+	/*
+	 * Check if an attribute gets deleted
+	 */
+
+	@Test(expected = IllegalAccessException.class)
+	public void testDelete1() {
+		Attribute attribute, saved;
+		int id;
+
+		attribute = attributeService.create();
+		attribute.setName("Test");
+
+		saved = attributeService.save(attribute);
+		attributeService.flush();
+		id = saved.getId();
+
+		attributeService.delete(saved);
+		attributeService.flush();
+
+		attributeService.findOne(id);
+	}
+	
+	/*
+	 * Check if attribute values related to an attribute get deleted
+	 */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDelete2() {
+		Attribute attribute;
+
+		attribute = attributeService.findOne(21);
+
+		attributeService.delete(attribute);
+
+		attributeService.flush();
+		attributeValueService.flush();
+
+		attributeValueService.findOne(44);
+	}
 
 }
