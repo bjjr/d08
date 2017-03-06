@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AuditRepository;
 import domain.Attachment;
@@ -32,6 +34,14 @@ public class AuditService {
 	@Autowired
 	private AttachmentService	attachmentService;
 
+	@Autowired
+	private PropertyService		propertyService;
+
+	// Validator --------------------------------------------
+
+	@Autowired
+	private Validator			validator;
+
 
 	// Constructors -----------------------------------------
 
@@ -41,10 +51,29 @@ public class AuditService {
 
 	// Simple CRUD methods ----------------------------------
 
-	public Audit create() {
+	public Audit create(int propertyId) {
 		Audit result;
+		Date momentWritten;
+		Property property;
+		Auditor auditor;
+		Boolean auditExisting;
 
+		property = propertyService.findOne(propertyId);
+		auditor = auditorService.findByPrincipal();
+		auditExisting = false;
+		for (Audit a : auditor.getAudits()) {
+			if (a.getProperty().equals(property)) {
+				auditExisting = true;
+				break;
+			}
+		}
+
+		Assert.isTrue(!auditExisting, "Cannot create an audit of this property");
 		result = new Audit();
+		momentWritten = new Date(System.currentTimeMillis() - 1000);
+		result.setMomentWritten(momentWritten);
+		result.setProperty(property);
+		result.setAuditor(auditor);
 
 		return result;
 	}
@@ -73,11 +102,15 @@ public class AuditService {
 		Audit result;
 		Auditor auditor;
 		Date momentWritten;
+		Property property;
 
 		if (audit.getId() == 0) {
 			auditor = auditorService.findByPrincipal();
 			auditor.getAudits().add(audit);
 			auditorService.save(auditor);
+			property = audit.getProperty();
+			property.getAudits().add(audit);
+			propertyService.save(property);
 		}
 
 		momentWritten = new Date(System.currentTimeMillis() - 1000);
@@ -99,12 +132,19 @@ public class AuditService {
 		Property property;
 		Collection<Attachment> attachments;
 
-		auditor = audit.getAuditor();
-		property = audit.getProperty();
+		auditor = auditorService.findByPrincipal();
+		for (Audit aud : auditor.getAudits()) {
+			if (aud.equals(audit)) {
+				property = aud.getProperty();
+				property.getAudits().remove(audit);
+				propertyService.save(property);
+				break;
+			}
+		}
 		attachments = attachmentService.findAll();
 
 		auditor.getAudits().remove(audit);
-		property.getAudits().remove(audit);
+		auditorService.save(auditor);
 
 		for (Attachment a : attachments) {
 			if (a.getAudit().equals(audit)) {
@@ -123,17 +163,30 @@ public class AuditService {
 		Audit result;
 		Auditor auditor;
 		Date momentWritten;
+		Property property;
 
 		if (audit.getId() == 0) {
 			auditor = auditorService.findByPrincipal();
 			auditor.getAudits().add(audit);
 			auditorService.save(auditor);
+			property = audit.getProperty();
+			property.getAudits().add(audit);
+			propertyService.save(property);
 		}
 
 		momentWritten = new Date(System.currentTimeMillis() - 1000);
 		audit.setMomentWritten(momentWritten);
 		audit.setDraft(true);
 		result = auditRepository.save(audit);
+
+		return result;
+	}
+
+	public Collection<Audit> findAuditsPublishedByProperty(int propertyId) {
+		Collection<Audit> result;
+
+		result = auditRepository.findAuditsPublishedByProperty(propertyId);
+		Assert.notNull(result);
 
 		return result;
 	}
@@ -173,8 +226,47 @@ public class AuditService {
 		return result;
 	}
 
+	public Audit findOneToEdit(int auditId, int propertyId) {
+		Audit result;
+		Property property;
+
+		result = findOne(auditId);
+		property = propertyService.findOne(propertyId);
+
+		Assert.notNull(result);
+		Assert.notNull(property);
+
+		Assert.isTrue(result.getProperty().equals(property));
+
+		return result;
+	}
+
 	public void flush() {
 		auditRepository.flush();
+	}
+
+	public Audit reconstruct(Audit audit, int propertyId, BindingResult binding) {
+		Audit result;
+		Auditor auditor;
+
+		if (audit.getId() == 0) {
+			Property property;
+			auditor = auditorService.findByPrincipal();
+			result = audit;
+			property = propertyService.findOne(propertyId);
+			result.setAuditor(auditor);
+			result.setProperty(property);
+		} else {
+			Audit aux;
+			aux = findOne(audit.getId());
+			result = audit;
+			result.setAuditor(aux.getAuditor());
+			result.setProperty(aux.getProperty());
+		}
+
+		validator.validate(result, binding);
+
+		return result;
 	}
 
 }

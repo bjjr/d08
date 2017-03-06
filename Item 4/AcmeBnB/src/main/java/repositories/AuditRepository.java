@@ -22,7 +22,10 @@ public interface AuditRepository extends JpaRepository<Audit, Integer> {
 	@Query("select max(p.audits.size) from Property p")
 	Double findMaxAuditsOfProperties();
 
-	@Query("select a from Attachment a where a.audit = ?1")
+	@Query("select a from Attachment a where a.audit.id = ?1")
 	Collection<Attachment> findAttachmentsByAudit(int auditId);
+
+	@Query("select a from Audit a where a.property.id = ?1 and a.draft = false")
+	Collection<Audit> findAuditsPublishedByProperty(int propertyId);
 
 }

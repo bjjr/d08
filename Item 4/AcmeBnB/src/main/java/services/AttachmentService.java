@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AttachmentRepository;
 import domain.Attachment;
+import domain.Audit;
 
 @Service
 @Transactional
@@ -20,8 +23,16 @@ public class AttachmentService {
 	@Autowired
 	private AttachmentRepository	attachmentRepository;
 
-
 	// Supporting services ----------------------------------
+
+	@Autowired
+	private AuditService			auditService;
+
+	// Validator --------------------------------------------
+
+	@Autowired
+	private Validator				validator;
+
 
 	// Constructors -----------------------------------------
 
@@ -80,6 +91,41 @@ public class AttachmentService {
 
 	public void flush() {
 		attachmentRepository.flush();
+	}
+
+	public Attachment findOneToEdit(int attachmentId, int auditId) {
+		Attachment result;
+		Audit audit;
+
+		result = findOne(attachmentId);
+		audit = auditService.findOne(auditId);
+
+		Assert.notNull(result);
+		Assert.notNull(audit);
+
+		Assert.isTrue(result.getAudit().equals(audit));
+
+		return result;
+	}
+
+	public Attachment reconstruct(Attachment attachment, int auditId, BindingResult binding) {
+		Attachment result;
+
+		if (attachment.getId() == 0) {
+			Audit audit;
+			result = attachment;
+			audit = auditService.findOne(auditId);
+			result.setAudit(audit);
+		} else {
+			Attachment aux;
+			aux = findOne(attachment.getId());
+			result = attachment;
+			result.setAudit(aux.getAudit());
+		}
+
+		validator.validate(result, binding);
+
+		return result;
 	}
 
 }

@@ -17,23 +17,30 @@
 	<display:column>
 		<jstl:if test="${isAuditor == true}">
 			<spring:message code="audit.auditOf" />
-			<jstl:out value=" " />
 			<jstl:out value="${row.property.name}" />
+			<jstl:if test="${row.draft == true}">
+				<spring:message code="audit.draft" />
+			</jstl:if>
 		</jstl:if>
 		<jstl:if test="${isAuditor == false}">
-			<spring:message code="audit.auditOf" />
-			<jstl:out value=" " />
-			<jstl:out value="${row.auditor}" />
+			<spring:message code="audit.auditBy" />
+			<jstl:out value="${row.auditor.name}" />
 		</jstl:if>
 	</display:column>
 	
 	<display:column>
-		<jstl:if test="${isAuditor == false}">
-			<a href="audit/display.do?auditId=${row.id}">
-				<spring:message code="audit.display"/>
-			</a>
-		</jstl:if>
+		<acme:link href="attachment/list.do?auditId=${row.id}" code="audit.attachments"/>
 	</display:column>
+	
+	<security:authorize access="hasAnyRole('LESSOR','TENANT','ADMINISTRATOR')">
+		<display:column>
+			<jstl:if test="${isAuditor == false}">
+				<a href="audit/display.do?auditId=${row.id}">
+					<spring:message code="audit.display"/>
+				</a>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
 	
 	<security:authorize access="hasRole('AUDITOR')">
 		<display:column>
@@ -51,7 +58,7 @@
 	
 		<display:column>
 			<jstl:if test="${row.draft == true}">
-				<a href="audit/auditor/edit.do?auditId=${row.id}">
+				<a href="audit/auditor/edit.do?auditId=${row.id}&propertyId=${row.property.id}">
 					<spring:message code="audit.edit"/>
 				</a>
 			</jstl:if>

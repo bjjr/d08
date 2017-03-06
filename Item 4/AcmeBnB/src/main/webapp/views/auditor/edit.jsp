@@ -11,6 +11,7 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
+	<form:hidden path="audit" />
 	
 	<acme:textbox code="attachment.path" path="path" />
 	<br />
@@ -21,6 +22,6 @@
 	
 	<acme:delete confirmationCode="attachment.confirm.delete" buttonCode="attachment.delete" id="${attachment.id}"/>
 	
-	<acme:cancel url="attachment/list.do?auditId=${auditId}" code="attachment.cancel"/>
+	<acme:cancel url="attachment/auditor/list.do" code="attachment.cancel"/>
 
 </form:form>

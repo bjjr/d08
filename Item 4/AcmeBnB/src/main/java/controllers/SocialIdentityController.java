@@ -86,12 +86,9 @@ public class SocialIdentityController extends AbstractController {
 		ModelAndView result;
 
 		socialIdentity = socialIdentityService.reconstruct(socialIdentity, binding);
+
 		if (binding.hasErrors()) {
 			result = createEditModelAndView(socialIdentity);
-			//			binding.rejectValue("nick", "org.hibernate.validator.constraints.NotBlank.message");
-			//			binding.rejectValue("nameSN", "org.hibernate.validator.constraints.NotBlank.message");
-			//			binding.rejectValue("urlSN", "org.hibernate.validator.constraints.NotBlank.message");
-			//			binding.rejectValue("urlSN", "org.hibernate.validator.constraints.URL.message ");
 		} else {
 			try {
 				socialIdentityService.save(socialIdentity);
@@ -103,7 +100,6 @@ public class SocialIdentityController extends AbstractController {
 
 		return result;
 	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(SocialIdentity socialIdentity, BindingResult binding) {
 		ModelAndView result;

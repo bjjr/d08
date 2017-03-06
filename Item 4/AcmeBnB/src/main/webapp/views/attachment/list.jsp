@@ -15,18 +15,30 @@
 	<!-- Attributes -->
 	
 	<acme:column code="attachment.path" property="path"/>
+	
+	<security:authorize access="hasRole('AUDITOR')">
+		<display:column>
+			<jstl:if test="${audit.draft == true}">
+				<a href="attachment/auditor/edit.do?attachmentId=${row.id}&auditId=${auditId}">
+					<spring:message code="attachment.edit"/>
+				</a>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
 
 </display:table>
 
 <br />
 
 <security:authorize access="hasRole('AUDITOR')" >
-	<input type="button" name="addAttachment"
-		value="<spring:message code="attachment.addAttachment" />"
-		onclick="window.location='attachment/auditor/edit.do'" />
+	<jstl:if test="${audit.draft == true}">
+		<input type="button" name="addAttachment"
+			value="<spring:message code="attachment.addAttachment" />"
+			onclick="window.location='attachment/auditor/create.do?auditId=${auditId}'" />
+	</jstl:if>
 </security:authorize>
 
 <input type="button" name="return"
 		value="<spring:message code="attachment.return" />"
-		onclick="window.location='property/list.do'" />
+		onclick="window.location='audit/auditor/list.do'" />
 <br />
