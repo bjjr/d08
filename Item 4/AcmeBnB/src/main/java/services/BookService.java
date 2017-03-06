@@ -144,18 +144,18 @@ public class BookService {
 	
 	public void acceptBook(int bookId){
 		Book bookToAccept = this.findOne(bookId);
-
+		
 		CreditCard lessorCreditCard = bookToAccept.getProperty().getLessor().getCreditCard();
 		Assert.isTrue(isAValidCreditCard(lessorCreditCard), "You need a valid credit card in order to accept the book");
-
+		
 		bookToAccept.setStatus(statusService.findStatus("ACCEPTED"));
-
+		
 		this.save(bookToAccept);
 	}
 
 	public void denyBook(int bookId) {
 		Book bookToAccept = this.findOne(bookId);
-
+		
 		bookToAccept.setStatus(statusService.findStatus("DENIED"));
 
 		this.save(bookToAccept);
@@ -167,7 +167,7 @@ public class BookService {
 
 		if (book.getId() == 0) {
 			result = book;
-		} else {
+		}else{
 			Book aux = bookRepository.findOne(book.getId());
 			result = book;
 			

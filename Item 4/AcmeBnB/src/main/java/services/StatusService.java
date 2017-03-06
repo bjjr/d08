@@ -25,8 +25,7 @@ public class StatusService {
 		return statusRepository.findAll();
 	}
 	
-	public Status findStatus(String statusString) {
+	public Status findStatus(String statusString){
 		return statusRepository.findStatus(statusString);
 	}
-
 }

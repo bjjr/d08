@@ -10,38 +10,20 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="administrator/edit.do" modelAttribute="administrator">
+<form:form action="administrator/administrator/edit.do" modelAttribute="administrator">
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<form:hidden path="socialIdentities"/>
 	<form:hidden path="comments"/>
-	<form:hidden path="userAccount.authorities" id="authorities"/>
-	<form:hidden path="userAccount.id"/>
-	<form:hidden path="userAccount.version"/>
+	<form:hidden path="userAccount"/>
 	
 	<acme:textbox code="administrator.name" path="name" />
-	<br /> 
-		
 	<acme:textbox code="administrator.surname" path="surname" />
-	<br /> 
-		
 	<acme:textbox code="administrator.email" path="email" />
-	<br /> 
-					
 	<acme:textbox code="administrator.phone" path="phone" />
-	<br /> 
-	
 	<acme:textbox code="administrator.picture" path="picture" />
 	<br /> 
-		
-	<acme:textbox code="userAccount.username" path="userAccount.username" />
-	<br /> 
-
-	<acme:textbox code="userAccount.password" path="userAccount.password" />
-	<br /> 
-	
-	<acme:password code="userAccount.confirmPassword" path="confirmPassword" />
 		
 	<!-- Action buttons -->
 	<div>
