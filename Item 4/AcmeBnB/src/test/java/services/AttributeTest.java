@@ -22,11 +22,11 @@ public class AttributeTest extends AbstractTest {
 	// Service under test --------------------------
 
 	@Autowired
-	private AttributeService		attributeService;
+	private AttributeService	attributeService;
 
-	@Autowired
-	private AttributeValueService	attributeValueService;
 
+	//	@Autowired
+	//	private AttributeValueService	attributeValueService;
 
 	// Tests ---------------------------------------
 

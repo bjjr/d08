@@ -11,7 +11,6 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="audit" />
 	
 	<acme:textbox code="attachment.path" path="path" />
 	<br />
@@ -20,15 +19,8 @@
 	
 	<acme:submit name="save" code="attachment.save"/>
 	
-	<jstl:if test="${attachment.id != 0}">
-		<input type="submit" name="delete"
-			value="<spring:message code="attachment.delete" />"
-			onclick="return confirm('<spring:message code="attachment.confirm.delete" />')" />&nbsp;
-	</jstl:if>
+	<acme:delete confirmationCode="attachment.confirm.delete" buttonCode="attachment.delete" id="${attachment.id}"/>
 	
-	<acme:cancel url="attachment/auditor/list.do" code="attachment.cancel"/>
-	<br />
+	<acme:cancel url="attachment/list.do?auditId=${auditId}" code="attachment.cancel"/>
 
 </form:form>
-
-

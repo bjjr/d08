@@ -41,7 +41,7 @@ public class AuditServiceTest extends AbstractTest {
 		Auditor auditor;
 
 		auditor = auditorService.findByPrincipal();
-		result = auditService.create();
+		result = auditService.create(41);
 		Assert.isTrue(result.getAuditor().equals(auditor));
 		Assert.isTrue(result.getText() == null);
 
@@ -91,7 +91,7 @@ public class AuditServiceTest extends AbstractTest {
 		Auditor auditor;
 		Collection<Audit> audits;
 
-		audit = auditService.create();
+		audit = auditService.create(41);
 		auditor = auditorService.findByPrincipal();
 
 		audit.setText("Text test");

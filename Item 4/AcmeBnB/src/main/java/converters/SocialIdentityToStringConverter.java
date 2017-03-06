@@ -22,4 +22,5 @@ public class SocialIdentityToStringConverter implements Converter<SocialIdentity
 		}
 		return res;
 	}
+
 }

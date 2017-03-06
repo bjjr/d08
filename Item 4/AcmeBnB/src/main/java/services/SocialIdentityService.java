@@ -88,6 +88,10 @@ public class SocialIdentityService {
 		return result;
 	}
 
+	public void flush() {
+		socialIdentityRepository.flush();
+	}
+
 	public void delete(SocialIdentity socialIdentity) {
 		Assert.notNull(socialIdentity);
 		Assert.isTrue(socialIdentity.getId() != 0);
@@ -132,7 +136,6 @@ public class SocialIdentityService {
 		return result;
 	}
 
-	@Transactional(readOnly = true)
 	public SocialIdentity reconstruct(SocialIdentity socialIdentity, BindingResult binding) {
 		SocialIdentity result;
 		Actor actor;
@@ -142,10 +145,10 @@ public class SocialIdentityService {
 			result = socialIdentity;
 			result.setActor(actor);
 		} else {
-			result = socialIdentityRepository.findOne(socialIdentity.getId());
-			result.setNick(socialIdentity.getNick());
-			result.setNameSN(socialIdentity.getNameSN());
-			result.setUrlSN(socialIdentity.getUrlSN());
+			SocialIdentity aux;
+			aux = findOne(socialIdentity.getId());
+			result = socialIdentity;
+			result.setActor(aux.getActor());
 		}
 
 		validator.validate(result, binding);

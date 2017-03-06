@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.AuditService;
 import domain.Attachment;
+import domain.Audit;
+import domain.Property;
 
 @Controller
 @RequestMapping("/attachment")
@@ -35,11 +37,20 @@ public class AttachmentController extends AbstractController {
 	public ModelAndView list(@RequestParam int auditId) {
 		ModelAndView result;
 		Collection<Attachment> attachments;
+		Audit audit;
+		Property property;
+		int propertyId;
 
 		attachments = auditService.findAttachmentsByAudit(auditId);
+		audit = auditService.findOne(auditId);
+		property = audit.getProperty();
+		propertyId = property.getId();
 
 		result = new ModelAndView("attachment/list");
 		result.addObject("attachments", attachments);
+		result.addObject("propertyId", propertyId);
+		result.addObject("auditId", auditId);
+		result.addObject("audit", audit);
 		result.addObject("requestURI", "attachment/list.do");
 
 		return result;

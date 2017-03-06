@@ -57,7 +57,7 @@ public class BookTenantController extends AbstractController {
 		tenant = tenantService.findByPrincipal();
 		Assert.notNull(tenant);
 
-		books = bookService.findBooksByPrincipal();
+		books = bookService.findTenantBooks();
 
 		result = new ModelAndView("book/list");
 		result.addObject("requestUri", "/book/tenant/list.do");
@@ -126,7 +126,7 @@ public class BookTenantController extends AbstractController {
 
 		result = new ModelAndView("book/edit");
 		result.addObject("book", book);
-		result.addObject("msg", message);
+		result.addObject("message", message);
 
 		return result;
 	}

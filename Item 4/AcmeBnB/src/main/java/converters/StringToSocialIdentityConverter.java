@@ -20,20 +20,21 @@ public class StringToSocialIdentityConverter implements Converter<String, Social
 
 	@Override
 	public SocialIdentity convert(String text) {
-		SocialIdentity res;
+		SocialIdentity result;
 		int id;
 
 		try {
-			if (StringUtils.isEmpty(text))
-				res = null;
-			else {
+			if (StringUtils.isEmpty(text)) {
+				result = null;
+			} else {
 				id = Integer.valueOf(text);
-				res = socialIdentityRepository.findOne(id);
+				result = socialIdentityRepository.findOne(id);
 			}
-		} catch (Throwable th) {
-			throw new IllegalArgumentException(th);
+		} catch (Throwable oops) {
+			throw new IllegalArgumentException(oops);
 		}
 
-		return res;
+		return result;
 	}
+
 }

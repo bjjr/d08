@@ -89,7 +89,7 @@ public class AttachmentServiceTest extends AbstractTest {
 		Audit audit;
 
 		attachment = attachmentService.create();
-		audit = auditService.create();
+		audit = auditService.create(41);
 
 		audit.setDraft(false);
 		audit.setText("Text prueba");

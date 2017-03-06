@@ -3,11 +3,8 @@ package controllers.auditor;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +29,8 @@ public class AuditAuditorController extends AbstractController {
 	@Autowired
 	private AuditorService	auditorService;
 
+	private int				propertyId;
+
 
 	// Constructors -------------------------------------------
 
@@ -42,11 +41,12 @@ public class AuditAuditorController extends AbstractController {
 	// Creating -----------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam int propertyId) {
 		ModelAndView result;
 		Audit audit;
 
-		audit = auditService.create();
+		audit = auditService.create(propertyId);
+		setPropertyId(propertyId);
 		result = createEditModelAndView(audit);
 
 		return result;
@@ -76,20 +76,22 @@ public class AuditAuditorController extends AbstractController {
 	// Edition -----------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam int auditId) {
+	public ModelAndView edit(@RequestParam int auditId, @RequestParam int propertyId) {
 		ModelAndView result;
 		Audit audit;
 
-		audit = auditService.findOne(auditId);
-		Assert.notNull(audit);
+		audit = auditService.findOneToEdit(auditId, propertyId);
+		setPropertyId(propertyId);
+
 		result = createEditModelAndView(audit);
 
 		return result;
 	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "publish")
-	public ModelAndView publish(@Valid Audit audit, BindingResult binding) {
+	public ModelAndView publish(Audit audit, BindingResult binding) {
 		ModelAndView result;
+
+		audit = auditService.reconstruct(audit, getPropertyId(), binding);
 
 		if (binding.hasErrors()) {
 			result = createEditModelAndView(audit);
@@ -122,8 +124,10 @@ public class AuditAuditorController extends AbstractController {
 	// Save as draft -----------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveAsDraft")
-	public ModelAndView saveAsDraft(@Valid Audit audit, BindingResult binding) {
+	public ModelAndView saveAsDraft(Audit audit, BindingResult binding) {
 		ModelAndView result;
+
+		audit = auditService.reconstruct(audit, propertyId, binding);
 
 		if (binding.hasErrors()) {
 			result = createEditModelAndView(audit);
@@ -140,6 +144,14 @@ public class AuditAuditorController extends AbstractController {
 	}
 
 	// Ancillary methods -------------------------------------
+
+	public int getPropertyId() {
+		return propertyId;
+	}
+
+	public void setPropertyId(int propertyId) {
+		this.propertyId = propertyId;
+	}
 
 	protected ModelAndView createEditModelAndView(Audit audit) {
 		ModelAndView result;
