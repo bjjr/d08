@@ -51,11 +51,11 @@
 		<security:intercept-url pattern="/property/ownList.do" access="hasRole('LESSOR')" />
 		<security:intercept-url pattern="/property/list.do" access="permitAll" />
 		<security:intercept-url pattern="/property/display.do" access="permitAll" />
-		<security:intercept-url pattern="/property/edit.do" access="permitAll" /> <!-- TODO -->
-		<security:intercept-url pattern="/property/create.do" access="permitAll" /> <!-- TODO -->
+		<security:intercept-url pattern="/property/edit.do" access="hasRole('LESSOR')" /> 
+		<security:intercept-url pattern="/property/create.do" access="hasRole('LESSOR')" /> 
 	
-		<security:intercept-url pattern="/fee/display.do" access="permitAll" /><!-- TODO -->
-		<security:intercept-url pattern="/fee/edit.do" access="permitAll" /><!-- TODO -->
+		<security:intercept-url pattern="/fee/display.do" access="hasRole('ADMINISTRATOR')" />
+		<security:intercept-url pattern="/fee/edit.do" access="hasRole('ADMINISTRATOR')" />
 	
 		<security:intercept-url pattern="/attachment/list.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/attachment/auditor/**" access="hasRole('AUDITOR')" />
