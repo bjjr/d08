@@ -39,8 +39,12 @@ public class BookTenantController extends AbstractController {
 	public ModelAndView create(@RequestParam int propertyId) {
 		ModelAndView result;
 		Book book;
+		
+		Tenant tenant = tenantService.findByPrincipal();
 
 		Property property = propertyService.findOne(propertyId);
+		
+		Assert.isTrue(bookService.isAValidCreditCard(tenant.getCreditCard()), "BookTenantController.create: You need a valid creditCard in order to create a book");
 		book = bookService.create(property);
 
 		result = createEditModelAndView(book);
