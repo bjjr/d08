@@ -86,22 +86,9 @@ public class TenantService {
 	public Tenant reconstruct(TenantForm tenantForm, BindingResult binding) {
 		Tenant result;
 
-		if (tenantForm.getTenant().getId() == 0) {
-			result = tenantForm.getTenant();
-		} else {
-			Tenant aux = findByPrincipal();
-			result = tenantForm.getTenant();
+		result = tenantForm.getTenant();
 
-			result.setInvoices(aux.getInvoices());
-			result.setFinder(aux.getFinder());
-			result.setBooks(aux.getBooks());
-			result.setCreditCard(aux.getCreditCard());
-			result.setSocialIdentities(aux.getSocialIdentities());
-			result.setUserAccount(aux.getUserAccount());
-			result.setComments(aux.getComments());
-
-			validator.validate(result, binding);
-		}
+		validator.validate(result, binding);
 
 		return result;
 	}
@@ -109,25 +96,21 @@ public class TenantService {
 	public Tenant reconstruct(Tenant tenant, BindingResult binding) {
 		Tenant result;
 
-		if (tenant.getId() == 0) {
-			result = tenant;
-		} else {
-			Tenant aux = findByPrincipal();
-			result = tenant;
+		Tenant aux = findByPrincipal();
+		result = tenant;
 
-			result.setInvoices(aux.getInvoices());
-			result.setFinder(aux.getFinder());
-			result.setBooks(aux.getBooks());
-			result.setCreditCard(aux.getCreditCard());
-			result.setSocialIdentities(aux.getSocialIdentities());
-			result.setUserAccount(aux.getUserAccount());
-			result.setComments(aux.getComments());
+		result.setInvoices(aux.getInvoices());
+		result.setFinder(aux.getFinder());
+		result.setBooks(aux.getBooks());
+		result.setCreditCard(aux.getCreditCard());
+		result.setSocialIdentities(aux.getSocialIdentities());
+		result.setUserAccount(aux.getUserAccount());
+		result.setComments(aux.getComments());
 
-			//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
-			//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
+		//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
+		//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
 
-			validator.validate(result, binding);
-		}
+		validator.validate(result, binding);
 
 		return result;
 	}

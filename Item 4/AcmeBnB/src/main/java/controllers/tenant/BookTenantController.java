@@ -27,16 +27,18 @@ import domain.Tenant;
 public class BookTenantController extends AbstractController {
 
 	@Autowired
-	private TenantService	tenantService;
+	private TenantService		tenantService;
 
 	@Autowired
-	private BookService		bookService;
+	private BookService			bookService;
 
 	@Autowired
-	private PropertyService	propertyService;
+	private PropertyService		propertyService;
 
 	@Autowired
-	CreditCardService		creditCardService;
+	private CreditCardService	creditCardService;
+
+	private int					propertyId;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -47,6 +49,8 @@ public class BookTenantController extends AbstractController {
 		Tenant tenant = tenantService.findByPrincipal();
 
 		Property property = propertyService.findOne(propertyId);
+
+		this.propertyId = propertyId;
 
 		try {
 			Assert.isTrue(creditCardService.checkDatesDifference(tenant.getCreditCard()), "BookTenantController.create: You need a valid creditCard in order to create a book");
@@ -95,7 +99,7 @@ public class BookTenantController extends AbstractController {
 	public ModelAndView save(Book book, BindingResult bindingResult) {
 		ModelAndView result;
 
-		Book book_reconstructed = bookService.reconstruct(book, bindingResult);
+		Book book_reconstructed = bookService.reconstruct(book, propertyId, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			result = createEditModelAndView(book_reconstructed);

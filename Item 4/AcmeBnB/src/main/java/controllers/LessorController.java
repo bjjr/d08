@@ -4,8 +4,6 @@ package controllers;
 import java.util.Collection;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -43,7 +41,7 @@ public class LessorController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid LessorForm lessorForm, BindingResult binding) {
+	public ModelAndView save(LessorForm lessorForm, BindingResult binding) {
 		ModelAndView result;
 		Lessor lessor;
 

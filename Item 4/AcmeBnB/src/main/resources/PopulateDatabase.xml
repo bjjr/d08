@@ -387,7 +387,7 @@
 	<bean id="property1" class="domain.Property">
 		<property name="name" value="property1Name" />
 		<property name="rate" value="8.25" />
-		<property name="description" value="This is property 1's description" />
+		<property name="description" value="This is property 1's description, bonito" />
 		<property name="address" value="property1Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">
@@ -444,7 +444,7 @@
 	<bean id="property4" class="domain.Property">
 		<property name="name" value="property4Name" />
 		<property name="rate" value="15.15" />
-		<property name="description" value="This is property 4's description" />
+		<property name="description" value="This is property 4's description, bueno" />
 		<property name="address" value="property4Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">
@@ -486,7 +486,7 @@
 	<bean id="property6" class="domain.Property">
 		<property name="name" value="property6Name" />
 		<property name="rate" value="9.65" />
-		<property name="description" value="This is property 6's description" />
+		<property name="description" value="This is property 6's description, barato" />
 		<property name="address" value="property6Address" />
 		<property name="lessor" ref="lessor3" />
 		<property name="books">

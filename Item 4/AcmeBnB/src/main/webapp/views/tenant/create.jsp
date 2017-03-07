@@ -24,13 +24,6 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="invoices" />
-	<form:hidden path="finder" />
-	<form:hidden path="books" />
-	<form:hidden path="creditCard" />
-	<form:hidden path="socialIdentities" />
-	<form:hidden path="userAccount.authorities" />
-	<form:hidden path="comments" />
 	
 	<acme:textbox code="tenant.name" path="name" />
 	<acme:textbox code="tenant.surname" path="surname" />

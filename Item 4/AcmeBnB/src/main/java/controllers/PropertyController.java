@@ -83,12 +83,16 @@ public class PropertyController {
 	public ModelAndView delete(Property property, BindingResult binding) {
 		ModelAndView res;
 
+		property = propertyService.reconstruct(property, binding);
+
 		try {
 			propertyService.delete(property);
 			res = new ModelAndView("redirect:ownList.do");
 		} catch (Throwable th) {
 			if (th.getMessage().equals("You have pending books")) {
 				res = createEditModelAndView(property, "property.commit.error.books");
+			} else if (th.getMessage().equals("Your property was audited")) {
+				res = createEditModelAndView(property, "property.commit.error.audits");
 			} else {
 				res = createEditModelAndView(property, "property.commit.error");
 			}
@@ -96,7 +100,6 @@ public class PropertyController {
 
 		return res;
 	}
-
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam int propertyId) {
 		ModelAndView result;

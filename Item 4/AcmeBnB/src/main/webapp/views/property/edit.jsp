@@ -14,6 +14,7 @@
 	
 	<acme:textbox code="property.name" path="name" />
 	<acme:textarea code="property.description" path="description" />
+	<acme:textbox code="property.rate" path="rate"/>
 	<acme:textbox code="property.address" path="address"/>
 	
 	<acme:submit name="save" code="property.save"/>

@@ -73,19 +73,15 @@ public class AdministratorService {
 	public Administrator reconstruct(Administrator administrator, BindingResult binding) {
 		Administrator result;
 
-		if (administrator.getId() == 0) {
-			result = administrator;
-		} else {
-			result = findByPrincipal();
+		Administrator aux = findByPrincipal();
 
-			result.setName(administrator.getName());
-			result.setSurname(administrator.getSurname());
-			result.setEmail(administrator.getEmail());
-			result.setPhone(administrator.getPhone());
-			result.setPicture(administrator.getPicture());
+		result = administrator;
 
-			validator.validate(result, binding);
-		}
+		result.setSocialIdentities(aux.getSocialIdentities());
+		result.setComments(aux.getComments());
+		result.setUserAccount(aux.getUserAccount());
+
+		validator.validate(result, binding);
 
 		return result;
 	}

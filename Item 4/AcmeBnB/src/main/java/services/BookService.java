@@ -20,6 +20,7 @@ import domain.CreditCard;
 import domain.Fee;
 import domain.Lessor;
 import domain.Property;
+import domain.Status;
 import domain.Tenant;
 
 @Transactional
@@ -46,6 +47,9 @@ public class BookService {
 
 	@Autowired
 	private Validator			validator;
+
+	@Autowired
+	private PropertyService		propertyService;
 
 
 	public Book create(Property property) {
@@ -160,11 +164,24 @@ public class BookService {
 	}
 
 	@Transactional(readOnly = true)
-	public Book reconstruct(Book book, BindingResult bindingResult) {
+	public Book reconstruct(Book book, int propertyId, BindingResult bindingResult) {
 		Book result;
 
 		if (book.getId() == 0) {
+			Property p;
+			Tenant t;
+			Status s;
+
 			result = book;
+
+			p = propertyService.findOne(propertyId);
+			t = tenantService.findByPrincipal();
+			s = statusService.findStatus("PENDING");
+
+			result.setProperty(p);
+			result.setTenant(t);
+			result.setStatus(s);
+
 		} else {
 			Book aux = bookRepository.findOne(book.getId());
 			result = book;
@@ -176,9 +193,9 @@ public class BookService {
 			result.setProperty(aux.getProperty());
 			result.setStatus(aux.getStatus());
 			result.setTenant(aux.getTenant());
-
-			validator.validate(result, bindingResult);
 		}
+
+		validator.validate(result, bindingResult);
 
 		return result;
 	}

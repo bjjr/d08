@@ -11,9 +11,6 @@
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-	<form:hidden path="tenant"/>
-	<form:hidden path="property"/>
-	<form:hidden path="status"/>
 	
 	
 	<acme:datebox code="book.checkInDate" path="checkInDate" />

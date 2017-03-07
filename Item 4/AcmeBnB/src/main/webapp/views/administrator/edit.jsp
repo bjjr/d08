@@ -14,9 +14,6 @@
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-	<form:hidden path="socialIdentities"/>
-	<form:hidden path="comments"/>
-	<form:hidden path="userAccount"/>
 	
 	<acme:textbox code="administrator.name" path="name" />
 	<acme:textbox code="administrator.surname" path="surname" />

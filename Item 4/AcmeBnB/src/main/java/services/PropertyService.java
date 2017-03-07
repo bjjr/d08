@@ -98,6 +98,9 @@ public class PropertyService {
 		Assert.isTrue(result.isEmpty(), "You have pending books");
 
 		allAudits = property.getAudits();
+
+		Assert.isTrue(allAudits.isEmpty(), "Your property was audited");
+
 		allBooks = property.getBooks();
 		allAttributes = attributeValueService.findAttributesValuesByProperty(property.getId());
 
@@ -182,18 +185,15 @@ public class PropertyService {
 			Lessor lessor;
 			Collection<Audit> audits;
 			Collection<Book> books;
-			int rate;
 
 			result = property;
 			lessor = lessorService.findByPrincipal();
 			audits = new ArrayList<>();
 			books = new ArrayList<>();
-			rate = 0;
 
 			result.setLessor(lessor);
 			result.setAudits(audits);
 			result.setBooks(books);
-			result.setRate(rate);
 
 		} else {
 			Property aux;
@@ -203,10 +203,7 @@ public class PropertyService {
 
 			result.setAudits(aux.getAudits());
 			result.setBooks(aux.getBooks());
-			result.setId(aux.getId());
-			result.setVersion(aux.getVersion());
 			result.setLessor(aux.getLessor());
-			result.setRate(aux.getRate());
 
 		}
 		validator.validate(result, bindingResult);

@@ -33,18 +33,24 @@
 		<acme:column code="book.tenant.name" property="tenant.name"/>
 	
 		<display:column>
-			<spring:url var="url_accept" value="/book/lessor/accept.do">
-				<spring:param name="bookId" value="${row.id}"/>
-			</spring:url>
+			<jstl:if test="${row.status.name == 'PENDING'}" >
+				<spring:url var="url_accept" value="/book/lessor/accept.do">
+					<spring:param name="bookId" value="${row.id}"/>
+				</spring:url>
 			
-			<a href="${url_accept}"><spring:message code="book.accept"/></a>
+				<a href="${url_accept}"><spring:message code="book.accept"/></a>
+			
+			</jstl:if>
+
 		</display:column>
 		<display:column>
-			<spring:url var="url_deny" value="/book/lessor/deny.do">
-				<spring:param name="bookId" value="${row.id}"/>
-			</spring:url>
-			
-			<a href="${url_deny}"><spring:message code="book.deny"/></a>
+			<jstl:if test="${row.status.name == 'PENDING'}" >
+				<spring:url var="url_deny" value="/book/lessor/deny.do">
+					<spring:param name="bookId" value="${row.id}"/>
+				</spring:url>
+				
+				<a href="${url_deny}"><spring:message code="book.deny"/></a>
+			</jstl:if>
 		</display:column>
 	</security:authorize>
 	
