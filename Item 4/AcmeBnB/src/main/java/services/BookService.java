@@ -84,8 +84,6 @@ public class BookService {
 
 		Book result;
 
-		System.out.println(book);
-
 		result = bookRepository.save(book);
 
 		return result;
