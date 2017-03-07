@@ -109,6 +109,8 @@
 				</ul>
 			</li>
 		</security:authorize>
+		
+		<li><a class="fNiv" href="property/list.do"><spring:message code="master.page.properties.list" /></a></li>
 	</ul>
 </div>
 
