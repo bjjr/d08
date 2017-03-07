@@ -64,7 +64,7 @@
 		</display:column>
 		
 		<display:column>
-		<jstl:if test="${row.status.name == 'ACCEPTED'}">
+		<jstl:if test="${row.status.name == 'ACCEPTED' && row.tenant.creditCard != null}">
 			<spring:url var="url_create_invoice" value="/invoice/tenant/createInvoice.do">
 				<spring:param name="bookId" value="${row.id}"/>
 			</spring:url>
