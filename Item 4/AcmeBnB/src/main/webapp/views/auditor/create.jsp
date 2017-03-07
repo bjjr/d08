@@ -7,12 +7,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="auditor/auditor/edit.do" modelAttribute="auditor">
+<form:form action="auditor/administrator/create.do" modelAttribute="auditorForm">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="socialIdentities" />
-	<form:hidden path="userAccount" />
+	<form:hidden path="userAccount.authorities" />
 	<form:hidden path="audits"/>
 	<form:hidden path="comments" />
 	
@@ -22,6 +22,11 @@
 	<acme:textbox code="auditor.phone" path="phone" />
 	<acme:textbox code="auditor.picture" path="picture" />
 	<acme:textbox code="auditor.companyName" path="companyName"/>
+	
+	<br />
+	<acme:textbox code="auditor.userAccount.username" path="userAccount.username" />
+	<acme:password code="auditor.userAccount.password" path="userAccount.password" />
+	<acme:password code="auditor.userAccount.confirmPassword" path="confirmPassword" />
 	
 	<br /><br />
 	<acme:submit name="save" code="auditor.save"/>

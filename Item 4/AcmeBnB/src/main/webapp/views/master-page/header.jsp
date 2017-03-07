@@ -27,7 +27,7 @@
 					<li><a href="administrator/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
 					<li><a href="administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
 					<li><a href="attribute/list.do"><spring:message code="master.page.administrator.attributes" /></a></li>
-					<li><a href="auditor/adminitrator/create.do"><spring:message code="master.page.administrator.auditor" /></a></li>
+					<li><a href="auditor/administrator/create.do"><spring:message code="master.page.administrator.auditor" /></a></li>
 					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>
 					<li><a href="socialIdentity/list.do"><spring:message code="master.page.si.list" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /></a></li>
@@ -74,7 +74,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.auditor" />(<security:authentication property="principal.username" />)</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="auditor/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
+					<li><a href="auditor/auditor/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
 					<li><a href="audit/auditor/list.do"><spring:message code="master.page.auditor.audit.list" /></a></li>
 					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>
 					<li><a href="socialIdentity/list.do"><spring:message code="master.page.si.list" /></a></li>
