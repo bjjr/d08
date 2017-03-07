@@ -2,12 +2,14 @@
 package repositories;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Lessor;
+import domain.Property;
 
 @Repository
 public interface LessorRepository extends JpaRepository<Lessor, Integer> {
@@ -39,4 +41,20 @@ public interface LessorRepository extends JpaRepository<Lessor, Integer> {
 
 	@Query("select l from Lessor l where l.userAccount.id = ?1")
 	Lessor findByUserAccountId(int userAccountId);
+
+	@Query("select p from Property p where p.lessor.id=?1 order by p.audits.size desc")
+	List<Property> propertiesSortedByAudits(int lessorId);
+
+	@Query("select p from Property p where p.lessor.id=?1 order by p.books.size desc")
+	List<Property> propertiesSortedByBooks(int lessorId);
+
+	@Query("select p from Property p join p.books b where b.status.name = 'ACCEPTED' AND p.lessor.id = ?1 order by b.size")
+	List<Property> propertiesSortedByAcceptedBooks(int lessorId);
+
+	@Query("select p from Property p join p.books b where b.status.name = 'DENIED' AND p.lessor.id = ?1 order by b.size")
+	List<Property> propertiesSortedByDeniedBooks(int lessorId);
+
+	@Query("select p from Property p join p.books b where b.status.name = 'PENDING' AND p.lessor.id = ?1 order by b.size")
+	List<Property> propertiesSortedByPendingBooks(int lessorId);
+
 }

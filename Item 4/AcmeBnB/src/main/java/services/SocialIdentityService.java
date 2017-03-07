@@ -88,6 +88,10 @@ public class SocialIdentityService {
 		return result;
 	}
 
+	public void flush() {
+		socialIdentityRepository.flush();
+	}
+
 	public void delete(SocialIdentity socialIdentity) {
 		Assert.notNull(socialIdentity);
 		Assert.isTrue(socialIdentity.getId() != 0);

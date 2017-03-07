@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -170,39 +171,40 @@ public class PropertyService {
 		Property result;
 
 		if (property.getId() == 0) {
+			Lessor lessor;
+			Collection<Audit> audits;
+			Collection<Book> books;
+			int rate;
+
 			result = property;
+			lessor = lessorService.findByPrincipal();
+			audits = new ArrayList<>();
+			books = new ArrayList<>();
+			rate = 0;
+
+			result.setLessor(lessor);
+			result.setAudits(audits);
+			result.setBooks(books);
+			result.setRate(rate);
+
 		} else {
-			result = propertyRepository.findOne(property.getId());
+			Property aux;
+			aux = propertyRepository.findOne(property.getId());
 
-			result.setName(property.getName());
-			result.setDescription(property.getDescription());
-			result.setAddress(property.getAddress());
+			result = property;
 
-			validator.validate(result, bindingResult);
+			result.setAudits(aux.getAudits());
+			result.setBooks(aux.getBooks());
+			result.setId(aux.getId());
+			result.setVersion(aux.getVersion());
+			result.setLessor(aux.getLessor());
+			result.setRate(aux.getRate());
+
 		}
+		validator.validate(result, bindingResult);
 
 		return result;
 
-	}
-
-	private void addBook(Property p, Book b) {
-		b.setProperty(p);
-		p.getBooks().add(b);
-	}
-
-	private void removeBook(Property p, Book b) {
-		b.setProperty(null);
-		p.getBooks().remove(b);
-	}
-
-	private void addAudit(Property p, Audit a) {
-		a.setProperty(p);
-		p.getAudits().add(a);
-	}
-
-	private void removeAudit(Property p, Audit a) {
-		a.setProperty(null);
-		p.getAudits().remove(a);
 	}
 
 }

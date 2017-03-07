@@ -2,9 +2,13 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.LessorService;
 import domain.Lessor;
+import domain.Property;
 import forms.LessorForm;
 
 @Controller
@@ -32,14 +37,13 @@ public class LessorController {
 		ModelAndView result;
 		Lessor lessor = lessorService.create();
 
-		result = new ModelAndView("lessor/create");
-		result.addObject("lessorForm", new LessorForm(lessor));
+		result = createEditModelAndView(new LessorForm(lessor));
 
 		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(LessorForm lessorForm, BindingResult binding) {
+	public ModelAndView save(@Valid LessorForm lessorForm, BindingResult binding) {
 		ModelAndView result;
 		Lessor lessor;
 
@@ -64,33 +68,60 @@ public class LessorController {
 		return result;
 	}
 
-	// Deleting ------------------------------------------------
-	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	//	public ModelAndView delete(Lessor lessor, BindingResult binding) {
-	//		ModelAndView res;
-	//
-	//		try {
-	//			lessorService.delete(lessor);
-	//			res = new ModelAndView("redirect:ownList.do");
-	//		} catch (Throwable th) {
-	//			if (th.getMessage().equals("You have pending books")) {
-	//				res = createEditModelAndView(lessor, "lessor.commit.error.books");
-	//			} else {
-	//				res = createEditModelAndView(lessor, "lessor.commit.error");
-	//			}
-	//		}
-	//
-	//		return res;
-	//	}
+	// Editing ------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit() {
+		ModelAndView result;
+		Lessor lessor = lessorService.findByPrincipal();
+		Assert.notNull(lessor);
+
+		result = new ModelAndView("lessor/edit");
+		result.addObject("lessor", lessor);
+		return result;
+	}
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(Lessor lessor, BindingResult binding) {
+		ModelAndView result;
+		Lessor lessorReconstructed = lessorService.reconstruct(lessor, binding);
+
+		if (binding.hasErrors()) {
+			result = new ModelAndView("lessor/edit");
+			result.addObject("lessor", lessorReconstructed);
+		} else {
+			try {
+				lessorService.save(lessorReconstructed);
+				result = new ModelAndView("redirect:/welcome/index.do");
+			} catch (IllegalArgumentException oops) {
+				result = new ModelAndView("lessor/edit");
+				result.addObject("lessor", lessorReconstructed);
+				result.addObject("message", "lessor.commit.error");
+			}
+		}
+
+		return result;
+	}
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam int lessorId) {
 		ModelAndView result;
 		Lessor lessor;
+		List<Property> propertiesSortedByAudits, propertiesSortedByBooks, propertiesSortedByAcceptedBooks, propertiesSortedByDeniedBooks, propertiesSortedByPendingBooks;
 
 		lessor = lessorService.findOne(lessorId);
+		propertiesSortedByAudits = lessorService.propertiesSortedByAudits(lessorId);
+		propertiesSortedByBooks = lessorService.propertiesSortedByBooks(lessorId);
+		propertiesSortedByAcceptedBooks = lessorService.propertiesSortedByAcceptedBooks(lessorId);
+		propertiesSortedByDeniedBooks = lessorService.propertiesSortedByDeniedBooks(lessorId);
+		propertiesSortedByPendingBooks = lessorService.propertiesSortedByPendingBooks(lessorId);
+
 		result = new ModelAndView("lessor/display");
 		result.addObject("lessor", lessor);
+		result.addObject("propertiesSortedByAudits", propertiesSortedByAudits);
+		result.addObject("propertiesSortedByBooks", propertiesSortedByBooks);
+		result.addObject("propertiesSortedByAcceptedBooks", propertiesSortedByAcceptedBooks);
+		result.addObject("propertiesSortedByDeniedBooks", propertiesSortedByDeniedBooks);
+		result.addObject("propertiesSortedByPendingBooks", propertiesSortedByPendingBooks);
 
 		return result;
 
@@ -110,19 +141,19 @@ public class LessorController {
 
 	}
 
-	protected ModelAndView createEditModelAndView(LessorForm lessorForm) {
+	protected ModelAndView createEditModelAndView(LessorForm lessor) {
 		ModelAndView result;
 
-		result = createEditModelAndView(lessorForm, null);
+		result = createEditModelAndView(lessor, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(LessorForm lessorForm, String message) {
+	protected ModelAndView createEditModelAndView(LessorForm lessor, String message) {
 		ModelAndView result;
 
 		result = new ModelAndView("lessor/create");
-		result.addObject("lessor", lessorForm);
+		result.addObject("lessorForm", lessor);
 		result.addObject("message", message);
 
 		return result;

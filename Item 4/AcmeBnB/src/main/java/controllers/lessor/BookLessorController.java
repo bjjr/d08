@@ -43,28 +43,31 @@ public class BookLessorController extends AbstractController {
 		result = new ModelAndView("book/list");
 		result.addObject("requestUri", "/book/lessor/list.do");
 		result.addObject("books", books);
+		result.addObject("feeToPay", lessor.getAccumulatedCharges());
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/accept", method = RequestMethod.GET)
-	public ModelAndView accept(@RequestParam int bookId){
+	public ModelAndView accept(@RequestParam int bookId) {
 		ModelAndView view = new ModelAndView("redirect:list.do");
-		
-		bookService.acceptBook(bookId);
-		
+
+		try {
+			bookService.acceptBook(bookId);
+		} catch (IllegalArgumentException e) {
+			view = new ModelAndView("redirect:/creditCard/display.do");
+		}
+
 		return view;
 	}
-	
+
 	@RequestMapping(value = "/deny", method = RequestMethod.GET)
-	public ModelAndView deny(@RequestParam int bookId){
+	public ModelAndView deny(@RequestParam int bookId) {
 		ModelAndView view = new ModelAndView("redirect:list.do");
-		
+
 		bookService.denyBook(bookId);
-		
+
 		return view;
 	}
-	
-	
 
 }

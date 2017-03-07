@@ -78,6 +78,7 @@ public class ConsumerActorService {
 		Collection<SocialIdentity> socialIdentities;
 
 		comments = new LinkedList<>();
+
 		socialIdentities = new LinkedList<>();
 
 		ca.setComments(comments);

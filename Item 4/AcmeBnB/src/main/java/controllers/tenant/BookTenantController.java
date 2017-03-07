@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.BookService;
+import services.CreditCardService;
 import services.PropertyService;
 import services.TenantService;
 import controllers.AbstractController;
@@ -34,20 +35,31 @@ public class BookTenantController extends AbstractController {
 	@Autowired
 	private PropertyService	propertyService;
 
+	@Autowired
+	CreditCardService		creditCardService;
+
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam int propertyId) {
 		ModelAndView result;
 		Book book;
 
-		Property property = propertyService.findOne(propertyId);
-		book = bookService.create(property);
+		Tenant tenant = tenantService.findByPrincipal();
 
-		result = createEditModelAndView(book);
+		Property property = propertyService.findOne(propertyId);
+
+		try {
+			Assert.isTrue(creditCardService.checkDatesDifference(tenant.getCreditCard()), "BookTenantController.create: You need a valid creditCard in order to create a book");
+
+			book = bookService.create(property);
+
+			result = createEditModelAndView(book);
+		} catch (IllegalArgumentException e) {
+			result = new ModelAndView("redirect:/creditCard/display.do");
+		}
 
 		return result;
 	}
-
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView display() {
 		ModelAndView result;
@@ -57,7 +69,7 @@ public class BookTenantController extends AbstractController {
 		tenant = tenantService.findByPrincipal();
 		Assert.notNull(tenant);
 
-		books = bookService.findBooksByPrincipal();
+		books = bookService.findTenantBooks();
 
 		result = new ModelAndView("book/list");
 		result.addObject("requestUri", "/book/tenant/list.do");
@@ -126,7 +138,7 @@ public class BookTenantController extends AbstractController {
 
 		result = new ModelAndView("book/edit");
 		result.addObject("book", book);
-		result.addObject("msg", message);
+		result.addObject("message", message);
 
 		return result;
 	}

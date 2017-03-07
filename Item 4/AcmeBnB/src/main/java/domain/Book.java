@@ -26,6 +26,7 @@ public class Book extends DomainEntity {
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
+	@NotNull
 	public Date getCheckInDate() {
 		return checkInDate;
 	}
@@ -36,6 +37,7 @@ public class Book extends DomainEntity {
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
+	@NotNull
 	public Date getCheckOutDate() {
 		return checkOutDate;
 	}

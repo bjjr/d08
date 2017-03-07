@@ -42,6 +42,7 @@
 					<li><a href="lessor/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
 					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
 					<li><a href="comment/create.do"><spring:message code="master.page.comment.create" /></a></li>
+					<li><a href="property/create.do"><spring:message code="master.page.lessor.properties.create" /></a></li>
 					<li><a href="property/ownList.do"><spring:message code="master.page.lessor.properties.list" /></a></li>
 					<li><a href="creditCard/display.do"><spring:message code="master.page.creditCard.display" /></a></li>
 					<li><a href="book/lessor/list.do"><spring:message code="master.page.lessor.book" /></a></li>
@@ -56,7 +57,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.tenant" />(<security:authentication property="principal.username" />)</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="tenant/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
+					<li><a href="tenant/tenant/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
 					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
 					<li><a href="comment/create.do"><spring:message code="master.page.comment.create" /></a></li>
 					<li><a href="creditCard/display.do"><spring:message code="master.page.creditCard.display" /></a></li>
@@ -82,7 +83,20 @@
 			</li>
 		</security:authorize>
 		
-		<security:authorize access="isAuthenticated()">
+		<security:authorize access="hasRole('TENANT')">
+			<li>
+				<a class="fNiv"> 
+					<spring:message code="master.page.profile" /> 
+			        (<security:authentication property="principal.username" />)
+				</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="finder/tenant/display.do"><spring:message code="master.page.tenant.finder" /></a></li>	
+					<li><a href="book/tenant/list.do"><spring:message code="master.page.tenant.book" /></a></li>	
+					<li><a href="invoice/tenant/list.do"><spring:message code="master.page.tenant.invoice" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				
+				</ul>
+			</li>
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">

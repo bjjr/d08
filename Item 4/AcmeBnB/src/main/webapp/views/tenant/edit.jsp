@@ -20,25 +20,26 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="lessor/edit.do" modelAttribute="lessor">
+<form:form action="tenant/tenant/edit.do" modelAttribute="tenant">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="properties" />
-	<form:hidden path="accumulatedCharges" />
+	<form:hidden path="invoices" />
+	<form:hidden path="finder" />
+	<form:hidden path="books" />
 	<form:hidden path="creditCard" />
 	<form:hidden path="socialIdentities" />
-	<form:hidden path="userAccount.authorities" />
+	<form:hidden path="userAccount" />
 	<form:hidden path="comments" />
 	
-	<acme:textbox code="lessor.name" path="name" />
-	<acme:textbox code="lessor.surname" path="surname" />
-	<acme:textbox code="lessor.email" path="email" />
-	<acme:textbox code="lessor.phone" path="phone" />
-	<acme:textbox code="lessor.picture" path="picture" />
+	<acme:textbox code="tenant.name" path="name" />
+	<acme:textbox code="tenant.surname" path="surname" />
+	<acme:textbox code="tenant.email" path="email" />
+	<acme:textbox code="tenant.phone" path="phone" />
+	<acme:textbox code="tenant.picture" path="picture" />
 	
 	<br /><br />
-	<acme:submit name="save" code="lessor.save"/>
-	<acme:cancel url="welcome/index.do" code="lessor.cancel"/>
+	<acme:submit name="save" code="tenant.save"/>
+	<acme:cancel url="welcome/index.do" code="tenant.cancel"/>
 
 </form:form>

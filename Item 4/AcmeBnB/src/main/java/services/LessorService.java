@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -15,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.LessorRepository;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountService;
 import domain.Lessor;
 import domain.Property;
 import forms.LessorForm;
@@ -32,6 +34,9 @@ public class LessorService {
 
 	@Autowired
 	private ConsumerActorService	consumerActorService;
+
+	@Autowired
+	private UserAccountService		userAccountService;
 
 	@Autowired
 	private Validator				validator;
@@ -69,17 +74,25 @@ public class LessorService {
 		result = new Lessor();
 
 		consumerActorService.setConsumerActorProperties(result);
+		result.setAccumulatedCharges(0.0);
+		result.setUserAccount(userAccountService.create("LESSOR"));
 		result.setProperties(new ArrayList<Property>());
 
 		return result;
 	}
-
 	public Lessor save(Lessor lessor) {
+		Lessor result, authenticatedLessor;
 		Assert.notNull(lessor);
 
-		Lessor result;
-
+		if (lessor.getId() != 0) {
+			authenticatedLessor = findByPrincipal();
+			Assert.isTrue(lessor.equals(authenticatedLessor));
+		} else {
+			Assert.isTrue(lessor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("LESSOR"));
+			lessor.getUserAccount().setPassword(hashCodePassword(lessor.getUserAccount().getPassword()));
+		}
 		result = lessorRepository.save(lessor);
+		Assert.notNull(result);
 
 		return result;
 	}
@@ -127,13 +140,36 @@ public class LessorService {
 			result.getUserAccount().setUsername(lessor.getLessor().getUserAccount().getUsername());
 			result.getUserAccount().setPassword(lessor.getLessor().getUserAccount().getPassword());
 
-			validator.validate(result, binding);
+		}
 
+		validator.validate(result, binding);
+		return result;
+	}
+
+	public Lessor reconstruct(Lessor lessor, BindingResult binding) {
+		Lessor result;
+
+		if (lessor.getId() == 0) {
+			result = lessor;
+		} else {
+			Lessor aux = findByPrincipal();
+			result = lessor;
+
+			result.setProperties(aux.getProperties());
+			result.setAccumulatedCharges(aux.getAccumulatedCharges());
+			result.setCreditCard(aux.getCreditCard());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
+
+			//result.getUserAccount().setUsername(lessorForm.getLessor().getUserAccount().getUsername());
+			//result.getUserAccount().setPassword(lessorForm.getLessor().getUserAccount().getPassword());
+
+			validator.validate(result, binding);
 		}
 
 		return result;
 	}
-
 	public Double avgAcceptedPerLessor() {
 		Double avg;
 
@@ -205,6 +241,66 @@ public class LessorService {
 		Assert.notNull(lessor);
 
 		return lessor;
+	}
+
+	public String hashCodePassword(String password) {
+		String result;
+		Md5PasswordEncoder encoder;
+
+		encoder = new Md5PasswordEncoder();
+		result = encoder.encodePassword(password, null);
+
+		return result;
+	}
+
+	//	@Query("select p from Property p where p.lessor.id=?1 order by p.audits.size desc")
+	public List<Property> propertiesSortedByAudits(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByAudits(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p where p.lessor.id=?1 order by p.books.size desc")
+	public List<Property> propertiesSortedByBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p join p.books b where b.status.name = 'ACCEPTED' AND p.lessor.id = 15 order by b.size")
+	public List<Property> propertiesSortedByAcceptedBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByAcceptedBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p join p.books b where b.status.name = 'DENIED' AND p.lessor.id = 15 order by b.size")
+	public List<Property> propertiesSortedByDeniedBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByDeniedBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
+	}
+	//
+	//	@Query("select p from Property p join p.books b where b.status.name = 'PENDING' AND p.lessor.id = 15 order by b.size")
+	public List<Property> propertiesSortedByPendingBooks(int lessorId) {
+		List<Property> properties;
+
+		properties = lessorRepository.propertiesSortedByPendingBooks(lessorId);
+		Assert.notNull(properties);
+
+		return properties;
 	}
 
 }

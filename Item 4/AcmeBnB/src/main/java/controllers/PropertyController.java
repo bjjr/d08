@@ -102,13 +102,19 @@ public class PropertyController {
 		ModelAndView result;
 		Property property;
 		Collection<AttributeValue> attributeValues;
+		Boolean isOwner = false;
 
 		property = propertyService.findOne(propertyId);
 		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyId);
+		if (propertyService.findAllToEdit().contains(property)) {
+			isOwner = true;
+		}
+
 		result = new ModelAndView("property/display");
 		result.addObject("requestURI", "property/display.do");
 		result.addObject("property", property);
 		result.addObject("attributes", attributeValues);
+		result.addObject("isOwner", isOwner);
 
 		return result;
 
@@ -122,6 +128,7 @@ public class PropertyController {
 		result = new ModelAndView("property/list");
 		result.addObject("isLessor", false);
 		result.addObject("properties", properties);
+		result.addObject("requestURI", "property/list.do");
 
 		return result;
 
@@ -136,6 +143,7 @@ public class PropertyController {
 		result = new ModelAndView("property/list");
 		result.addObject("isLessor", true);
 		result.addObject("properties", properties);
+		result.addObject("requestURI", "property/ownList.do");
 
 		return result;
 

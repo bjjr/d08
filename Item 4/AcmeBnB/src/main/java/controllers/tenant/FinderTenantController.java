@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.FinderService;
-import services.TenantService;
 import controllers.AbstractController;
 import domain.Finder;
 import domain.Property;
@@ -24,8 +23,6 @@ import domain.Property;
 @RequestMapping("/finder/tenant")
 public class FinderTenantController extends AbstractController {
 
-	@Autowired
-	private TenantService	tenantService;
 
 	@Autowired
 	private FinderService	finderService;
@@ -56,7 +53,7 @@ public class FinderTenantController extends AbstractController {
 		finder = finderService.findByPrincipal();
 		Assert.notNull(finder);
 
-		properties = finderService.resultsPerFinder();
+		properties = finderService.resultsPerFinder(finder);
 
 		result = new ModelAndView("finder/results");
 		result.addObject("properties", properties);
