@@ -52,7 +52,11 @@ public class BookLessorController extends AbstractController {
 	public ModelAndView accept(@RequestParam int bookId) {
 		ModelAndView view = new ModelAndView("redirect:list.do");
 
-		bookService.acceptBook(bookId);
+		try {
+			bookService.acceptBook(bookId);
+		} catch (IllegalArgumentException e) {
+			view = new ModelAndView("redirect:/creditCard/display.do");
+		}
 
 		return view;
 	}
