@@ -1,0 +1,1 @@
+mysql -uroot -pV3rY=$tR0nG=P@$$w0rd$ < C:\Temp\Create-Acme-Pad-Thai.sql
