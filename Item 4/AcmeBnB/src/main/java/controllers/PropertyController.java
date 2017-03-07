@@ -128,6 +128,7 @@ public class PropertyController {
 		result = new ModelAndView("property/list");
 		result.addObject("isLessor", false);
 		result.addObject("properties", properties);
+		result.addObject("requestURI", "property/list.do");
 
 		return result;
 
@@ -142,6 +143,7 @@ public class PropertyController {
 		result = new ModelAndView("property/list");
 		result.addObject("isLessor", true);
 		result.addObject("properties", properties);
+		result.addObject("requestURI", "property/ownList.do");
 
 		return result;
 
