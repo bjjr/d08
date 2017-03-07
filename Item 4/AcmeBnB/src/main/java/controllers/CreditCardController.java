@@ -88,7 +88,7 @@ public class CreditCardController extends AbstractController {
 		ModelAndView res;
 		CreditCard creditCard;
 
-		creditCard = creditCardService.findOne(creditCardId);
+		creditCard = creditCardService.findOneToEdit(creditCardId);
 
 		res = createEditModelAndView(creditCard);
 

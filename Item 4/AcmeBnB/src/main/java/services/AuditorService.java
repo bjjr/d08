@@ -5,16 +5,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AuditorRepository;
+import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import security.UserAccountService;
 import domain.Audit;
 import domain.Auditor;
+import forms.AuditorForm;
 
 @Service
 @Transactional
@@ -27,8 +31,10 @@ public class AuditorService {
 
 	// Supporting services ----------------------------------
 
+	// Validator --------------------------------------------
+
 	@Autowired
-	private UserAccountService	userAccountService;
+	private Validator			validator;
 
 
 	// Constructors -----------------------------------------
@@ -41,15 +47,23 @@ public class AuditorService {
 
 	public Auditor create() {
 		Auditor result;
+		Authority authority;
 		UserAccount userAccount;
 		Collection<Audit> audits;
 
-		userAccount = userAccountService.create("AUDITOR");
-		audits = new ArrayList<Audit>();
+		userAccount = new UserAccount();
+		userAccount.setUsername("");
+		userAccount.setPassword("");
 
 		result = new Auditor();
+
 		result.setUserAccount(userAccount);
+		audits = new ArrayList<Audit>();
 		result.setAudits(audits);
+
+		authority = new Authority();
+		authority.setAuthority("AUDITOR");
+		result.getUserAccount().addAuthority(authority);
 
 		return result;
 	}
@@ -76,8 +90,18 @@ public class AuditorService {
 		Assert.notNull(auditor);
 
 		Auditor result;
+		Auditor authenticatedAuditor;
+
+		if (auditor.getId() == 0) {
+			Assert.isTrue(auditor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("AUDITOR"));
+			auditor.getUserAccount().setPassword(hashCodePassword(auditor.getUserAccount().getPassword()));
+		} else {
+			authenticatedAuditor = findByPrincipal();
+			Assert.isTrue(auditor.equals(authenticatedAuditor));
+		}
 
 		result = auditorRepository.save(auditor);
+		Assert.notNull(result);
 
 		return result;
 	}
@@ -106,8 +130,57 @@ public class AuditorService {
 		return result;
 	}
 
+	public Auditor reconstruct(Auditor auditor, BindingResult binding) {
+		Auditor result;
+
+		if (auditor.getId() == 0) {
+			result = auditor;
+		} else {
+			Auditor aux = findByPrincipal();
+			result = auditor;
+
+			result.setAudits(aux.getAudits());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
+
+			validator.validate(result, binding);
+		}
+
+		return result;
+	}
+
+	public Auditor reconstruct(AuditorForm auditorForm, BindingResult binding) {
+		Auditor result;
+
+		if (auditorForm.getAuditor().getId() == 0) {
+			result = auditorForm.getAuditor();
+		} else {
+			Auditor aux = findByPrincipal();
+			result = auditorForm.getAuditor();
+
+			result.setAudits(aux.getAudits());
+			result.setSocialIdentities(aux.getSocialIdentities());
+			result.setUserAccount(aux.getUserAccount());
+			result.setComments(aux.getComments());
+		}
+
+		validator.validate(result, binding);
+
+		return result;
+	}
+
 	public void flush() {
 		auditorRepository.flush();
 	}
 
+	public String hashCodePassword(String password) {
+		String result;
+		Md5PasswordEncoder encoder;
+
+		encoder = new Md5PasswordEncoder();
+		result = encoder.encodePassword(password, null);
+
+		return result;
+	}
 }

@@ -73,6 +73,8 @@ public class AttachmentService {
 
 		Attachment result;
 
+		Assert.isTrue(attachment.getAudit().getDraft(), "Cannot create an attachment for an audit published");
+
 		result = attachmentRepository.save(attachment);
 
 		return result;

@@ -116,6 +116,8 @@ public class CreditCardService {
 		Date today;
 		Date expiryDate;
 
+		Assert.notNull(creditCard);
+
 		today = new DateTime().withTimeAtStartOfDay().toDate();
 		expiryDate = new DateTime(creditCard.getExpiryDate()).withTimeAtStartOfDay().toDate();
 
@@ -161,7 +163,7 @@ public class CreditCardService {
 
 		consumerActor = consumerActorService.findByPrincipal();
 		result = creditCardRepository.findOne(creditCardId);
-		Assert.notNull(result, "The credit card does no exist");
+		Assert.notNull(result, "The credit card does not exist");
 		Assert.isTrue(consumerActor.getCreditCard().equals(result), "This is not your credit card");
 
 		return result;

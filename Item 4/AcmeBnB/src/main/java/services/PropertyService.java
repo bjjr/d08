@@ -101,14 +101,22 @@ public class PropertyService {
 		allBooks = property.getBooks();
 		allAttributes = attributeValueService.findAttributesValuesByProperty(property.getId());
 
-		for (Book book : allBooks) {
-			bookService.delete(book);
+		if (allBooks != null) {
+			for (Book book : allBooks) {
+				bookService.delete(book);
+			}
 		}
-		for (AttributeValue attributeValue : allAttributes) {
-			attributeValueService.delete(attributeValue);
+
+		if (allAttributes != null) {
+			for (AttributeValue attributeValue : allAttributes) {
+				attributeValueService.delete(attributeValue);
+			}
 		}
-		for (Audit audit : allAudits) {
-			auditService.delete(audit);
+
+		if (allAudits != null) {
+			for (Audit audit : allAudits) {
+				auditService.delete(audit);
+			}
 		}
 
 		propertyRepository.delete(property);
