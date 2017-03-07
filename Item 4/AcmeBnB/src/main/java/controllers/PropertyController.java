@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
 import services.AttributeValueService;
+import services.AuditorService;
 import services.PropertyService;
 import domain.AttributeValue;
 import domain.Property;
@@ -26,6 +28,9 @@ public class PropertyController {
 
 	@Autowired
 	private AttributeValueService	attributeValueService;
+
+	@Autowired
+	private AuditorService			auditorService;
 
 
 	public PropertyController() {
@@ -129,12 +134,24 @@ public class PropertyController {
 	public ModelAndView list() {
 		ModelAndView result;
 		Collection<Property> properties;
+		Authority auth;
+		auth = new Authority();
+		auth.setAuthority("AUDITOR");
 
-		properties = propertyService.findAll();
-		result = new ModelAndView("property/list");
-		result.addObject("isLessor", false);
-		result.addObject("properties", properties);
-		result.addObject("requestURI", "property/list.do");
+		try {
+			properties = propertyService.findAll();
+			result = new ModelAndView("property/list");
+			result.addObject("isLessor", false);
+			result.addObject("properties", properties);
+			result.addObject("requestURI", "property/list.do");
+			result.addObject("audits", auditorService.findByPrincipal().getAudits());
+		} catch (Throwable th) {
+			properties = propertyService.findAll();
+			result = new ModelAndView("property/list");
+			result.addObject("isLessor", false);
+			result.addObject("properties", properties);
+			result.addObject("requestURI", "property/list.do");
+		}
 
 		return result;
 

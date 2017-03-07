@@ -1,0 +1,13 @@
+En el proyecto hemos tomado las siguientes decisiones:
+
+- Hemos añadido la clase abstracta CommentableEntity, de la que extienden ahora mismo la clase Actor y tiene una asociación con la clase Comment. De esta manera en futuras versiones del proyecto, puede ser que otras clases puedan tener comentarios, por lo que esas clases extenderían también de CommentableEntity
+
+- Según lo dicho anteriormente, Actor extiende de CommentableEntity, por lo que todos los actores podrían tener comentarios. Por lo que hemos controlado que solo Lessor y Tenant puedan tener comentarios y no Administrator y Auditor
+
+- Una property no puede borrarse si tiene auditorías publicadas sobre ésta
+
+- Una property no puede borrarse si tiene una reserva aceptada y la fecha de salida es en el futuro
+
+- Un tenant solo puede tener una reserva pendiente por propiedad
+
+- Para implementar la caché que se requiere para satisfacer uno de los requisitos se ha añadido como dependencia del proyecto el componente "EhCache"
