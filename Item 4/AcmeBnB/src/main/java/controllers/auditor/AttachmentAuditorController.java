@@ -43,6 +43,7 @@ public class AttachmentAuditorController extends AbstractController {
 		attachment = attachmentService.create();
 		result = createEditModelAndView(attachment);
 		result.addObject("auditId", auditId);
+		setAuditId(auditId);
 
 		return result;
 	}
@@ -125,6 +126,7 @@ public class AttachmentAuditorController extends AbstractController {
 		result.addObject("attachment", attachment);
 		result.addObject("attachments", attachments);
 		result.addObject("message", message);
+		result.addObject("auditId", getAuditId());
 
 		return result;
 	}

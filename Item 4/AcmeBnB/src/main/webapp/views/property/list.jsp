@@ -20,6 +20,11 @@
 	<acme:column code="property.description" property="description"/>
 	<acme:column code="property.address" property="address"/>
 	
+	<spring:message code="property.number.books" var = "c"/>
+	<display:column title="${c}" sortable="true">
+		<jstl:out value="${row.books.size()}" />
+	</display:column>
+	
 	<display:column>
 			<a href="property/display.do?propertyId=${row.id}">
 				<spring:message	code="property.display" />
@@ -53,11 +58,19 @@
 	
 	<security:authorize access="hasRole('AUDITOR')">
 		<display:column>
-			<spring:url var="url_request" value="/audit/auditor/create.do">
-				<spring:param name="propertyId" value="${row.id}"/>
-			</spring:url>
-			
-			<a href="${url_request}"><spring:message code="property.make.audit"/></a>
+			<jstl:set var="contains" value="false" />
+			<jstl:forEach var = "i" items="${row.audits}">
+				<jstl:if test="${audits.contains(i)}">
+					<jstl:set var="contains" value="true" />
+				</jstl:if>
+			</jstl:forEach>
+			<jstl:if test="${!contains}">
+				<spring:url var="url_request" value="/audit/auditor/create.do">
+					<spring:param name="propertyId" value="${row.id}"/>
+				</spring:url>
+				
+				<a href="${url_request}"><spring:message code="property.make.audit"/></a>
+			</jstl:if>
 		</display:column>
 	</security:authorize>
 	
