@@ -107,8 +107,14 @@ public class BookTenantController extends AbstractController {
 			try {
 				bookService.save(book_reconstructed);
 				result = new ModelAndView("redirect:list.do");
-			} catch (IllegalArgumentException oops) {
-				result = createEditModelAndView(book_reconstructed, "misc.commit.error");
+			} catch (Throwable oops) {
+				if (oops.getMessage().equals("BookService.save: Checkin and checkout need to be planned in the future")) {
+					result = createEditModelAndView(book_reconstructed, "book.date.error");
+				} else if (oops.getMessage().equals("BookService.save: Just a single book PENDING over a same property")) {
+					result = createEditModelAndView(book_reconstructed, "book.pending.error");
+				} else {
+					result = createEditModelAndView(book_reconstructed, "misc.commit.error");
+				}
 			}
 		}
 

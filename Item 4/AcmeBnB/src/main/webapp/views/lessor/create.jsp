@@ -24,12 +24,6 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="properties" />
-	<form:hidden path="accumulatedCharges" />
-	<form:hidden path="creditCard" />
-	<form:hidden path="socialIdentities" />
-	<form:hidden path="userAccount.authorities" />
-	<form:hidden path="comments" />
 	
 	<acme:textbox code="lessor.name" path="name" />
 	<acme:textbox code="lessor.surname" path="surname" />

@@ -14,11 +14,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.LessorRepository;
+import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import security.UserAccountService;
+import domain.Comment;
 import domain.Lessor;
 import domain.Property;
+import domain.SocialIdentity;
 import forms.LessorForm;
 
 @Service
@@ -125,48 +128,37 @@ public class LessorService {
 
 	public Lessor reconstruct(LessorForm lessor, BindingResult binding) {
 		Lessor result;
+		Authority auth;
+		auth = new Authority();
+		auth.setAuthority("LESSOR");
 
-		if (lessor.getLessor().getId() == 0) {
-			result = lessor.getLessor();
-		} else {
-			result = lessorRepository.findOne(lessor.getLessor().getId());
+		result = lessor.getLessor();
 
-			result.setName(lessor.getLessor().getName());
-			result.setSurname(lessor.getLessor().getSurname());
-			result.setEmail(lessor.getLessor().getEmail());
-			result.setPhone(lessor.getLessor().getPhone());
-			result.setPicture(lessor.getLessor().getPicture());
-
-			result.getUserAccount().setUsername(lessor.getLessor().getUserAccount().getUsername());
-			result.getUserAccount().setPassword(lessor.getLessor().getUserAccount().getPassword());
-
-		}
+		result.getUserAccount().addAuthority(auth);
+		result.setAccumulatedCharges(0.0);
+		result.setSocialIdentities(new ArrayList<SocialIdentity>());
+		result.setComments(new ArrayList<Comment>());
+		result.setProperties(new ArrayList<Property>());
 
 		validator.validate(result, binding);
+
 		return result;
 	}
 
 	public Lessor reconstruct(Lessor lessor, BindingResult binding) {
 		Lessor result;
 
-		if (lessor.getId() == 0) {
-			result = lessor;
-		} else {
-			Lessor aux = findByPrincipal();
-			result = lessor;
+		Lessor aux = findByPrincipal();
+		result = lessor;
 
-			result.setProperties(aux.getProperties());
-			result.setAccumulatedCharges(aux.getAccumulatedCharges());
-			result.setCreditCard(aux.getCreditCard());
-			result.setSocialIdentities(aux.getSocialIdentities());
-			result.setUserAccount(aux.getUserAccount());
-			result.setComments(aux.getComments());
+		result.setProperties(aux.getProperties());
+		result.setAccumulatedCharges(aux.getAccumulatedCharges());
+		result.setCreditCard(aux.getCreditCard());
+		result.setSocialIdentities(aux.getSocialIdentities());
+		result.setUserAccount(aux.getUserAccount());
+		result.setComments(aux.getComments());
 
-			//result.getUserAccount().setUsername(lessorForm.getLessor().getUserAccount().getUsername());
-			//result.getUserAccount().setPassword(lessorForm.getLessor().getUserAccount().getPassword());
-
-			validator.validate(result, binding);
-		}
+		validator.validate(result, binding);
 
 		return result;
 	}

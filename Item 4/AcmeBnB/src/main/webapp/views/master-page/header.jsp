@@ -25,7 +25,7 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="administrator/administrator/edit.do"><spring:message code="master.page.profile.edit" /></a></li>
-					<li><a href="administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
+					<li><a href="dashboard/administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
 					<li><a href="attribute/list.do"><spring:message code="master.page.administrator.attributes" /></a></li>
 					<li><a href="auditor/administrator/create.do"><spring:message code="master.page.administrator.auditor" /></a></li>
 					<li><a href="socialIdentity/create.do"><spring:message code="master.page.si.create" /></a></li>

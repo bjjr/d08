@@ -18,6 +18,8 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Audit;
 import domain.Auditor;
+import domain.Comment;
+import domain.SocialIdentity;
 import forms.AuditorForm;
 
 @Service
@@ -133,37 +135,31 @@ public class AuditorService {
 	public Auditor reconstruct(Auditor auditor, BindingResult binding) {
 		Auditor result;
 
-		if (auditor.getId() == 0) {
-			result = auditor;
-		} else {
-			Auditor aux = findByPrincipal();
-			result = auditor;
+		Auditor aux = findByPrincipal();
+		result = auditor;
 
-			result.setAudits(aux.getAudits());
-			result.setSocialIdentities(aux.getSocialIdentities());
-			result.setUserAccount(aux.getUserAccount());
-			result.setComments(aux.getComments());
+		result.setAudits(aux.getAudits());
+		result.setSocialIdentities(aux.getSocialIdentities());
+		result.setUserAccount(aux.getUserAccount());
+		result.setComments(aux.getComments());
 
-			validator.validate(result, binding);
-		}
+		validator.validate(result, binding);
 
 		return result;
 	}
 
 	public Auditor reconstruct(AuditorForm auditorForm, BindingResult binding) {
 		Auditor result;
+		Authority auth;
+		auth = new Authority();
+		auth.setAuthority("AUDITOR");
 
-		if (auditorForm.getAuditor().getId() == 0) {
-			result = auditorForm.getAuditor();
-		} else {
-			Auditor aux = findByPrincipal();
-			result = auditorForm.getAuditor();
+		result = auditorForm.getAuditor();
 
-			result.setAudits(aux.getAudits());
-			result.setSocialIdentities(aux.getSocialIdentities());
-			result.setUserAccount(aux.getUserAccount());
-			result.setComments(aux.getComments());
-		}
+		result.getUserAccount().addAuthority(auth);
+		result.setAudits(new ArrayList<Audit>());
+		result.setSocialIdentities(new ArrayList<SocialIdentity>());
+		result.setComments(new ArrayList<Comment>());
 
 		validator.validate(result, binding);
 

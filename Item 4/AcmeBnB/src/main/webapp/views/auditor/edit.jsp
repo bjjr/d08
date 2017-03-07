@@ -11,10 +11,6 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="socialIdentities" />
-	<form:hidden path="userAccount" />
-	<form:hidden path="audits"/>
-	<form:hidden path="comments" />
 	
 	<acme:textbox code="auditor.name" path="name" />
 	<acme:textbox code="auditor.surname" path="surname" />

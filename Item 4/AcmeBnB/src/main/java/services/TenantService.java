@@ -18,9 +18,11 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Book;
+import domain.Comment;
 import domain.CreditCard;
 import domain.Finder;
 import domain.Invoice;
+import domain.SocialIdentity;
 import domain.Tenant;
 import forms.TenantForm;
 
@@ -85,8 +87,17 @@ public class TenantService {
 	@Transactional(readOnly = true)
 	public Tenant reconstruct(TenantForm tenantForm, BindingResult binding) {
 		Tenant result;
+		Authority auth;
+		auth = new Authority();
+		auth.setAuthority("TENANT");
 
 		result = tenantForm.getTenant();
+
+		result.getUserAccount().addAuthority(auth);
+		result.setSocialIdentities(new ArrayList<SocialIdentity>());
+		result.setComments(new ArrayList<Comment>());
+		result.setInvoices(new ArrayList<Invoice>());
+		result.setBooks(new ArrayList<Book>());
 
 		validator.validate(result, binding);
 
@@ -106,9 +117,6 @@ public class TenantService {
 		result.setSocialIdentities(aux.getSocialIdentities());
 		result.setUserAccount(aux.getUserAccount());
 		result.setComments(aux.getComments());
-
-		//result.getUserAccount().setUsername(tenantForm.getTenant().getUserAccount().getUsername());
-		//result.getUserAccount().setPassword(tenantForm.getTenant().getUserAccount().getPassword());
 
 		validator.validate(result, binding);
 
