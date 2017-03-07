@@ -106,8 +106,11 @@ public class PropertyController {
 
 		property = propertyService.findOne(propertyId);
 		attributeValues = attributeValueService.findAttributesValuesByProperty(propertyId);
-		if (propertyService.findAllToEdit().contains(property)) {
-			isOwner = true;
+		try {
+			if (propertyService.findAllToEdit().contains(property)) {
+				isOwner = true;
+			}
+		} catch (Throwable th) {
 		}
 
 		result = new ModelAndView("property/display");

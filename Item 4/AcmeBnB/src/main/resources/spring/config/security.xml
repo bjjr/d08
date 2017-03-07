@@ -43,7 +43,7 @@
 
 		<security:intercept-url pattern="/legal/**" access="permitAll" />
 		
-		<security:intercept-url pattern="/lessor/display.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/lessor/display.do" access="permitAll" />
 		<security:intercept-url pattern="/lessor/list.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/lessor/create.do" access="isAnonymous()" />
 		<security:intercept-url pattern="/lessor/edit.do" access="hasRole('LESSOR')" />

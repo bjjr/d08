@@ -18,6 +18,18 @@
 <acme:display code="lessor.phone" property="${lessor.phone}" />
 <img alt='<spring:message code="lessor.alt" />' src="${lessor.picture }" />
 
+<h2>
+			<spring:message code="lessor.social" />
+		</h2>
+		<display:table pagesize="5" class="displaytag"
+			name="lessor.socialIdentities" requestURI="lessor/display.do"
+			id="row">
+			<acme:column code="socialIdentity.nick" property="nick" />
+			<acme:column code="socialIdentity.nameSN" property="nameSN" />
+			<acme:column code="socialIdentity.urlSN" property="urlSN" />
+		</display:table>
+
+
 <security:authorize access="hasRole('ADMINISTRATOR')">
 	<h2><spring:message code="propertiesSortedByAudits" /></h2>
 	<display:table pagesize="5" class="displaytag"

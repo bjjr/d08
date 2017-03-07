@@ -29,10 +29,17 @@
 	<acme:column code="property.attribute.name" property="attribute.name" />
 	<jstl:if test="${isOwner == true }">
 		<display:column>
-			<a href="attributeValue/edit.do?attributeValueId=${row.id}&propertyId=${property.id}"> <spring:message
-					code="property.edit" />
+			<a
+				href="attributeValue/edit.do?attributeValueId=${row.id}&propertyId=${property.id}">
+				<spring:message code="property.edit" />
 			</a>
 		</display:column>
 	</jstl:if>
 
+
+
 </display:table>
+
+<br/><h3><a href="lessor/display.do?lessorId=${property.lessor.id}"> <spring:message
+		code="property.lessor" />
+</a></h3>
